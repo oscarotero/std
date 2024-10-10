@@ -7,6 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,40 +20,6 @@ jobs:
       - name: Run build
         run: deno run -A https://gist.githubusercontent.com/oscarotero/f4e471faedb54d2f8ee3d820f451a296/raw/c0b9793b954fe4bd16738ce743dc9ce2827932e2/std-to-http.ts
 
-      - name: Configure Git
-        run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-
-      - name: Commit and push changes
-        run: |
-          git add .
-          git commit -m "Automated commit from GitHub Action"
-          git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get latest tag
-        id: get_latest_tag
-        run: |
-          git fetch --tags
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "latest_tag=$latest_tag" >> $GITHUB_ENV
-
-      - name: Calculate next tag
-        id: calculate_tag
-        run: |
-          latest_tag=${{ env.latest_tag }}
-          if [ -z "$latest_tag" ]; then
-            next_tag=1
-          else
-            next_tag=$((latest_tag + 1))
-          fi
-          echo "next_tag=$next_tag" >> $GITHUB_ENV
-
-      - name: Create and push tag
-        run: |
-          git tag ${{ env.next_tag }}
-          git push origin ${{ env.next_tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Update code
