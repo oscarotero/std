@@ -18,7 +18,7 @@ jobs:
         uses: denoland/setup-deno@v2
 
       - name: Run build
-        run: deno run -A https://gist.githubusercontent.com/oscarotero/f4e471faedb54d2f8ee3d820f451a296/raw/f4b39c60533a36fb4aff7c2be3851427ba692480/std-to-http.ts
+        run: deno run -A https://gist.githubusercontent.com/oscarotero/f4e471faedb54d2f8ee3d820f451a296/raw/std-to-http.ts
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
