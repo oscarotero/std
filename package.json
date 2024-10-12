@@ -1,0 +1,56 @@
+{
+  "name": "deno-std",
+  "version": "1.0.0",
+  "description": "Deno std packages in a single package",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oscarotero/std.git"
+  },
+  "keywords": [
+    "deno",
+    "std"
+  ],
+  "author": "Óscar Otero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oscarotero/std/issues"
+  },
+  "homepage": "https://github.com/oscarotero/std#readme",
+  "files": [
+    "*/*.js"
+  ],
+  "exports": {
+    "./assert/*.js": "./assert/*.js",
+    "./async/*.js": "./async/*.js",
+    "./bytes/*.js": "./bytes/*.js",
+    "./cli/*.js": "./cli/*.js",
+    "./collections/*.js": "./collections/*.js",
+    "./crypto/*.js": "./crypto/*.js",
+    "./csv/*.js": "./csv/*.js",
+    "./data_structures/*.js": "./data_structures/*.js",
+    "./encoding/*.js": "./encoding/*.js",
+    "./expect/*.js": "./expect/*.js",
+    "./fmt/*.js": "./fmt/*.js",
+    "./front_matter/*.js": "./front_matter/*.js",
+    "./fs/*.js": "./fs/*.js",
+    "./html/*.js": "./html/*.js",
+    "./http/*.js": "./http/*.js",
+    "./internal/*.js": "./internal/*.js",
+    "./json/*.js": "./json/*.js",
+    "./jsonc/*.js": "./jsonc/*.js",
+    "./media_types/*.js": "./media_types/*.js",
+    "./msgpack/*.js": "./msgpack/*.js",
+    "./net/*.js": "./net/*.js",
+    "./path/*.js": "./path/*.js",
+    "./regexp/*.js": "./regexp/*.js",
+    "./semver/*.js": "./semver/*.js",
+    "./streams/*.js": "./streams/*.js",
+    "./testing/*.js": "./testing/*.js",
+    "./text/*.js": "./text/*.js",
+    "./toml/*.js": "./toml/*.js",
+    "./ulid/*.js": "./ulid/*.js",
+    "./uuid/*.js": "./uuid/*.js",
+    "./yaml/*.js": "./yaml/*.js"
+  }
+}
