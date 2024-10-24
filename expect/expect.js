@@ -461,3 +461,19 @@ expect.stringMatching = asymmetricMatchers.stringMatching;
  * ```
  */
 expect.hasAssertions = hasAssertions;
+/**
+ * `expect.objectContaining(object)` matches any received object that recursively matches the expected properties.
+ * That is, the expected object is not a subset of the received object. Therefore, it matches a received object
+ * which contains properties that are not in the expected object.
+ *
+ * @example
+ * ```ts
+ * import { expect } from "mod.js";
+ *
+ * Deno.test("example", () => {
+ *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'bar'}));
+ *   expect({ bar: 'baz' }).not.toEqual(expect.objectContaining({ foo: 'bar'}));
+ * });
+ * ```
+ */
+expect.objectContaining = asymmetricMatchers.objectContaining;

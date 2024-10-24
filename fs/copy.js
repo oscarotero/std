@@ -6,7 +6,8 @@ import { ensureDir, ensureDirSync } from "./ensure_dir.js";
 import { getFileInfoType } from "./_get_file_info_type.js";
 import { toPathString } from "./_to_path_string.js";
 import { isSubdir } from "./_is_subdir.js";
-const isWindows = Deno.build.os === "windows";
+// deno-lint-ignore no-explicit-any
+const isWindows = globalThis.Deno?.build.os === "windows";
 function assertIsDate(date, name) {
   if (date === null) {
     throw new Error(`${name} is unavailable`);

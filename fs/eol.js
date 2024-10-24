@@ -13,7 +13,9 @@ export const CRLF = "\r\n";
  * EOL; // "\n" on POSIX platforms and "\r\n" on Windows
  * ```
  */
-export const EOL = Deno?.build.os === "windows" ? CRLF : LF;
+export const EOL =
+  // deno-lint-ignore no-explicit-any
+  globalThis.Deno?.build.os === "windows" ? CRLF : LF;
 const regDetect = /(?:\r?\n)/g;
 /**
  * Returns the detected EOL character(s) detected in the input string. If no EOL

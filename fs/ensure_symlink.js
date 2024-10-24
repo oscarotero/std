@@ -4,7 +4,8 @@ import { resolve } from "../path/resolve.js";
 import { ensureDir, ensureDirSync } from "./ensure_dir.js";
 import { getFileInfoType } from "./_get_file_info_type.js";
 import { toPathString } from "./_to_path_string.js";
-const isWindows = Deno.build.os === "windows";
+// deno-lint-ignore no-explicit-any
+const isWindows = globalThis.Deno?.build.os === "windows";
 function resolveSymlinkTarget(target, linkName) {
   if (typeof target !== "string") {
     return target; // URL is always absolute path

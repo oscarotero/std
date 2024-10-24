@@ -17,6 +17,24 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(path, "/foo/bar/baz/asdf");
  * ```
  *
+ * @example Working with URLs
+ *
+ * Note: This function will remove the double slashes from a URL's scheme.
+ * Hence, do not pass a full URL to this function. Instead, pass the pathname of
+ * the URL.
+ *
+ * ```ts
+ * import { normalize } from "normalize.js";
+ * import { assertEquals } from "../../assert/mod.js";
+ *
+ * const url = new URL("https://deno.land");
+ * url.pathname = normalize("//std//assert//.//mod.ts");
+ * assertEquals(url.href, "https://deno.land/std/assert/mod.ts");
+ *
+ * url.pathname = normalize("std/assert/../async/retry.ts");
+ * assertEquals(url.href, "https://deno.land/std/async/retry.ts");
+ * ```
+ *
  * Note: If you are working with file URLs,
  * use the new version of `normalize` from `@std/path/posix/unstable-normalize`.
  *

@@ -13,6 +13,18 @@ import { isPosixPathSeparator } from "./_util.js";
  *
  * assertEquals(dirname("/home/user/Documents/"), "/home/user");
  * assertEquals(dirname("/home/user/Documents/image.png"), "/home/user/Documents");
+ * assertEquals(dirname("https://deno.land/std/path/mod.ts"), "https://deno.land/std/path");
+ * ```
+ *
+ * @example Working with URLs
+ *
+ * ```ts
+ * import { dirname } from "dirname.js";
+ * import { assertEquals } from "../../assert/mod.js";
+ *
+ * assertEquals(dirname("https://deno.land/std/path/mod.ts"), "https://deno.land/std/path");
+ * assertEquals(dirname("https://deno.land/std/path/mod.ts?a=b"), "https://deno.land/std/path");
+ * assertEquals(dirname("https://deno.land/std/path/mod.ts#header"), "https://deno.land/std/path");
  * ```
  *
  * Note: If you are working with file URLs,

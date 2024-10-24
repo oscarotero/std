@@ -1,5 +1,6 @@
 // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
+import { equal } from "./_equal.js";
 export class AsymmetricMatcher {
   value;
   constructor(value) {
@@ -115,4 +116,24 @@ export class StringMatching extends AsymmetricMatcher {
 }
 export function stringMatching(pattern) {
   return new StringMatching(pattern);
+}
+export class ObjectContaining extends AsymmetricMatcher {
+  constructor(obj) {
+    super(obj);
+  }
+  equals(other) {
+    const keys = Object.keys(this.value);
+    for (const key of keys) {
+      if (
+        !Object.hasOwn(other, key) ||
+        !equal(this.value[key], other[key])
+      ) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+export function objectContaining(obj) {
+  return new ObjectContaining(obj);
 }

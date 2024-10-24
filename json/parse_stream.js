@@ -1,9 +1,9 @@
 // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
 // This module is browser compatible.
 import { parse } from "./_common.js";
-const branks = /^[ \t\r\n]*$/;
-function isBrankString(str) {
-  return branks.test(str);
+const blanks = /^[ \t\r\n]*$/;
+function isBlankSpace(str) {
+  return blanks.test(str);
 }
 /**
  * Parse each chunk as JSON.
@@ -57,7 +57,7 @@ export class JsonParseStream extends TransformStream {
   constructor() {
     super({
       transform(chunk, controller) {
-        if (!isBrankString(chunk)) {
+        if (!isBlankSpace(chunk)) {
           controller.enqueue(parse(chunk));
         }
       },
