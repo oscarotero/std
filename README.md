@@ -3,6 +3,8 @@
 Import [Deno std library](https://jsr.io/@std) using HTTP modules, in a single
 package, with no dependencies. Compatible with browsers, Node, Bun, and Deno.
 
+Note: This package only includes stable APIs.
+
 ## Use in browsers
 
 The package can be imported from

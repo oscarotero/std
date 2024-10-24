@@ -9,6 +9,19 @@ import {
   relative,
 } from "https://deno.land/x/_std@1.0.0/path/posix/mod.ts";
 import { walk } from "https://deno.land/x/_std@1.0.0/fs/walk.ts";
+import versions from "./versions.json" with { type: "json" };
+
+// Fetch the latest release of the std repository
+const release = await (await fetch(
+  "https://api.github.com/repos/denoland/std/releases/latest",
+)).json();
+
+const { tag_name, zipball_url } = release;
+
+if (versions[tag_name]) {
+  console.log(`The version ${tag_name} is already published as ${versions[tag_name]}`);
+  Deno.exit();
+}
 
 // Remove the previous std code
 for await (const entry of Deno.readDir(".")) {
@@ -17,11 +30,15 @@ for await (const entry of Deno.readDir(".")) {
   }
 }
 
-// Fetch the latest release of the std repository
-const release = await (await fetch(
-  "https://api.github.com/repos/denoland/std/releases/latest",
-)).json();
-const zip = await (await fetch(release.zipball_url)).arrayBuffer();
+const last = Object.values(versions).pop()!;
+
+// Increment patch version
+const [major, minor, patch] = last.split(".").map(Number);
+const version = `${major}.${minor}.${patch + 1}`;
+versions[tag_name] = version;
+Deno.writeTextFile(".github/versions.json", JSON.stringify(versions, null, 2));
+
+const zip = await (await fetch(zipball_url)).arrayBuffer();
 const reader = new ZipReader(new BlobReader(new Blob([zip])));
 
 // Filters to exclude certain files
@@ -110,7 +127,7 @@ await Deno.writeTextFile(
   JSON.stringify(
     {
       name: "deno-std",
-      version: "1.0.0",
+      version,
       description: "Deno std packages in a single package",
       type: "module",
       repository: {
