@@ -25,6 +25,13 @@ jobs:
           echo "VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
 
       - uses: stefanzweifel/git-auto-commit-action@v5
+        id: auto-commit
         with:
           commit_message: Update code
           tagging_message: ${{ env.VERSION }}
+
+      - name: "Run if no changes have been detected"
+        if: steps.auto-commit.outputs.changes_detected == 'false'
+        run: |
+          echo "No changes"
+          exit 1
