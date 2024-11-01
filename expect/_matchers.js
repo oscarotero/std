@@ -5,7 +5,6 @@ import { assertInstanceOf } from "../assert/instance_of.js";
 import { assertIsError } from "../assert/is_error.js";
 import { assertNotInstanceOf } from "../assert/not_instance_of.js";
 import { assertMatch } from "../assert/match.js";
-import { assertObjectMatch } from "../assert/object_match.js";
 import { assertNotMatch } from "../assert/not_match.js";
 import { AssertionError } from "../assert/assertion_error.js";
 import { assertEquals } from "./_assert_equals.js";
@@ -14,7 +13,11 @@ import { equal } from "./_equal.js";
 import { format } from "../internal/format.js";
 import { getMockCalls } from "./_mock_util.js";
 import { inspectArg, inspectArgs } from "./_inspect_args.js";
-import { buildEqualOptions, iterableEquality } from "./_utils.js";
+import {
+  buildEqualOptions,
+  iterableEquality,
+  subsetEquality,
+} from "./_utils.js";
 export function toBe(context, expect) {
   if (context.isNot) {
     assertNotStrictEquals(context.value, expect, context.customMessage);
@@ -349,34 +352,30 @@ export function toMatch(context, expected) {
   }
 }
 export function toMatchObject(context, expected) {
-  if (context.isNot) {
-    let objectMatch = false;
-    try {
-      assertObjectMatch(
-        // deno-lint-ignore no-explicit-any
-        context.value,
-        expected,
-        context.customMessage,
-      );
-      objectMatch = true;
-      const actualString = format(context.value);
-      const expectedString = format(expected);
-      throw new AssertionError(
-        `Expected ${actualString} to NOT match ${expectedString}`,
-      );
-    } catch (e) {
-      if (objectMatch) {
-        throw e;
-      }
-      return;
-    }
-  } else {
-    assertObjectMatch(
-      // deno-lint-ignore no-explicit-any
-      context.value,
-      expected,
-      context.customMessage,
+  const received = context.value;
+  if (typeof received !== "object" || received === null) {
+    throw new AssertionError("Received value must be an object");
+  }
+  if (typeof expected !== "object" || expected === null) {
+    throw new AssertionError("Received value must be an object");
+  }
+  const pass = equal(context.value, expected, {
+    strictCheck: false,
+    customTesters: [
+      ...context.customTesters,
+      iterableEquality,
+      subsetEquality,
+    ],
+  });
+  const triggerError = () => {
+    const actualString = format(context.value);
+    const expectedString = format(expected);
+    throw new AssertionError(
+      `Expected ${actualString} to NOT match ${expectedString}`,
     );
+  };
+  if (context.isNot && pass || !context.isNot && !pass) {
+    triggerError();
   }
 }
 export function toHaveBeenCalled(context) {

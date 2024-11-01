@@ -19,7 +19,8 @@ import { normalizeGlob } from "./normalize_glob.js";
  * @param options The options to use.
  * @returns The joined path.
  */
-export function joinGlobs(globs, { extended = true, globstar = false } = {}) {
+export function joinGlobs(globs, options = {}) {
+  const { globstar = false } = options;
   if (!globstar || globs.length === 0) {
     return join(...globs);
   }
@@ -37,5 +38,5 @@ export function joinGlobs(globs, { extended = true, globstar = false } = {}) {
   if (!joined) {
     return ".";
   }
-  return normalizeGlob(joined, { extended, globstar });
+  return normalizeGlob(joined, { globstar });
 }

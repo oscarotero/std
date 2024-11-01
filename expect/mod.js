@@ -53,11 +53,16 @@
  *   - {@linkcode expect.anything}
  *   - {@linkcode expect.any}
  *   - {@linkcode expect.arrayContaining}
+ *   - {@linkcode expect.not.arrayContaining}
  *   - {@linkcode expect.objectContaining}
+ *   - {@linkcode expect.not.objectContaining}
  *   - {@linkcode expect.closeTo}
  *   - {@linkcode expect.stringContaining}
+ *   - {@linkcode expect.not.stringContaining}
  *   - {@linkcode expect.stringMatching}
+ *   - {@linkcode expect.not.stringMatching}
  * - Utilities:
+ *   - {@linkcode expect.assertions}
  *   - {@linkcode expect.addEqualityTester}
  *   - {@linkcode expect.extend}
  *   - {@linkcode expect.hasAssertions}
@@ -68,10 +73,7 @@
  *   - `toMatchInlineSnapshot`
  *   - `toThrowErrorMatchingSnapshot`
  *   - `toThrowErrorMatchingInlineSnapshot`
- * - Asymmetric matchers:
- *   - `expect.not.objectContaining`
  * - Utilities:
- *   - `expect.assertions`
  *   - `expect.addSnapshotSerializer`
  *
  * The tracking issue to add support for unsupported parts of the API is

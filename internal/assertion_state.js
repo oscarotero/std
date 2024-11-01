@@ -13,9 +13,43 @@ export class AssertionState {
   #state;
   constructor() {
     this.#state = {
+      assertionCount: undefined,
       assertionCheck: false,
       assertionTriggered: false,
+      assertionTriggeredCount: 0,
     };
+  }
+  /**
+   * Get the number that through `expect.assertions` api set.
+   *
+   * @returns the number that through `expect.assertions` api set.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * assertionState.assertionCount;
+   * ```
+   */
+  get assertionCount() {
+    return this.#state.assertionCount;
+  }
+  /**
+   * Get a certain number that assertions were called before.
+   *
+   * @returns return a certain number that assertions were called before.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * assertionState.assertionTriggeredCount;
+   * ```
+   */
+  get assertionTriggeredCount() {
+    return this.#state.assertionTriggeredCount;
   }
   /**
    * If `expect.hasAssertions` called, then through this method to update #state.assertionCheck value.
@@ -50,6 +84,39 @@ export class AssertionState {
     this.#state.assertionTriggered = val;
   }
   /**
+   * If `expect.assertions` called, then through this method to update #state.assertionCheck value.
+   *
+   * @param num Set #state.assertionCount's value, for example if the value is set 2, that means
+   * you must have two assertion matchers call in your test suite.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * assertionState.setAssertionCount(2);
+   * ```
+   */
+  setAssertionCount(num) {
+    this.#state.assertionCount = num;
+  }
+  /**
+   * If any matchers was called, `#state.assertionTriggeredCount` value will plus one internally.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * assertionState.updateAssertionTriggerCount();
+   * ```
+   */
+  updateAssertionTriggerCount() {
+    if (this.#state.assertionCount !== undefined) {
+      this.#state.assertionTriggeredCount += 1;
+    }
+  }
+  /**
    * Check Assertion internal state, if `#state.assertionCheck` is set true, but
    * `#state.assertionTriggered` is still false, then should throw an Assertion Error.
    *
@@ -61,22 +128,53 @@ export class AssertionState {
    * import { AssertionState } from "mod.js";
    *
    * const assertionState = new AssertionState();
-   * if (assertionState.checkAssertionErrorStateAndReset()) {
+   * if (assertionState.checkAssertionErrorState()) {
    *   // throw AssertionError("");
    * }
    * ```
    */
-  checkAssertionErrorStateAndReset() {
-    const result = this.#state.assertionCheck &&
-      !this.#state.assertionTriggered;
-    this.#resetAssertionState();
-    return result;
+  checkAssertionErrorState() {
+    return this.#state.assertionCheck && !this.#state.assertionTriggered;
   }
-  #resetAssertionState() {
+  /**
+   * Reset all assertion state when every test suite function ran completely.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * assertionState.resetAssertionState();
+   * ```
+   */
+  resetAssertionState() {
     this.#state = {
+      assertionCount: undefined,
       assertionCheck: false,
       assertionTriggered: false,
+      assertionTriggeredCount: 0,
     };
+  }
+  /**
+   * Check Assertion called state, if `#state.assertionCount` is set to a number value, but
+   * `#state.assertionTriggeredCount` is less then it, then should throw an assertion error.
+   *
+   * @returns a boolean value, that the test suite is satisfied with the check. If not,
+   * it should throw an AssertionError.
+   *
+   * @example Usage
+   * ```ts ignore
+   * import { AssertionState } from "mod.js";
+   *
+   * const assertionState = new AssertionState();
+   * if (assertionState.checkAssertionCountSatisfied()) {
+   *   // throw AssertionError("");
+   * }
+   * ```
+   */
+  checkAssertionCountSatisfied() {
+    return this.#state.assertionCount !== undefined &&
+      this.#state.assertionCount !== this.#state.assertionTriggeredCount;
   }
 }
 const assertionState = new AssertionState();

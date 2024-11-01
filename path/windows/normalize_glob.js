@@ -18,7 +18,8 @@ import { SEPARATOR_PATTERN } from "./constants.js";
  * @param options The options for glob pattern.
  * @returns The normalized glob pattern.
  */
-export function normalizeGlob(glob, { globstar = false } = {}) {
+export function normalizeGlob(glob, options = {}) {
+  const { globstar = false } = options;
   if (glob.match(/\0/g)) {
     throw new Error(`Glob contains invalid characters: "${glob}"`);
   }

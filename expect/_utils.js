@@ -31,6 +31,31 @@ export function isA(typeName, value) {
 function isObject(a) {
   return a !== null && typeof a === "object";
 }
+function isObjectWithKeys(a) {
+  return (isObject(a) &&
+    !(a instanceof Error) &&
+    !Array.isArray(a) &&
+    !(a instanceof Date) &&
+    !(a instanceof Set) &&
+    !(a instanceof Map));
+}
+function getObjectKeys(object) {
+  return [
+    ...Object.keys(object),
+    ...Object.getOwnPropertySymbols(object).filter((s) =>
+      Object.getOwnPropertyDescriptor(object, s)?.enumerable
+    ),
+  ];
+}
+function hasPropertyInObject(object, key) {
+  const shouldTerminate = !object || typeof object !== "object" ||
+    object === Object.prototype;
+  if (shouldTerminate) {
+    return false;
+  }
+  return (Object.prototype.hasOwnProperty.call(object, key) ||
+    hasPropertyInObject(Object.getPrototypeOf(object), key));
+}
 // deno-lint-ignore no-explicit-any
 function entries(obj) {
   if (!isObject(obj)) {
@@ -171,4 +196,43 @@ export function iterableEquality(
   aStack.pop();
   bStack.pop();
   return true;
+}
+// Ported from https://github.com/jestjs/jest/blob/442c7f692e3a92f14a2fb56c1737b26fc663a0ef/packages/expect-utils/src/utils.ts#L341
+export function subsetEquality(object, subset, customTesters = []) {
+  const filteredCustomTesters = customTesters.filter((t) =>
+    t !== subsetEquality
+  );
+  const subsetEqualityWithContext = (seenReferences = new WeakMap()) =>
+  // deno-lint-ignore no-explicit-any
+  (object, subset) => {
+    if (!isObjectWithKeys(subset)) {
+      return undefined;
+    }
+    if (seenReferences.has(subset)) {
+      return undefined;
+    }
+    seenReferences.set(subset, true);
+    const matchResult = getObjectKeys(subset).every((key) => {
+      if (isObjectWithKeys(subset[key])) {
+        if (seenReferences.has(subset[key])) {
+          return equal(object[key], subset[key], {
+            customTesters: filteredCustomTesters,
+          });
+        }
+      }
+      const result = object != null &&
+        hasPropertyInObject(object, key) &&
+        equal(object[key], subset[key], {
+          customTesters: [
+            ...filteredCustomTesters,
+            subsetEqualityWithContext(seenReferences),
+          ],
+        });
+      seenReferences.delete(subset[key]);
+      return result;
+    });
+    seenReferences.delete(subset);
+    return matchResult;
+  };
+  return subsetEqualityWithContext()(object, subset);
 }

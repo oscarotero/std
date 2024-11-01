@@ -321,6 +321,12 @@ import { assertEquals } from "../assert/equals.js";
 import { assertIsError } from "../assert/is_error.js";
 import { assertRejects } from "../assert/rejects.js";
 import { AssertionError } from "../assert/assertion_error.js";
+import {
+  isSpy,
+  registerMock,
+  sessions,
+  unregisterMock,
+} from "./_mock_utils.js";
 /**
  * An error related to spying on a function or instance method.
  *
@@ -385,42 +391,6 @@ function functionSpy(func) {
     },
   });
   return spy;
-}
-/**
- * Checks if a function is a spy.
- *
- * @typeParam Self The self type of the function.
- * @typeParam Args The arguments type of the function.
- * @typeParam Return The return type of the function.
- * @param func The function to check
- * @return `true` if the function is a spy, `false` otherwise.
- */
-function isSpy(func) {
-  const spy = func;
-  return typeof spy === "function" &&
-    typeof spy.original === "function" &&
-    typeof spy.restored === "boolean" &&
-    typeof spy.restore === "function" &&
-    Array.isArray(spy.calls);
-}
-// deno-lint-ignore no-explicit-any
-const sessions = [];
-// deno-lint-ignore no-explicit-any
-function getSession() {
-  if (sessions.length === 0) {
-    sessions.push(new Set());
-  }
-  return sessions.at(-1);
-}
-// deno-lint-ignore no-explicit-any
-function registerMock(spy) {
-  const session = getSession();
-  session.add(spy);
-}
-// deno-lint-ignore no-explicit-any
-function unregisterMock(spy) {
-  const session = getSession();
-  session.delete(spy);
 }
 export function mockSession(func) {
   if (func) {
