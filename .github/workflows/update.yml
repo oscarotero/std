@@ -20,6 +20,11 @@ jobs:
       - name: Run build
         run: deno run -A --no-lock ./.github/std-to-http.ts
 
+      - name: Read the new version
+        run: |
+          echo "VERSION=$(cat package.json | jq -r '.version')" >> $GITHUB_ENV
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update code
+          tagging_message: ${{ env.VERSION }}

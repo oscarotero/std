@@ -19,7 +19,9 @@ const release = await (await fetch(
 const { tag_name, zipball_url } = release;
 
 if (versions[tag_name]) {
-  console.log(`The version ${tag_name} is already published as ${versions[tag_name]}`);
+  console.log(
+    `The version ${tag_name} is already published as ${versions[tag_name]}`,
+  );
   Deno.exit();
 }
 
