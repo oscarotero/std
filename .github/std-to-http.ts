@@ -16,7 +16,41 @@ const release = await (await fetch(
   "https://api.github.com/repos/denoland/std/releases/latest",
 )).json();
 
-const { tag_name, zipball_url } = release;
+const { tag_name, zipball_url, body } = release;
+
+const stablePackages = [
+  "assert",
+  "async",
+  "bytes",
+  "cli",
+  "collections",
+  "crypto",
+  "csv",
+  "data-structures",
+  "encoding",
+  "expect",
+  "fmt",
+  "front-matter",
+  "fs",
+  "html",
+  "http",
+  "internal",
+  "json",
+  "jsonc",
+  "media-types",
+  "msgpack",
+  "net",
+  "path",
+  "regexp",
+  "semver",
+  "streams",
+  "testing",
+  "text",
+  "toml",
+  "ulid",
+  "uuid",
+  "yaml",
+];
 
 if (versions[tag_name]) {
   console.log(
@@ -35,8 +69,7 @@ for await (const entry of Deno.readDir(".")) {
 const last = Object.values(versions).pop()!;
 
 // Increment patch version
-const [major, minor, patch] = last.split(".").map(Number);
-const version = `${major}.${minor}.${patch + 1}`;
+const version = figureOutVersion(body, last);
 versions[tag_name] = version;
 Deno.writeTextFile(".github/versions.json", JSON.stringify(versions, null, 2));
 
@@ -51,17 +84,6 @@ const filters = [
   "/_test_",
   "_test.ts",
   "/unstable_",
-  "/archive/",
-  "/cache/",
-  "/cbor/",
-  "/datetime/",
-  "/dotenv/",
-  "/ini/",
-  "/io/",
-  "/log/",
-  "/random/",
-  "/tar/",
-  "/webgpu/",
 ];
 
 // Extract the files from the std repository
@@ -70,6 +92,15 @@ for await (const entry of reader.getEntriesGenerator()) {
   if (
     entry.directory || !entry.filename.endsWith(".ts") ||
     filters.some((filter) => entry.filename.includes(filter))
+  ) {
+    continue;
+  }
+  // Exclude unstable packages
+  const dir = entry.filename.replace(/^[^/]+\//, "/"); // Remove the root directory
+  if (
+    !stablePackages.some((pkg) =>
+      dir.startsWith(`/${pkg.replaceAll("-", "_")}/`)
+    )
   ) {
     continue;
   }
@@ -177,4 +208,41 @@ function resolve(base: string, path: string): string {
     base,
     filename ? `${mod}/${filename.replaceAll("-", "_")}.ts` : `${mod}/mod.ts`,
   );
+}
+
+function figureOutVersion(body: string, version: string): string {
+  let v = 1; // 1: patch, 2: minor, 3: major
+
+  const lines = body.split("\n").map((line) => line.trim());
+  for (const line of lines) {
+    if (line.startsWith("#### ")) {
+      const match = line.match(
+        /####\s+@std\/([\w-]+)\s+([\d.]+)\s+\(([^)]+)\)/,
+      );
+      if (match) {
+        const [, name, , increment] = match;
+
+        if (!stablePackages.includes(name)) {
+          continue;
+        }
+        if (increment === "minor" && v < 2) {
+          v = 2;
+        } else if (increment === "major" && v < 3) {
+          v = 3;
+        }
+      }
+    }
+  }
+
+  const [major, minor, patch] = last.split(".").map(Number);
+  switch (v) {
+    case 1:
+      return `${major}.${minor}.${patch + 1}`;
+    case 2:
+      return `${major}.${minor + 1}.0`;
+    case 3:
+      return `${major + 1}.0.0`;
+    default:
+      throw new Error("Invalid version");
+  }
 }
