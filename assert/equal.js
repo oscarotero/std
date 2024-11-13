@@ -3,16 +3,84 @@
 function isKeyedCollection(x) {
   return x instanceof Set || x instanceof Map;
 }
-function constructorsEqual(a, b) {
-  return a.constructor === b.constructor ||
-    a.constructor === Object && !b.constructor ||
-    !a.constructor && b.constructor === Object;
+function prototypesEqual(a, b) {
+  const pa = Object.getPrototypeOf(a);
+  const pb = Object.getPrototypeOf(b);
+  return pa === pb ||
+    pa === Object.prototype && pb === null ||
+    pa === null && pb === Object.prototype;
+}
+function isBasicObjectOrArray(obj) {
+  const proto = Object.getPrototypeOf(obj);
+  return proto === null || proto === Object.prototype ||
+    proto === Array.prototype;
+}
+// Slightly faster than Reflect.ownKeys in V8 as of 12.9.202.13-rusty (2024-10-28)
+function ownKeys(obj) {
+  return [
+    ...Object.getOwnPropertyNames(obj),
+    ...Object.getOwnPropertySymbols(obj),
+  ];
+}
+function getKeysDeep(obj) {
+  const keys = new Set();
+  while (obj !== Object.prototype && obj !== Array.prototype && obj != null) {
+    for (const key of ownKeys(obj)) {
+      keys.add(key);
+    }
+    obj = Object.getPrototypeOf(obj);
+  }
+  return keys;
+}
+// deno-lint-ignore no-explicit-any
+const Temporal = globalThis.Temporal ??
+  new Proxy({}, { get: () => {} });
+/** A non-exhaustive list of prototypes that can be accurately fast-path compared with `String(instance)` */
+const stringComparablePrototypes = new Set(
+  [
+    Intl.Locale,
+    RegExp,
+    Temporal.Duration,
+    Temporal.Instant,
+    Temporal.PlainDate,
+    Temporal.PlainDateTime,
+    Temporal.PlainTime,
+    Temporal.PlainYearMonth,
+    Temporal.PlainMonthDay,
+    Temporal.ZonedDateTime,
+    URL,
+    URLSearchParams,
+  ].filter((x) => x != null).map((x) => x.prototype),
+);
+function isPrimitive(x) {
+  return typeof x === "string" ||
+    typeof x === "number" ||
+    typeof x === "boolean" ||
+    typeof x === "bigint" ||
+    typeof x === "symbol" ||
+    x == null;
+}
+const TypedArray = Object.getPrototypeOf(Uint8Array);
+function compareTypedArrays(a, b) {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < b.length; i++) {
+    if (!sameValueZero(a[i], b[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+/** Check both strict equality (`0 == -0`) and `Object.is` (`NaN == NaN`) */
+function sameValueZero(a, b) {
+  return a === b || Object.is(a, b);
 }
 /**
  * Deep equality comparison used in assertions.
  *
- * @param c The actual value
- * @param d The expected value
+ * @param a The actual value
+ * @param b The expected value
  * @returns `true` if the values are deeply equal, `false` otherwise
  *
  * @example Usage
@@ -20,58 +88,35 @@ function constructorsEqual(a, b) {
  * import { equal } from "equal.js";
  *
  * equal({ foo: "bar" }, { foo: "bar" }); // Returns `true`
- * equal({ foo: "bar" }, { foo: "baz" }); // Returns `false
+ * equal({ foo: "bar" }, { foo: "baz" }); // Returns `false`
  * ```
  */
-export function equal(c, d) {
+export function equal(a, b) {
   const seen = new Map();
   return (function compare(a, b) {
-    // Have to render RegExp & Date for string comparison
-    // unless it's mistreated as object
-    if (
-      a &&
-      b &&
-      ((a instanceof RegExp && b instanceof RegExp) ||
-        (a instanceof URL && b instanceof URL))
-    ) {
-      return String(a) === String(b);
-    }
-    if (a instanceof Date && b instanceof Date) {
-      const aTime = a.getTime();
-      const bTime = b.getTime();
-      // Check for NaN equality manually since NaN is not
-      // equal to itself.
-      if (Number.isNaN(aTime) && Number.isNaN(bTime)) {
-        return true;
-      }
-      return aTime === bTime;
-    }
-    if (typeof a === "number" && typeof b === "number") {
-      return Number.isNaN(a) && Number.isNaN(b) || a === b;
-    }
-    if (Object.is(a, b)) {
+    if (sameValueZero(a, b)) {
       return true;
     }
+    if (isPrimitive(a) || isPrimitive(b)) {
+      return false;
+    }
+    if (a instanceof Date && b instanceof Date) {
+      return Object.is(a.getTime(), b.getTime());
+    }
     if (a && typeof a === "object" && b && typeof b === "object") {
-      if (a && b && !constructorsEqual(a, b)) {
+      if (!prototypesEqual(a, b)) {
         return false;
       }
-      if (a instanceof WeakMap || b instanceof WeakMap) {
-        if (!(a instanceof WeakMap && b instanceof WeakMap)) {
-          return false;
-        }
+      if (a instanceof TypedArray) {
+        return compareTypedArrays(a, b);
+      }
+      if (a instanceof WeakMap) {
         throw new TypeError("cannot compare WeakMap instances");
       }
-      if (a instanceof WeakSet || b instanceof WeakSet) {
-        if (!(a instanceof WeakSet && b instanceof WeakSet)) {
-          return false;
-        }
+      if (a instanceof WeakSet) {
         throw new TypeError("cannot compare WeakSet instances");
       }
-      if (a instanceof WeakRef || b instanceof WeakRef) {
-        if (!(a instanceof WeakRef && b instanceof WeakRef)) {
-          return false;
-        }
+      if (a instanceof WeakRef) {
         return compare(a.deref(), b.deref());
       }
       if (seen.get(a) === b) {
@@ -86,14 +131,7 @@ export function equal(c, d) {
           return false;
         }
         const aKeys = [...a.keys()];
-        const primitiveKeysFastPath = aKeys.every((k) => {
-          return typeof k === "string" ||
-            typeof k === "number" ||
-            typeof k === "boolean" ||
-            typeof k === "bigint" ||
-            typeof k === "symbol" ||
-            k == null;
-        });
+        const primitiveKeysFastPath = aKeys.every(isPrimitive);
         if (primitiveKeysFastPath) {
           if (a instanceof Set) {
             return a.symmetricDifference(b).size === 0;
@@ -127,14 +165,19 @@ export function equal(c, d) {
         }
         return unmatchedEntries === 0;
       }
-      const merged = { ...a, ...b };
-      for (
-        const key of [
-          ...Object.getOwnPropertyNames(merged),
-          ...Object.getOwnPropertySymbols(merged),
-        ]
-      ) {
-        if (!compare(a && a[key], b && b[key])) {
+      let keys;
+      if (isBasicObjectOrArray(a)) {
+        // fast path
+        keys = ownKeys({ ...a, ...b });
+      } else if (stringComparablePrototypes.has(Object.getPrototypeOf(a))) {
+        // medium path
+        return String(a) === String(b);
+      } else {
+        // slow path
+        keys = getKeysDeep(a).union(getKeysDeep(b));
+      }
+      for (const key of keys) {
+        if (!compare(a[key], b[key])) {
           return false;
         }
         if (((key in a) && (!(key in b))) || ((key in b) && (!(key in a)))) {
@@ -144,5 +187,5 @@ export function equal(c, d) {
       return true;
     }
     return false;
-  })(c, d);
+  })(a, b);
 }

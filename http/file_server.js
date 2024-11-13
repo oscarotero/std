@@ -556,6 +556,10 @@ async function createServeDirResponse(req, opts) {
   if (normalizedPath.endsWith("/")) {
     normalizedPath = normalizedPath.slice(0, -1);
   }
+  // Exclude dotfiles if showDotfiles is false
+  if (!showDotfiles && /\/\./.test(normalizedPath)) {
+    return createStandardResponse(STATUS_CODE.NotFound);
+  }
   const fsPath = join(target, normalizedPath);
   const fileInfo = await Deno.stat(fsPath);
   // For files, remove the trailing slash from the path.
