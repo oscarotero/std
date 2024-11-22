@@ -44,6 +44,7 @@ import { parseArgs } from "../cli/parse_args.js";
 import denoConfig from "./deno.json" with { type: "json" };
 import { format as formatBytes } from "../fmt/bytes.js";
 import { getNetworkAddress } from "../net/unstable_get_network_address.js";
+import { escape } from "../html/entities.js";
 import { HEADER } from "./unstable_header.js";
 import { METHOD } from "./unstable_method.js";
 const ENV_PERM_STATUS =
@@ -421,7 +422,7 @@ function dirViewerTemplate(dirname, entries) {
           return "";
         }
         const link = array.slice(0, index + 1).join("/");
-        return `<a href="${link}">${path}</a>`;
+        return `<a href="${escape(link)}">${escape(path)}</a>`;
       })
       .join("/")
   }
@@ -445,7 +446,7 @@ function dirViewerTemplate(dirname, entries) {
                       ${entry.size}
                     </td>
                     <td>
-                      <a href="${entry.url}">${entry.name}</a>
+                      <a href="${escape(entry.url)}">${escape(entry.name)}</a>
                     </td>
                   </tr>
                 `)

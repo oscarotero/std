@@ -529,7 +529,7 @@ export function dateTime(scanner) {
   scanner.next(10);
   const acc = [];
   // example: 1979-05-27T00:32:00Z
-  while (/[ 0-9TZ.:-]/.test(scanner.char()) && !scanner.eof()) {
+  while (/[ 0-9TZ.:+-]/.test(scanner.char()) && !scanner.eof()) {
     acc.push(scanner.char());
     scanner.next();
   }

@@ -32,21 +32,40 @@ function getSymlinkOption(type) {
  * @see {@link https://docs.deno.com/runtime/manual/basics/permissions#file-system-access}
  * for more information on Deno's permissions system.
  *
- * @param target The source file path as a string or URL.
+ * @param target The source file path as a string or URL. If it is a relative path string, it have to be relative to the link path.
  * @param linkName The destination link path as a string or URL.
  *
  * @returns A void promise that resolves once the link exists.
  *
- * @example Usage
+ * @example Basic usage
  * ```ts ignore
  * import { ensureSymlink } from "ensure_symlink.js";
  *
- * await ensureSymlink("./folder/targetFile.dat", "./folder/targetFile.link.dat");
+ * // Ensures the link `./targetFile.link.dat` exists and points to `./targetFile.dat`
+ * await ensureSymlink("./targetFile.dat", "./targetFile.link.dat");
+ * ```
+ *
+ * @example Ensuring a link in a folder
+ * ```ts ignore
+ * import { ensureSymlink } from "ensure_symlink.js";
+ *
+ * // Ensures the link `./folder/targetFile.link.dat` exists and points to `./folder/targetFile.dat`
+ * await ensureSymlink("./targetFile.dat", "./folder/targetFile.link.dat");
  * ```
  */
 export async function ensureSymlink(target, linkName) {
   const targetRealPath = resolveSymlinkTarget(target, linkName);
-  const srcStatInfo = await Deno.lstat(targetRealPath);
+  let srcStatInfo;
+  try {
+    srcStatInfo = await Deno.lstat(targetRealPath);
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      throw new Deno.errors.NotFound(
+        `Cannot ensure symlink as the target path does not exist: ${targetRealPath}`,
+      );
+    }
+    throw error;
+  }
   const srcFilePathType = getFileInfoType(srcStatInfo);
   await ensureDir(dirname(toPathString(linkName)));
   const options = getSymlinkOption(srcFilePathType);
@@ -85,20 +104,39 @@ export async function ensureSymlink(target, linkName) {
  * @see {@link https://docs.deno.com/runtime/manual/basics/permissions#file-system-access}
  * for more information on Deno's permissions system.
  *
- * @param target The source file path as a string or URL.
+ * @param target The source file path as a string or URL. If it is a relative path string, it have to be relative to the link path.
  * @param linkName The destination link path as a string or URL.
  * @returns A void value that returns once the link exists.
  *
- * @example Usage
+ * @example Basic usage
  * ```ts ignore
  * import { ensureSymlinkSync } from "ensure_symlink.js";
  *
- * ensureSymlinkSync("./folder/targetFile.dat", "./folder/targetFile.link.dat");
+ * // Ensures the link `./targetFile.link.dat` exists and points to `./targetFile.dat`
+ * ensureSymlinkSync("./targetFile.dat", "./targetFile.link.dat");
+ * ```
+ *
+ * @example Ensuring a link in a folder
+ * ```ts ignore
+ * import { ensureSymlinkSync } from "ensure_symlink.js";
+ *
+ * // Ensures the link `./folder/targetFile.link.dat` exists and points to `./folder/targetFile.dat`
+ * ensureSymlinkSync("./targetFile.dat", "./folder/targetFile.link.dat");
  * ```
  */
 export function ensureSymlinkSync(target, linkName) {
   const targetRealPath = resolveSymlinkTarget(target, linkName);
-  const srcStatInfo = Deno.lstatSync(targetRealPath);
+  let srcStatInfo;
+  try {
+    srcStatInfo = Deno.lstatSync(targetRealPath);
+  } catch (error) {
+    if (error instanceof Deno.errors.NotFound) {
+      throw new Deno.errors.NotFound(
+        `Cannot ensure symlink as the target path does not exist: ${targetRealPath}`,
+      );
+    }
+    throw error;
+  }
   const srcFilePathType = getFileInfoType(srcStatInfo);
   ensureDirSync(dirname(toPathString(linkName)));
   const options = getSymlinkOption(srcFilePathType);
