@@ -35,3 +35,8 @@ jobs:
         run: |
           echo "No changes"
           exit 1
+      
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.VERSION }}
