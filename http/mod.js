@@ -103,6 +103,3 @@ export * from "./negotiation.js";
 export * from "./server_sent_event_stream.js";
 export * from "./user_agent.js";
 export * from "./file_server.js";
-// We keep this re-export as an exception for now as it's used in
-// `deno init --serve` output
-export * from "./unstable_route.js";

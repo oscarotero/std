@@ -18,5 +18,5 @@ import { capitalizeWord, splitToWords } from "./_util.js";
 export function toCamelCase(input) {
   input = input.trim();
   const [first = "", ...rest] = splitToWords(input);
-  return [first.toLocaleLowerCase(), ...rest.map(capitalizeWord)].join("");
+  return [first.toLowerCase(), ...rest.map(capitalizeWord)].join("");
 }

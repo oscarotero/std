@@ -642,6 +642,77 @@ it.skip = function itSkip(...args) {
 export function test(...args) {
   it(...args);
 }
+/**
+ * Only execute this test case.
+ *
+ * @example Usage
+ * ```ts
+ * import { describe, test } from "bdd.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * describe("example", () => {
+ *   test("should pass", () => {
+ *     assertEquals(2 + 2, 4);
+ *   });
+ *
+ *   test.only("should pass too", () => {
+ *     assertEquals(3 + 4, 7);
+ *   });
+ * });
+ * ```
+ *
+ * @param args The test case
+ */
+test.only = function itOnly(...args) {
+  it.only(...args);
+};
+/**
+ * Ignore this test case.
+ *
+ * @example Usage
+ * ```ts
+ * import { describe, test } from "bdd.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * describe("example", () => {
+ *   test("should pass", () => {
+ *     assertEquals(2 + 2, 4);
+ *   });
+ *
+ *   test.ignore("should pass too", () => {
+ *     assertEquals(3 + 4, 7);
+ *   });
+ * });
+ * ```
+ *
+ * @param args The test case
+ */
+test.ignore = function itIgnore(...args) {
+  it.ignore(...args);
+};
+/** Skip this test case.
+ *
+ * @example Usage
+ * ```ts
+ * import { describe, test } from "bdd.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * describe("example", () => {
+ *   test("should pass", () => {
+ *     assertEquals(2 + 2, 4);
+ *   });
+ *
+ *   test.skip("should pass too", () => {
+ *     assertEquals(3 + 4, 7);
+ *   });
+ * });
+ * ```
+ *
+ * @param args The test case
+ */
+test.skip = function itSkip(...args) {
+  it.ignore(...args);
+};
 function addHook(name, fn) {
   if (!TestSuiteInternal.current) {
     if (TestSuiteInternal.started) {

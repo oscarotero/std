@@ -2,7 +2,7 @@
 // This module is browser compatible.
 /** A library of assertion functions.
  * If the assertion is false an `AssertionError` will be thrown which will
- * result in pretty-printed diff of failing assertion.
+ * result in pretty-printed diff of the failing assertion.
  *
  * This module is browser compatible, but do not rely on good formatting of
  * values for AssertionError messages in browsers.

@@ -17,5 +17,5 @@ import { splitToWords } from "./_util.js";
  */
 export function toKebabCase(input) {
   input = input.trim();
-  return splitToWords(input).join("-").toLocaleLowerCase();
+  return splitToWords(input).join("-").toLowerCase();
 }

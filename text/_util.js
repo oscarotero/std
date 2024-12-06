@@ -12,7 +12,5 @@ export function splitToWords(input) {
   return input.match(WORD_OR_NUMBER_REGEXP) ?? [];
 }
 export function capitalizeWord(word) {
-  return word
-    ? word?.[0]?.toLocaleUpperCase() + word.slice(1).toLocaleLowerCase()
-    : word;
+  return word ? word[0].toUpperCase() + word.slice(1).toLowerCase() : word;
 }

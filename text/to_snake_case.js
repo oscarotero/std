@@ -17,5 +17,5 @@ import { splitToWords } from "./_util.js";
  */
 export function toSnakeCase(input) {
   input = input.trim();
-  return splitToWords(input).join("_").toLocaleLowerCase();
+  return splitToWords(input).join("_").toLowerCase();
 }
