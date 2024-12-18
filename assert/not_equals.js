@@ -2,6 +2,7 @@
 // This module is browser compatible.
 import { equal } from "./equal.js";
 import { AssertionError } from "./assertion_error.js";
+import { format } from "../internal/format.js";
 /**
  * Make an assertion that `actual` and `expected` are not equal, deeply.
  * If not then throw.
@@ -25,8 +26,8 @@ export function assertNotEquals(actual, expected, msg) {
   if (!equal(actual, expected)) {
     return;
   }
-  const actualString = String(actual);
-  const expectedString = String(expected);
+  const actualString = format(actual);
+  const expectedString = format(expected);
   const msgSuffix = msg ? `: ${msg}` : ".";
   throw new AssertionError(
     `Expected actual: ${actualString} not to be: ${expectedString}${msgSuffix}`,

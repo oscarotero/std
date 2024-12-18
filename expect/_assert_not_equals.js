@@ -21,6 +21,6 @@ export function assertNotEquals(actual, expected, options = {}) {
   if (!equal(actual, expected, options)) {
     return;
   }
-  const message = buildNotEqualErrorMessage(actual, expected, options);
+  const message = buildNotEqualErrorMessage(actual, expected, options ?? {});
   throw new AssertionError(message);
 }

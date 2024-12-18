@@ -148,6 +148,7 @@ export class BinarySearchTree {
             nodes.push(right);
           }
         }
+        result.#size = collection.#size;
       }
     } else {
       result = options?.compare

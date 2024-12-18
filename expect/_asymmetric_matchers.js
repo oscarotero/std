@@ -1,5 +1,6 @@
 // Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
 // deno-lint-ignore-file no-explicit-any
+import { getCustomEqualityTesters } from "./_custom_equality_tester.js";
 import { equal } from "./_equal.js";
 export class AsymmetricMatcher {
   value;
@@ -62,7 +63,11 @@ export class ArrayContaining extends AsymmetricMatcher {
   }
   equals(other) {
     const res = Array.isArray(other) &&
-      this.value.every((e) => other.includes(e));
+      this.value.every((e) =>
+        other.some((another) =>
+          equal(e, another, { customTesters: getCustomEqualityTesters() })
+        )
+      );
     return this.inverse ? !res : res;
   }
 }
