@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 import { testComparatorSet } from "./_test_comparator_set.js";
 /**
  * Test to see if the SemVer satisfies the range.

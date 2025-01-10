@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 import { extractAndParse } from "./_shared.js";
 import { EXTRACT_JSON_REGEXP } from "./_formats.js";
 /**

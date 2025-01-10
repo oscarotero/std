@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 import { globToRegExp } from "../path/glob_to_regexp.js";
 import { joinGlobs } from "../path/join_globs.js";
 import { isGlob } from "../path/is_glob.js";

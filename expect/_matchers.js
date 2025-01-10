@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 import { assertNotStrictEquals } from "../assert/not_strict_equals.js";
 import { assertStrictEquals } from "../assert/strict_equals.js";
 import { assertInstanceOf } from "../assert/instance_of.js";
@@ -69,7 +69,7 @@ export function toBeCloseTo(context, expected, numDigits = 2) {
   if (context.isNot) {
     if (pass) {
       const defaultMessage =
-        `Expected the value not to be close to ${expected} (using ${numDigits} digits), but it is`;
+        `Expected the value ${value} not to be close to ${expected} (using ${numDigits} digits), but it is`;
       throw new AssertionError(
         context.customMessage
           ? `${context.customMessage}: ${defaultMessage}`
@@ -79,7 +79,7 @@ export function toBeCloseTo(context, expected, numDigits = 2) {
   } else {
     if (!pass) {
       const defaultMessage =
-        `Expected the value (${value} to be close to ${expected} (using ${numDigits} digits), but it is not`;
+        `Expected the value ${value} to be close to ${expected} (using ${numDigits} digits), but it is not`;
       throw new AssertionError(
         context.customMessage
           ? `${context.customMessage}: ${defaultMessage}`

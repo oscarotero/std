@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
 import { ascend } from "./comparators.js";
 import { BinarySearchNode } from "./_binary_search_node.js";
@@ -118,6 +118,7 @@ export class BinarySearchTree {
       tree.#rotateNode(node, direction);
     internals.insertNode = (tree, Node, value) => tree.#insertNode(Node, value);
     internals.removeNode = (tree, node) => tree.#removeNode(node);
+    internals.setSize = (tree, size) => tree.#size = size;
   }
   static from(collection, options) {
     let result;

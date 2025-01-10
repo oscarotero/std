@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 import { assertEquals } from "../../assert/mod.js";
 import { instantiateWasm } from "./mod.js";
 const webCrypto = globalThis.crypto;

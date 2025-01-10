@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 // deno-lint-ignore-file no-explicit-any
 /**
  * True if the runtime is Deno, false otherwise.
@@ -17,6 +17,9 @@ function checkWindows() {
   }
   return false;
 }
-export function getNodeFsPromises() {
-  return globalThis.process.getBuiltinModule("node:fs/promises");
+/**
+ * @returns The Node.js `fs` module.
+ */
+export function getNodeFs() {
+  return globalThis.process.getBuiltinModule("node:fs");
 }

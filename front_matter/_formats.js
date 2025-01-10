@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 const BOM = "\\ufeff?";
 const YAML_DELIMITER = "= yaml =|---";
 const YAML_HEADER = `(---yaml|${YAML_DELIMITER})\\s*`;

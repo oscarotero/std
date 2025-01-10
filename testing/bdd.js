@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 /**
  * A {@link https://en.wikipedia.org/wiki/Behavior-driven_development | BDD} interface
  * to `Deno.test()` API.
@@ -18,10 +18,10 @@
  * the test case passes. The *All hooks will be called once for the whole group
  * while the *Each hooks will be called for each individual test case.
  *
- * - `beforeAll`: Runs before all of the tests in the test suite.
- * - `afterAll`: Runs after all of the tests in the test suite finish.
- * - `beforeEach`: Runs before each of the individual test cases in the test suite.
- * - `afterEach`: Runs after each of the individual test cases in the test suite.
+ * - `beforeAll`: Runs before all of the tests in the group.
+ * - `afterAll`: Runs after all of the tests in the group finish.
+ * - `beforeEach`: Runs before each of the individual test cases in the group.
+ * - `afterEach`: Runs after each of the individual test cases in the group.
  *
  * If a hook is registered at the top level, a global test suite will be registered
  * and all tests will belong to it. Hooks registered at the top level must be
@@ -402,7 +402,7 @@
  */
 import { getAssertionState } from "../internal/assertion_state.js";
 import { AssertionError } from "../assert/assertion_error.js";
-import { TestSuiteInternal } from "./_test_suite.js";
+import { globalSanitizersState, TestSuiteInternal } from "./_test_suite.js";
 /** Generates an ItDefinition from ItArgs. */
 function itDefinition(...args) {
   let [suiteOptionsOrNameOrFn, optionsOrNameOrFn, optionsOrFn, fn] = args;
@@ -493,9 +493,9 @@ export function it(...args) {
       ignore,
       only,
       permissions,
-      sanitizeExit,
-      sanitizeOps,
-      sanitizeResources,
+      sanitizeExit = globalSanitizersState.sanitizeExit,
+      sanitizeOps = globalSanitizersState.sanitizeOps,
+      sanitizeResources = globalSanitizersState.sanitizeResources,
     } = options;
     const opts = {
       name,
@@ -729,9 +729,9 @@ function addHook(name, fn) {
   }
 }
 /**
- * Run some shared setup before all of the tests in the suite.
- * `beforeAll` is only provided for compatibility. Top-level
- * initialization code should be used instead.
+ * Run some shared setup before all of the tests in the group.
+ * Useful for async setup in `describe` blocks. Outside them,
+ * top-level initialization code should be used instead.
  *
  * @example Usage
  * ```ts

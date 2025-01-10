@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
 import { ascend } from "./comparators.js";
 import { BinarySearchTree } from "./binary_search_tree.js";
@@ -12,6 +12,7 @@ const {
   rotateNode,
   insertNode,
   removeNode,
+  setSize,
 } = internals;
 /**
  * A red-black tree. This is a kind of self-balancing binary search tree. The
@@ -141,6 +142,7 @@ export class RedBlackTree extends BinarySearchTree {
             nodes.push(right);
           }
         }
+        setSize(result, collection.size);
       }
     } else {
       result = options?.compare

@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 var __addDisposableResource = (this && this.__addDisposableResource) ||
   function (env, value, async) {
     if (value !== null && value !== void 0) {

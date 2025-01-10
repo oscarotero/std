@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
 import { isWindows } from "./_os.js";
 import { toNamespacedPath as posixToNamespacedPath } from "./posix/to_namespaced_path.js";

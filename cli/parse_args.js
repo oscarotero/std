@@ -1,4 +1,4 @@
-// Copyright 2018-2024 the Deno authors. All rights reserved. MIT license.
+// Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
 const FLAG_REGEXP =
   /^(?:-(?:(?<doubleDash>-)(?<negated>no-)?)?)(?<key>.+?)(?:=(?<value>.+?))?$/s;
@@ -76,6 +76,8 @@ function parseBooleanString(value) {
  * Numeric-looking arguments will be returned as numbers unless `options.string`
  * or `options.boolean` is set for that argument name.
  *
+ * See {@linkcode ParseOptions} for more information.
+ *
  * @param args An array of command line arguments.
  * @param options Options for the parse function.
  *
@@ -95,7 +97,7 @@ function parseBooleanString(value) {
  * @example Usage
  * ```ts
  * import { parseArgs } from "parse_args.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { assertEquals } from "../assert/equals.js";
  *
  * // For proper use, one should use `parseArgs(Deno.args)`
  * assertEquals(parseArgs(["--foo", "--bar=baz", "./quux.txt"]), {
@@ -103,6 +105,56 @@ function parseBooleanString(value) {
  *   bar: "baz",
  *   _: ["./quux.txt"],
  * });
+ * ```
+ *
+ * @example `string` and `boolean` options
+ *
+ * Use `string` and `boolean` options to specify the type of the argument.
+ *
+ * ```ts
+ * import { parseArgs } from "parse_args.js";
+ * import { assertEquals } from "../assert/equals.js";
+ *
+ * const args = parseArgs(["--foo", "--bar", "baz"], {
+ *   boolean: ["foo"],
+ *   string: ["bar"],
+ * });
+ *
+ * assertEquals(args, { foo: true, bar: "baz", _: [] });
+ * ```
+ *
+ * @example `collect` option
+ *
+ * `collect` option tells the parser to treat the option as an array. All
+ * values will be collected into one array. If a non-collectable option is used
+ * multiple times, the last value is used.
+ *
+ * ```ts
+ * import { parseArgs } from "parse_args.js";
+ * import { assertEquals } from "../assert/equals.js";
+ *
+ * const args = parseArgs(["--foo", "bar", "--foo", "baz"], {
+ *  collect: ["foo"],
+ * });
+ *
+ * assertEquals(args, { foo: ["bar", "baz"], _: [] });
+ * ```
+ *
+ * @example `negatable` option
+ *
+ * `negatable` option tells the parser to treat the option can be negated by
+ * prefixing them with `--no-`, like `--no-config`.
+ *
+ * ```ts
+ * import { parseArgs } from "parse_args.js";
+ * import { assertEquals } from "../assert/equals.js";
+ *
+ * const args = parseArgs(["--no-foo"], {
+ *   boolean: ["foo"],
+ *   negatable: ["foo"],
+ * });
+ *
+ * assertEquals(args, { foo: false, _: [] });
  * ```
  */
 export function parseArgs(args, options) {
