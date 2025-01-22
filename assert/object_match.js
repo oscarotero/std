@@ -47,12 +47,21 @@ export function assertObjectMatch(
 function isObject(val) {
   return typeof val === "object" && val !== null;
 }
+function defineProperty(target, key, value) {
+  return Object.defineProperty(target, key, {
+    value,
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  });
+}
 function filter(a, b) {
   const seen = new WeakMap();
   return filterObject(a, b);
   function filterObject(a, b) {
     // Prevent infinite loop with circular references with same filter
-    if ((seen.has(a)) && (seen.get(a) === b)) {
+    const memo = seen.get(a);
+    if (memo && (memo === b)) {
       return a;
     }
     try {
@@ -74,52 +83,57 @@ function filter(a, b) {
       // If both objects are not empty but don't have the same keys or symbols,
       // returns the entries in object a.
       for (const key of keysA) {
-        filtered[key] = a[key];
+        defineProperty(filtered, key, a[key]);
       }
       return filtered;
     }
     for (const [key, value] of entries) {
       // On regexp references, keep value as it to avoid loosing pattern and flags
       if (value instanceof RegExp) {
-        filtered[key] = value;
+        defineProperty(filtered, key, value);
         continue;
       }
       const subset = b[key];
       // On array references, build a filtered array and filter nested objects inside
       if (Array.isArray(value) && Array.isArray(subset)) {
-        filtered[key] = filterArray(value, subset);
+        defineProperty(filtered, key, filterArray(value, subset));
         continue;
       }
       // On nested objects references, build a filtered object recursively
       if (isObject(value) && isObject(subset)) {
         // When both operands are maps, build a filtered map with common keys and filter nested objects inside
         if ((value instanceof Map) && (subset instanceof Map)) {
-          filtered[key] = new Map(
-            [...value].filter(([k]) => subset.has(k)).map(([k, v]) => {
-              const v2 = subset.get(k);
-              if (isObject(v) && isObject(v2)) {
-                return [k, filterObject(v, v2)];
-              }
-              return [k, v];
-            }),
+          defineProperty(
+            filtered,
+            key,
+            new Map(
+              [...value].filter(([k]) => subset.has(k)).map(([k, v]) => {
+                const v2 = subset.get(k);
+                if (isObject(v) && isObject(v2)) {
+                  return [k, filterObject(v, v2)];
+                }
+                return [k, v];
+              }),
+            ),
           );
           continue;
         }
         // When both operands are set, build a filtered set with common values
         if ((value instanceof Set) && (subset instanceof Set)) {
-          filtered[key] = value.intersection(subset);
+          defineProperty(filtered, key, value.intersection(subset));
           continue;
         }
-        filtered[key] = filterObject(value, subset);
+        defineProperty(filtered, key, filterObject(value, subset));
         continue;
       }
-      filtered[key] = value;
+      defineProperty(filtered, key, value);
     }
     return filtered;
   }
   function filterArray(a, b) {
     // Prevent infinite loop with circular references with same filter
-    if (seen.has(a) && (seen.get(a) === b)) {
+    const memo = seen.get(a);
+    if (memo && (memo === b)) {
       return a;
     }
     seen.set(a, b);

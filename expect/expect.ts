@@ -545,7 +545,7 @@ expect.assertions = assertions as (num: number) => void;
  * import { expect } from "mod.ts";
  *
  * Deno.test("example", () => {
- *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'bar'}));
+ *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'baz'}));
  *   expect({ bar: 'baz' }).not.toEqual(expect.objectContaining({ foo: 'bar'}));
  * });
  * ```

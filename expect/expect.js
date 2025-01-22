@@ -494,7 +494,7 @@ expect.assertions = assertions;
  * import { expect } from "mod.js";
  *
  * Deno.test("example", () => {
- *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'bar'}));
+ *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'baz'}));
  *   expect({ bar: 'baz' }).not.toEqual(expect.objectContaining({ foo: 'bar'}));
  * });
  * ```
