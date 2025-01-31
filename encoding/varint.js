@@ -24,8 +24,6 @@
  *
  * @module
  */
-// This implementation is a port of https://deno.land/x/varint@v2.0.0 by @keithamus
-// This module is browser compatible.
 /**
  * The maximum value of an unsigned 64-bit integer.
  * Equivalent to `2n**64n - 1n`

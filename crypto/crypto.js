@@ -151,8 +151,8 @@ function toUint8Array(data) {
   return undefined;
 }
 /**
- * An wrapper for WebCrypto adding support for additional non-standard
- * algorithms, but delegating to the runtime WebCrypto implementation whenever
+ * A wrapper for WebCrypto which adds support for additional non-standard
+ * algorithms, but delegates to the runtime WebCrypto implementation whenever
  * possible.
  */
 const stdCrypto = ((x) => x)({

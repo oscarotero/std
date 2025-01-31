@@ -1,4 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+import { stripAnsiCode } from "./colors.js";
 /**
  * {@linkcode sprintf} and {@linkcode printf} for printing formatted strings to
  * stdout.
@@ -808,6 +809,10 @@ class Printf {
   fmtString(s) {
     if (this.flags.precision !== -1) {
       s = s.slice(0, this.flags.precision);
+    }
+    const sac = stripAnsiCode(s);
+    if (sac.length !== s.length) {
+      this.flags.width += s.length - sac.length;
     }
     return this.pad(s);
   }

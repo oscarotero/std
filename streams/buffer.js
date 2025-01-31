@@ -114,7 +114,14 @@ export class Buffer {
    * @param ab An optional buffer to use as the initial buffer.
    */
   constructor(ab) {
-    this.#buf = ab === undefined ? new Uint8Array(0) : new Uint8Array(ab);
+    if (ab === undefined) {
+      this.#buf = new Uint8Array(0);
+    } else if (ab instanceof SharedArrayBuffer) {
+      // Note: This is necessary to avoid type error
+      this.#buf = new Uint8Array(ab);
+    } else {
+      this.#buf = new Uint8Array(ab);
+    }
   }
   /**
    * Returns a slice holding the unread portion of the buffer.
