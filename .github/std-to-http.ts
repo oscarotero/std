@@ -177,7 +177,7 @@ await Deno.writeTextFile(
         url: "https://github.com/oscarotero/std/issues",
       },
       homepage: "https://github.com/oscarotero/std#readme",
-      files: ["*/*.js"],
+      files: ["**/*.js"],
       exports: Object.fromEntries(
         Array.from(Deno.readDirSync("."))
           .sort((a, b) => a.name.localeCompare(b.name))
