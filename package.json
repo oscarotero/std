@@ -1,6 +1,6 @@
 {
   "name": "deno-std",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "Deno std packages in a single package",
   "type": "module",
   "repository": {
@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/oscarotero/std#readme",
   "files": [
-    "*/*.js"
+    "**/*.js"
   ],
   "exports": {
     "./assert/*.js": "./assert/*.js",

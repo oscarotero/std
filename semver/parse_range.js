@@ -113,9 +113,7 @@ function handleRightHyphenRangeGroups(rightGroups) {
     major: +rightGroups.major,
     minor: +rightGroups.minor,
     patch: +rightGroups.patch,
-    prerelease: rightGroups.prerelease
-      ? parsePrerelease(rightGroups.prerelease)
-      : [],
+    prerelease: [],
     build: [],
   };
 }
@@ -123,12 +121,12 @@ function parseHyphenRange(range) {
   const leftMatch = range.match(new RegExp(`^${XRANGE}`));
   const leftGroup = leftMatch?.groups;
   if (!leftGroup) {
-    return;
+    return null;
   }
   const leftLength = leftMatch[0].length;
   const hyphenMatch = range.slice(leftLength).match(/^\s+-\s+/);
   if (!hyphenMatch) {
-    return;
+    return null;
   }
   const hyphenLength = hyphenMatch[0].length;
   const rightMatch = range.slice(leftLength + hyphenLength).match(
@@ -136,7 +134,7 @@ function parseHyphenRange(range) {
   );
   const rightGroups = rightMatch?.groups;
   if (!rightGroups) {
-    return;
+    return null;
   }
   const from = handleLeftHyphenRangeGroups(leftGroup);
   const to = handleRightHyphenRangeGroups(rightGroups);
@@ -230,7 +228,7 @@ function handleLessThanOperator(groups) {
     if (patchIsWildcard) {
       return [{ operator: "<", major, minor: 0, patch: 0 }];
     }
-    return [{ operator: "<", major, minor, patch: 0 }];
+    return [{ operator: "<", major, minor: 0, patch: 0 }];
   }
   if (patchIsWildcard) {
     return [{ operator: "<", major, minor, patch: 0 }];
@@ -292,7 +290,7 @@ function handleGreaterOrEqualOperator(groups) {
     if (patchIsWildcard) {
       return [{ operator: ">=", major, minor: 0, patch: 0 }];
     }
-    return [{ operator: ">=", major, minor, patch: 0 }];
+    return [{ operator: ">=", major, minor: 0, patch: 0 }];
   }
   if (patchIsWildcard) {
     return [{ operator: ">=", major, minor, patch: 0 }];

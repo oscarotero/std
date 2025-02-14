@@ -1,18 +1,9 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-import { extractAndParse, recognize } from "./_shared.js";
-import { parse as parseYaml } from "../yaml/parse.js";
-import { parse as parseToml } from "../toml/parse.js";
+import { recognize } from "./_shared.js";
+import { extract as extractToml } from "./toml.js";
+import { extract as extractYaml } from "./yaml.js";
+import { extract as extractJson } from "./json.js";
 import { EXTRACT_REGEXP_MAP } from "./_formats.js";
-function getParserForFormat(format) {
-  switch (format) {
-    case "yaml":
-      return parseYaml;
-    case "toml":
-      return parseToml;
-    case "json":
-      return JSON.parse;
-  }
-}
 /**
  * Extracts and parses {@link https://yaml.org | YAML}, {@link https://toml.io |
  * TOML}, or {@link https://www.json.org/ | JSON} from the metadata of front
@@ -42,7 +33,12 @@ function getParserForFormat(format) {
 export function extract(text) {
   const formats = [...EXTRACT_REGEXP_MAP.keys()];
   const format = recognize(text, formats);
-  const regexp = EXTRACT_REGEXP_MAP.get(format);
-  const parser = getParserForFormat(format);
-  return extractAndParse(text, regexp, parser);
+  switch (format) {
+    case "yaml":
+      return extractYaml(text);
+    case "toml":
+      return extractToml(text);
+    case "json":
+      return extractJson(text);
+  }
 }

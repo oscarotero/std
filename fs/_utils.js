@@ -23,3 +23,15 @@ function checkWindows() {
 export function getNodeFs() {
   return globalThis.process.getBuiltinModule("node:fs");
 }
+/**
+ * @returns The Node.js `os` module.
+ */
+export function getNodeOs() {
+  return globalThis.process.getBuiltinModule("node:os");
+}
+/**
+ * @returns The Node.js `path` module.
+ */
+export function getNodePath() {
+  return globalThis.process.getBuiltinModule("node:path");
+}
