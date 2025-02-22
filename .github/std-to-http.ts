@@ -32,6 +32,7 @@ const stablePackages = [
   "fmt",
   "front-matter",
   "fs",
+  // "ini",
   "html",
   "http",
   "internal",
@@ -86,12 +87,18 @@ const filters = [
   "/unstable_",
 ];
 
+const filterExceptions = [
+  "/_test_comparator_set.ts",
+  "/_test_comparator_get.ts",
+];
+
 // Extract the files from the std repository
 for await (const entry of reader.getEntriesGenerator()) {
   // Exclude directories and non-TS files
   if (
     entry.directory || !entry.filename.endsWith(".ts") ||
-    filters.some((filter) => entry.filename.includes(filter))
+    (filters.some((filter) => entry.filename.includes(filter)) &&
+      !filterExceptions.some((filter) => entry.filename.includes(filter)))
   ) {
     continue;
   }
