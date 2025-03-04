@@ -35,3 +35,9 @@ export function getNodeOs() {
 export function getNodePath() {
   return globalThis.process.getBuiltinModule("node:path");
 }
+/**
+ * @returns The Node.js `process` module.
+ */
+export function getNodeProcess() {
+  return globalThis.process.getBuiltinModule("node:process");
+}

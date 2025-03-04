@@ -1,5 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-import { extractAndParse } from "./_shared.js";
+import { extractFrontMatter } from "./_shared.js";
 import { parse } from "../toml/parse.js";
 import { EXTRACT_TOML_REGEXP } from "./_formats.js";
 /**
@@ -29,5 +29,7 @@ import { EXTRACT_TOML_REGEXP } from "./_formats.js";
  * @returns The extracted TOML front matter and body content.
  */
 export function extract(text) {
-  return extractAndParse(text, EXTRACT_TOML_REGEXP, parse);
+  const { frontMatter, body } = extractFrontMatter(text, EXTRACT_TOML_REGEXP);
+  const attrs = parse(frontMatter);
+  return { frontMatter, body, attrs };
 }

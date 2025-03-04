@@ -1,9 +1,24 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-import { recognize } from "./_shared.js";
 import { extract as extractToml } from "./toml.js";
 import { extract as extractYaml } from "./yaml.js";
 import { extract as extractJson } from "./json.js";
-import { EXTRACT_REGEXP_MAP } from "./_formats.js";
+import { EXTRACT_REGEXP_MAP, RECOGNIZE_REGEXP_MAP } from "./_formats.js";
+/**
+ * Recognizes the format of the front matter in a string.
+ * Supports {@link https://yaml.org | YAML}, {@link https://toml.io | TOML} and
+ * {@link https://www.json.org/ | JSON}.
+ *
+ * @param str String to recognize.
+ * @param formats A list of formats to recognize. Defaults to all supported formats.
+ */
+function recognize(str, formats) {
+  for (const format of formats) {
+    if (RECOGNIZE_REGEXP_MAP.get(format)?.test(str)) {
+      return format;
+    }
+  }
+  throw new TypeError("Unsupported front matter format");
+}
 /**
  * Extracts and parses {@link https://yaml.org | YAML}, {@link https://toml.io |
  * TOML}, or {@link https://www.json.org/ | JSON} from the metadata of front

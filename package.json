@@ -1,6 +1,6 @@
 {
   "name": "deno-std",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Deno std packages in a single package",
   "type": "module",
   "repository": {

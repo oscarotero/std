@@ -1,5 +1,4 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-import { stripAnsiCode } from "./colors.js";
 /**
  * {@linkcode sprintf} and {@linkcode printf} for printing formatted strings to
  * stdout.
@@ -157,6 +156,7 @@ import { stripAnsiCode } from "./colors.js";
  *
  * @module
  */
+import { stripAnsiCode } from "./colors.js";
 const State = {
   PASSTHROUGH: 0,
   PERCENT: 1,

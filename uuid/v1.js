@@ -60,7 +60,7 @@ export function generate(options = {}) {
   if (node === undefined || clockseq === undefined) {
     // deno-lint-ignore no-explicit-any
     const seedBytes = options.random ??
-      options.rng ??
+      options.rng?.() ??
       crypto.getRandomValues(new Uint8Array(16));
     if (node === undefined) {
       node = _nodeId = [
