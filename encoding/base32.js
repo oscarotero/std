@@ -22,10 +22,41 @@
  *
  * @module
  */
-import { decode, encode } from "./_base32_common.js";
-const lookup = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567".split("");
-const revLookup = [];
-lookup.forEach((c, i) => (revLookup[c.charCodeAt(0)] = i));
+import { calcMax, decode, encode } from "./_common32.js";
+import { detach } from "./_common_detach.js";
+const padding = "=".charCodeAt(0);
+const alphabet = new TextEncoder()
+  .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
+const rAlphabet = new Uint8Array(128).fill(32); //alphabet.length
+alphabet.forEach((byte, i) => rAlphabet[byte] = i);
+/**
+ * Converts data into a base32-encoded string.
+ *
+ * @see {@link https://www.rfc-editor.org/rfc/rfc4648.html#section-6}
+ *
+ * @param data The data to encode.
+ * @returns The base32-encoded string.
+ *
+ * @example Usage
+ * ```ts
+ * import { encodeBase32 } from "base32.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * assertEquals(encodeBase32("6c60c0"), "GZRTMMDDGA======");
+ * ```
+ */
+export function encodeBase32(data) {
+  if (typeof data === "string") {
+    data = new TextEncoder().encode(data);
+  } else if (data instanceof ArrayBuffer) {
+    data = new Uint8Array(data).slice();
+  } else {
+    data = data.slice();
+  }
+  const [output, i] = detach(data, calcMax(data.length));
+  encode(output, i, 0, alphabet, padding);
+  return new TextDecoder().decode(output);
+}
 /**
  * Decodes a base32-encoded string.
  *
@@ -46,24 +77,13 @@ lookup.forEach((c, i) => (revLookup[c.charCodeAt(0)] = i));
  * ```
  */
 export function decodeBase32(b32) {
-  return decode(b32, lookup);
-}
-/**
- * Converts data into a base32-encoded string.
- *
- * @see {@link https://www.rfc-editor.org/rfc/rfc4648.html#section-6}
- *
- * @param data The data to encode.
- * @returns The base32-encoded string.
- *
- * @example Usage
- * ```ts
- * import { encodeBase32 } from "base32.js";
- * import { assertEquals } from "../assert/mod.js";
- *
- * assertEquals(encodeBase32("6c60c0"), "GZRTMMDDGA======");
- * ```
- */
-export function encodeBase32(data) {
-  return encode(data, lookup);
+  const output = new TextEncoder().encode(b32);
+  if (output.length % 8) {
+    throw new TypeError(
+      `Invalid base32 string: length (${output.length}) must be a multiple of 8`,
+    );
+  }
+  // deno-lint-ignore no-explicit-any
+  return new Uint8Array(output.buffer
+    .transfer(decode(output, 0, 0, rAlphabet, padding)));
 }

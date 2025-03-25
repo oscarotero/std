@@ -1,4 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+// This module is browser compatible.
 
 import { extractFrontMatter } from "./_shared.ts";
 import { EXTRACT_JSON_REGEXP } from "./_formats.ts";
@@ -34,6 +35,6 @@ export type { Extract };
  */
 export function extract<T>(text: string): Extract<T> {
   const { frontMatter, body } = extractFrontMatter(text, EXTRACT_JSON_REGEXP);
-  const attrs = JSON.parse(frontMatter) as T;
+  const attrs = (frontMatter ? JSON.parse(frontMatter) : {}) as T;
   return { frontMatter, body, attrs };
 }

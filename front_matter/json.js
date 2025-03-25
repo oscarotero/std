@@ -1,4 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+// This module is browser compatible.
 import { extractFrontMatter } from "./_shared.js";
 import { EXTRACT_JSON_REGEXP } from "./_formats.js";
 /**
@@ -29,6 +30,6 @@ import { EXTRACT_JSON_REGEXP } from "./_formats.js";
  */
 export function extract(text) {
   const { frontMatter, body } = extractFrontMatter(text, EXTRACT_JSON_REGEXP);
-  const attrs = JSON.parse(frontMatter);
+  const attrs = frontMatter ? JSON.parse(frontMatter) : {};
   return { frontMatter, body, attrs };
 }

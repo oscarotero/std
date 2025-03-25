@@ -20,73 +20,13 @@
  *
  * @module
  */
-import { validateBinaryLike } from "./_validate_binary_like.js";
-const base64abc = [
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-  "G",
-  "H",
-  "I",
-  "J",
-  "K",
-  "L",
-  "M",
-  "N",
-  "O",
-  "P",
-  "Q",
-  "R",
-  "S",
-  "T",
-  "U",
-  "V",
-  "W",
-  "X",
-  "Y",
-  "Z",
-  "a",
-  "b",
-  "c",
-  "d",
-  "e",
-  "f",
-  "g",
-  "h",
-  "i",
-  "j",
-  "k",
-  "l",
-  "m",
-  "n",
-  "o",
-  "p",
-  "q",
-  "r",
-  "s",
-  "t",
-  "u",
-  "v",
-  "w",
-  "x",
-  "y",
-  "z",
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "+",
-  "/",
-];
+import { calcMax, decode, encode } from "./_common64.js";
+import { detach } from "./_common_detach.js";
+const padding = "=".charCodeAt(0);
+const alphabet = new TextEncoder()
+  .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+const rAlphabet = new Uint8Array(128).fill(64); // alphabet.length
+alphabet.forEach((byte, i) => rAlphabet[byte] = i);
 /**
  * Converts data into a base64-encoded string.
  *
@@ -104,40 +44,16 @@ const base64abc = [
  * ```
  */
 export function encodeBase64(data) {
-  // CREDIT: https://gist.github.com/enepomnyaschih/72c423f727d395eeaa09697058238727
-  const uint8 = validateBinaryLike(data);
-  let result = "";
-  let i;
-  const l = uint8.length;
-  for (i = 2; i < l; i += 3) {
-    result += base64abc[(uint8[i - 2]) >> 2];
-    result += base64abc[
-      (((uint8[i - 2]) & 0x03) << 4) |
-      ((uint8[i - 1]) >> 4)
-    ];
-    result += base64abc[
-      (((uint8[i - 1]) & 0x0f) << 2) |
-      ((uint8[i]) >> 6)
-    ];
-    result += base64abc[(uint8[i]) & 0x3f];
+  if (typeof data === "string") {
+    data = new TextEncoder().encode(data);
+  } else if (data instanceof ArrayBuffer) {
+    data = new Uint8Array(data).slice();
+  } else {
+    data = data.slice();
   }
-  if (i === l + 1) {
-    // 1 octet yet to write
-    result += base64abc[(uint8[i - 2]) >> 2];
-    result += base64abc[((uint8[i - 2]) & 0x03) << 4];
-    result += "==";
-  }
-  if (i === l) {
-    // 2 octets yet to write
-    result += base64abc[(uint8[i - 2]) >> 2];
-    result += base64abc[
-      (((uint8[i - 2]) & 0x03) << 4) |
-      ((uint8[i - 1]) >> 4)
-    ];
-    result += base64abc[((uint8[i - 1]) & 0x0f) << 2];
-    result += "=";
-  }
-  return result;
+  const [output, i] = detach(data, calcMax(data.length));
+  encode(output, i, 0, alphabet, padding);
+  return new TextDecoder().decode(output);
 }
 /**
  * Decodes a base64-encoded string.
@@ -159,11 +75,8 @@ export function encodeBase64(data) {
  * ```
  */
 export function decodeBase64(b64) {
-  const binString = atob(b64);
-  const size = binString.length;
-  const bytes = new Uint8Array(size);
-  for (let i = 0; i < size; i++) {
-    bytes[i] = binString.charCodeAt(i);
-  }
-  return bytes;
+  const output = new TextEncoder().encode(b64);
+  // deno-lint-ignore no-explicit-any
+  return new Uint8Array(output.buffer
+    .transfer(decode(output, 0, 0, rAlphabet, padding)));
 }

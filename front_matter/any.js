@@ -1,32 +1,18 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+// This module is browser compatible.
 import { extract as extractToml } from "./toml.js";
 import { extract as extractYaml } from "./yaml.js";
 import { extract as extractJson } from "./json.js";
-import { EXTRACT_REGEXP_MAP, RECOGNIZE_REGEXP_MAP } from "./_formats.js";
-/**
- * Recognizes the format of the front matter in a string.
- * Supports {@link https://yaml.org | YAML}, {@link https://toml.io | TOML} and
- * {@link https://www.json.org/ | JSON}.
- *
- * @param str String to recognize.
- * @param formats A list of formats to recognize. Defaults to all supported formats.
- */
-function recognize(str, formats) {
-  for (const format of formats) {
-    if (RECOGNIZE_REGEXP_MAP.get(format)?.test(str)) {
-      return format;
-    }
-  }
-  throw new TypeError("Unsupported front matter format");
-}
+import { RECOGNIZE_REGEXP_MAP } from "./_formats.js";
 /**
  * Extracts and parses {@link https://yaml.org | YAML}, {@link https://toml.io |
  * TOML}, or {@link https://www.json.org/ | JSON} from the metadata of front
  * matter content, depending on the format.
  *
- * @example
+ * @example Usage
  * ```ts
  * import { extract } from "../front-matter/any.js";
+ * import { assertEquals } from "../assert/mod.js";
  *
  * const output = `---json
  * {
@@ -35,10 +21,11 @@ function recognize(str, formats) {
  * ---
  * Hello, world!`;
  * const result = extract(output);
- *
- * result.frontMatter; // '{\n "title": "Three dashes marks the spot"\n}'
- * result.body; // "Hello, world!"
- * result.attrs; // { title: "Three dashes marks the spot" }
+ * assertEquals(result, {
+ *   frontMatter: '{\n  "title": "Three dashes marks the spot"\n}',
+ *   body: "Hello, world!",
+ *   attrs: { title: "Three dashes marks the spot" }
+ * })
  * ```
  *
  * @typeParam T The type of the parsed front matter.
@@ -46,8 +33,8 @@ function recognize(str, formats) {
  * @returns The extracted front matter and body content.
  */
 export function extract(text) {
-  const formats = [...EXTRACT_REGEXP_MAP.keys()];
-  const format = recognize(text, formats);
+  const format = [...RECOGNIZE_REGEXP_MAP.entries()]
+    .find(([_, regexp]) => regexp.test(text))?.[0];
   switch (format) {
     case "yaml":
       return extractYaml(text);
@@ -55,5 +42,7 @@ export function extract(text) {
       return extractToml(text);
     case "json":
       return extractJson(text);
+    default:
+      throw new TypeError("Unsupported front matter format");
   }
 }

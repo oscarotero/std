@@ -5,7 +5,7 @@
 /**
  * This module contains a function to mock functions for testing and assertions.
  *
- * ```ts
+ * ```ts no-assert
  * import { fn, expect } from "mod.js";
  *
  * Deno.test("example", () => {

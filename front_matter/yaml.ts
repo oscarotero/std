@@ -1,4 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+// This module is browser compatible.
 
 import { extractFrontMatter } from "./_shared.ts";
 import { parse } from "../yaml/parse.ts";
@@ -38,6 +39,6 @@ export type { Extract };
  */
 export function extract<T>(text: string): Extract<T> {
   const { frontMatter, body } = extractFrontMatter(text, EXTRACT_YAML_REGEXP);
-  const attrs = parse(frontMatter) as T;
+  const attrs = (frontMatter ? parse(frontMatter) : {}) as T;
   return { frontMatter, body, attrs };
 }

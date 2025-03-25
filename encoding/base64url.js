@@ -7,39 +7,13 @@
  *
  * @module
  */
-import * as base64 from "./base64.js";
-/**
- * Some variants allow or require omitting the padding '=' signs:
- * https://en.wikipedia.org/wiki/Base64#The_URL_applications
- *
- * @param base64url
- */
-function addPaddingToBase64url(base64url) {
-  if (base64url.length % 4 === 2) {
-    return base64url + "==";
-  }
-  if (base64url.length % 4 === 3) {
-    return base64url + "=";
-  }
-  if (base64url.length % 4 === 1) {
-    throw new TypeError("Illegal base64url string");
-  }
-  return base64url;
-}
-function convertBase64urlToBase64(b64url) {
-  if (!/^[-_A-Z0-9]*?={0,2}$/i.test(b64url)) {
-    // Contains characters not part of base64url spec.
-    throw new TypeError("Failed to decode base64url: invalid character");
-  }
-  return addPaddingToBase64url(b64url).replace(/\-/g, "+").replace(/_/g, "/");
-}
-function convertBase64ToBase64url(b64) {
-  return b64.endsWith("=")
-    ? b64.endsWith("==")
-      ? b64.replace(/\+/g, "-").replace(/\//g, "_").slice(0, -2)
-      : b64.replace(/\+/g, "-").replace(/\//g, "_").slice(0, -1)
-    : b64.replace(/\+/g, "-").replace(/\//g, "_");
-}
+import { calcMax, decode, encode } from "./_common64.js";
+import { detach } from "./_common_detach.js";
+const padding = "=".charCodeAt(0);
+const alphabet = new TextEncoder()
+  .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
+const rAlphabet = new Uint8Array(128).fill(64); // alphabet.length
+alphabet.forEach((byte, i) => rAlphabet[byte] = i);
 /**
  * Convert data into a base64url-encoded string.
  *
@@ -57,7 +31,20 @@ function convertBase64ToBase64url(b64) {
  * ```
  */
 export function encodeBase64Url(data) {
-  return convertBase64ToBase64url(base64.encodeBase64(data));
+  if (typeof data === "string") {
+    data = new TextEncoder().encode(data);
+  } else if (data instanceof ArrayBuffer) {
+    data = new Uint8Array(data).slice();
+  } else {
+    data = data.slice();
+  }
+  const [output, i] = detach(data, calcMax(data.length));
+  let o = encode(output, i, 0, alphabet, padding);
+  o = output.indexOf(padding, o - 2);
+  return new TextDecoder().decode(
+    // deno-lint-ignore no-explicit-any
+    o > 0 ? new Uint8Array(output.buffer.transfer(o)) : output,
+  );
 }
 /**
  * Decodes a given base64url-encoded string.
@@ -79,5 +66,8 @@ export function encodeBase64Url(data) {
  * ```
  */
 export function decodeBase64Url(b64url) {
-  return base64.decodeBase64(convertBase64urlToBase64(b64url));
+  const output = new TextEncoder().encode(b64url);
+  // deno-lint-ignore no-explicit-any
+  return new Uint8Array(output.buffer
+    .transfer(decode(output, 0, 0, rAlphabet, padding)));
 }
