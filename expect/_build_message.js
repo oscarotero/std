@@ -6,8 +6,8 @@ import { format } from "../internal/format.js";
 function isString(value) {
   return typeof value === "string";
 }
-export function buildEqualErrorMessage(actual, expected, options) {
-  const { formatter = format, msg } = options ?? {};
+export function buildEqualErrorMessage(actual, expected, options = {}) {
+  const { formatter = format, msg } = options;
   const msgPrefix = msg ? `${msg}: ` : "";
   const actualString = formatter(actual);
   const expectedString = formatter(expected);
@@ -20,10 +20,10 @@ export function buildEqualErrorMessage(actual, expected, options) {
   message = `${message}\n${diffMsg}`;
   return message;
 }
-export function buildNotEqualErrorMessage(actual, expected, options) {
-  const { msg } = options ?? {};
-  const actualString = String(actual);
-  const expectedString = String(expected);
+export function buildNotEqualErrorMessage(actual, expected, options = {}) {
+  const { formatter = format, msg } = options;
+  const actualString = formatter(actual);
+  const expectedString = formatter(expected);
   const msgPrefix = msg ? `${msg}: ` : "";
   return `${msgPrefix}Expected actual: ${actualString} not to be: ${expectedString}.`;
 }

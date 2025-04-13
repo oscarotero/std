@@ -1,21 +1,38 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+export const padding = "=".charCodeAt(0);
+export const alphabet = {
+  Base32: new TextEncoder().encode("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567"),
+  Base32Hex: new TextEncoder().encode("0123456789ABCDEFGHIJKLMNOPQRSTUV"),
+  Base32Crockford: new TextEncoder().encode("0123456789ABCDEFGHJKMNPQRSTVWXYZ"),
+};
+export const rAlphabet = {
+  Base32: new Uint8Array(128).fill(32), // alphabet.Base32.length
+  Base32Hex: new Uint8Array(128).fill(32),
+  Base32Crockford: new Uint8Array(128).fill(32),
+};
+alphabet.Base32
+  .forEach((byte, i) => rAlphabet.Base32[byte] = i);
+alphabet.Base32Hex
+  .forEach((byte, i) => rAlphabet.Base32Hex[byte] = i);
+alphabet.Base32Crockford
+  .forEach((byte, i) => rAlphabet.Base32Crockford[byte] = i);
 /**
  * Calculate the output size needed to encode a given input size for
  * {@linkcode encodeRawBase32}.
  *
- * @param originalSize The size of the input buffer.
+ * @param rawSize The size of the input buffer.
  * @returns The size of the output buffer.
  *
  * @example Basic Usage
  * ```ts
  * import { assertEquals } from "../assert/mod.js";
- * import { calcMax } from "unstable_base32.js";
+ * import { calcSizeBase32 } from "unstable_base32.js";
  *
- * assertEquals(calcMax(1), 8);
+ * assertEquals(calcSizeBase32(1), 8);
  * ```
  */
-export function calcMax(originalSize) {
-  return ((originalSize + 4) / 5 | 0) * 8;
+export function calcSizeBase32(rawSize) {
+  return ((rawSize + 4) / 5 | 0) * 8;
 }
 export function encode(buffer, i, o, alphabet, padding) {
   i += 4;

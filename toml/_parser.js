@@ -26,14 +26,8 @@ export class Scanner {
   /**
    * Move position to next
    */
-  next(count) {
-    if (typeof count === "number") {
-      for (let i = 0; i < count; i++) {
-        this.#position++;
-      }
-    } else {
-      this.#position++;
-    }
+  next(count = 1) {
+    this.#position += count;
   }
   /**
    * Move position until current char is not a whitespace, EOL, or comment.
@@ -81,7 +75,10 @@ export class Scanner {
     return this.#position;
   }
   isCurrentCharEOL() {
-    return this.char() === "\n" || this.slice(0, 2) === "\r\n";
+    return this.char() === "\n" || this.startsWith("\r\n");
+  }
+  startsWith(searchString) {
+    return this.#source.startsWith(searchString, this.#position);
   }
 }
 // -----------------------
@@ -248,7 +245,7 @@ function surround(left, parser, right) {
 function character(str) {
   return (scanner) => {
     scanner.nextUntilChar({ inline: true });
-    if (scanner.slice(0, str.length) !== str) {
+    if (!scanner.startsWith(str)) {
       return failure();
     }
     scanner.next(str.length);
@@ -363,25 +360,25 @@ export function literalString(scanner) {
 }
 export function multilineBasicString(scanner) {
   scanner.nextUntilChar({ inline: true });
-  if (scanner.slice(0, 3) !== '"""') {
+  if (!scanner.startsWith('"""')) {
     return failure();
   }
   scanner.next(3);
   if (scanner.char() === "\n") {
     // The first newline (LF) is trimmed
     scanner.next();
-  } else if (scanner.slice(0, 2) === "\r\n") {
+  } else if (scanner.startsWith("\r\n")) {
     // The first newline (CRLF) is trimmed
     scanner.next(2);
   }
   const acc = [];
-  while (scanner.slice(0, 3) !== '"""' && !scanner.eof()) {
+  while (!scanner.startsWith('"""') && !scanner.eof()) {
     // line ending backslash
-    if (scanner.slice(0, 2) === "\\\n") {
+    if (scanner.startsWith("\\\n")) {
       scanner.next();
       scanner.nextUntilChar({ comment: false });
       continue;
-    } else if (scanner.slice(0, 3) === "\\\r\n") {
+    } else if (scanner.startsWith("\\\r\n")) {
       scanner.next();
       scanner.nextUntilChar({ comment: false });
       continue;
@@ -407,19 +404,19 @@ export function multilineBasicString(scanner) {
 }
 export function multilineLiteralString(scanner) {
   scanner.nextUntilChar({ inline: true });
-  if (scanner.slice(0, 3) !== "'''") {
+  if (!scanner.startsWith("'''")) {
     return failure();
   }
   scanner.next(3);
   if (scanner.char() === "\n") {
     // The first newline (LF) is trimmed
     scanner.next();
-  } else if (scanner.slice(0, 2) === "\r\n") {
+  } else if (scanner.startsWith("\r\n")) {
     // The first newline (CRLF) is trimmed
     scanner.next(2);
   }
   const acc = [];
-  while (scanner.slice(0, 3) !== "'''" && !scanner.eof()) {
+  while (!scanner.startsWith("'''") && !scanner.eof()) {
     acc.push(scanner.char());
     scanner.next();
   }
@@ -446,9 +443,7 @@ const symbolPairs = [
 ];
 export function symbols(scanner) {
   scanner.nextUntilChar({ inline: true });
-  const found = symbolPairs.find(([str]) =>
-    scanner.slice(0, str.length) === str
-  );
+  const found = symbolPairs.find(([str]) => scanner.startsWith(str));
   if (!found) {
     return failure();
   }
@@ -463,7 +458,6 @@ export function integer(scanner) {
   const first2 = scanner.slice(0, 2);
   if (first2.length === 2 && /0(?:x|o|b)/i.test(first2)) {
     scanner.next(2);
-    const acc = [first2];
     const prefix = first2.toLowerCase();
     // Determine allowed characters and base in one switch
     let allowedChars;
@@ -484,21 +478,25 @@ export function integer(scanner) {
       default:
         return failure(); // Unreachable due to regex check
     }
+    const acc = [];
     // Collect valid characters
-    while (!scanner.eof() && allowedChars.test(scanner.char())) {
-      acc.push(scanner.char());
+    while (!scanner.eof()) {
+      const char = scanner.char();
+      if (!allowedChars.test(char)) {
+        break;
+      }
+      if (char === "_") {
+        scanner.next();
+        continue;
+      }
+      acc.push(char);
       scanner.next();
     }
-    if (acc.length === 1) {
-      return failure(); // Only prefix, no digits
-    }
-    // Process and parse
-    const numberStr = acc.join("").replace(/_/g, ""); // Remove underscores
-    const digits = numberStr.slice(2); // Remove prefix
-    if (digits.length === 0) {
+    if (!acc.length) {
       return failure();
     }
-    const number = parseInt(digits, base);
+    const numberStr = acc.join("");
+    const number = parseInt(numberStr, base);
     return isNaN(number) ? failure() : success(number);
   }
   // Handle regular integers

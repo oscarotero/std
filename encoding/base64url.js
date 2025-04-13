@@ -7,7 +7,7 @@
  *
  * @module
  */
-import { calcMax, decode, encode } from "./_common64.js";
+import { calcSizeBase64, decode, encode } from "./_common64.js";
 import { detach } from "./_common_detach.js";
 const padding = "=".charCodeAt(0);
 const alphabet = new TextEncoder()
@@ -38,7 +38,7 @@ export function encodeBase64Url(data) {
   } else {
     data = data.slice();
   }
-  const [output, i] = detach(data, calcMax(data.length));
+  const [output, i] = detach(data, calcSizeBase64(data.length));
   let o = encode(output, i, 0, alphabet, padding);
   o = output.indexOf(padding, o - 2);
   return new TextDecoder().decode(

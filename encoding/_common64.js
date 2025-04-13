@@ -1,4 +1,19 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
+export const padding = "=".charCodeAt(0);
+export const alphabet = {
+  Base64: new TextEncoder()
+    .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"),
+  Base64Url: new TextEncoder()
+    .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"),
+};
+export const rAlphabet = {
+  Base64: new Uint8Array(128).fill(64), // alphabet.Base64.length
+  Base64Url: new Uint8Array(128).fill(64),
+};
+alphabet.Base64
+  .forEach((byte, i) => rAlphabet.Base64[byte] = i);
+alphabet.Base64Url
+  .forEach((byte, i) => rAlphabet.Base64Url[byte] = i);
 /**
  * Calculate the output size needed to encode a given input size for
  * {@linkcode encodeRawBase64}.
@@ -9,12 +24,12 @@
  * @example Basic Usage
  * ```ts
  * import { assertEquals } from "../assert/mod.js";
- * import { calcMax } from "unstable_base64.js";
+ * import { calcSizeBase64 } from "unstable_base64.js";
  *
- * assertEquals(calcMax(1), 4);
+ * assertEquals(calcSizeBase64(1), 4);
  * ```
  */
-export function calcMax(originalSize) {
+export function calcSizeBase64(originalSize) {
   return ((originalSize + 2) / 3 | 0) * 4;
 }
 export function encode(buffer, i, o, alphabet, padding) {

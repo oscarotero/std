@@ -18,6 +18,10 @@ import {
   iterableEquality,
   subsetEquality,
 } from "./_utils.js";
+import {
+  buildEqualErrorMessage,
+  buildNotEqualErrorMessage,
+} from "./_build_message.js";
 export function toBe(context, expect) {
   if (context.isNot) {
     assertNotStrictEquals(context.value, expect, context.customMessage);
@@ -460,7 +464,7 @@ export function toMatchObject(context, expected) {
         : defaultMsg,
     );
   }
-  const pass = equal(context.value, expected, {
+  const pass = equal(received, expected, {
     strictCheck: false,
     customTesters: [
       ...context.customTesters,
@@ -469,19 +473,15 @@ export function toMatchObject(context, expected) {
     ],
   });
   const triggerError = () => {
-    const actualString = format(context.value);
-    const expectedString = format(expected);
     if (context.isNot) {
-      const defaultMessage =
-        `Expected ${actualString} to NOT match ${expectedString}`;
+      const defaultMessage = buildNotEqualErrorMessage(received, expected);
       throw new AssertionError(
         context.customMessage
           ? `${context.customMessage}: ${defaultMessage}`
           : defaultMessage,
       );
     } else {
-      const defaultMessage =
-        `Expected ${actualString} to match ${expectedString}`;
+      const defaultMessage = buildEqualErrorMessage(received, expected);
       throw new AssertionError(
         context.customMessage
           ? `${context.customMessage}: ${defaultMessage}`

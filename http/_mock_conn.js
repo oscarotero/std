@@ -12,7 +12,6 @@ export function mockConn(base = {}) {
       hostname: "",
       port: 0,
     },
-    rid: -1,
     closeWrite: () => {
       return Promise.resolve();
     },

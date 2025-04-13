@@ -24,7 +24,7 @@
  *
  * @module
  */
-import { calcMax, decode, encode } from "./_common16.js";
+import { calcSizeHex, decode, encode } from "./_common16.js";
 import { detach } from "./_common_detach.js";
 const alphabet = new TextEncoder()
   .encode("0123456789abcdef");
@@ -56,7 +56,7 @@ export function encodeHex(src) {
   } else {
     src = src.slice();
   }
-  const [output, i] = detach(src, calcMax(src.length));
+  const [output, i] = detach(src, calcSizeHex(src.length));
   encode(output, i, 0, alphabet);
   return new TextDecoder().decode(output);
 }
