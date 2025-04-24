@@ -1,22 +1,22 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
 export const padding = "=".charCodeAt(0);
 export const alphabet = {
-  Base64: new TextEncoder()
+  base64: new TextEncoder()
     .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"),
-  Base64Url: new TextEncoder()
+  base64url: new TextEncoder()
     .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_"),
 };
 export const rAlphabet = {
-  Base64: new Uint8Array(128).fill(64), // alphabet.Base64.length
-  Base64Url: new Uint8Array(128).fill(64),
+  base64: new Uint8Array(128).fill(64), // alphabet.base64.length
+  base64url: new Uint8Array(128).fill(64),
 };
-alphabet.Base64
-  .forEach((byte, i) => rAlphabet.Base64[byte] = i);
-alphabet.Base64Url
-  .forEach((byte, i) => rAlphabet.Base64Url[byte] = i);
+alphabet.base64
+  .forEach((byte, i) => rAlphabet.base64[byte] = i);
+alphabet.base64url
+  .forEach((byte, i) => rAlphabet.base64url[byte] = i);
 /**
  * Calculate the output size needed to encode a given input size for
- * {@linkcode encodeRawBase64}.
+ * {@linkcode encodeIntoBase64}.
  *
  * @param originalSize The size of the input buffer.
  * @returns The size of the output buffer.

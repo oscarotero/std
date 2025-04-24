@@ -52,7 +52,7 @@ export function slidingWindows(array, size, options = {}) {
   if (
     !Number.isInteger(size) || !Number.isInteger(step) || size <= 0 || step <= 0
   ) {
-    throw new RangeError("Both size and step must be positive integer.");
+    throw new RangeError("Both size and step must be positive integer");
   }
   return Array.from({
     length: Math.floor((array.length - (partial ? 1 : size)) / step + 1),

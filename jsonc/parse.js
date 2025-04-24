@@ -23,10 +23,10 @@ export function parse(text) {
       "Cannot create an instance: parse is not a constructor",
     );
   }
-  return new JSONCParser(text).parse();
+  return new JsoncParser(text).parse();
 }
 // First tokenize and then parse the token.
-class JSONCParser {
+class JsoncParser {
   #whitespace = new Set(" \t\r\n");
   #numberEndToken = new Set([..."[]{}:,/", ...this.#whitespace]);
   #text;

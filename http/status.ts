@@ -18,7 +18,7 @@
  * ```
  *
  * @example Checking the status code type
- * ```ts
+ * ```ts ignore
  * import { isErrorStatus } from "status.ts";
  *
  * const res = await fetch("https://example.com/");

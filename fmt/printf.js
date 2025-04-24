@@ -775,10 +775,10 @@ class Printf {
     // A double argument representing an infinity or NaN shall be
     // converted in the style of an f or F conversion specifier.
     // https://pubs.opengroup.org/onlinepubs/9699919799/functions/fprintf.html
-    let P = this.flags.precision !== -1
+    let p = this.flags.precision !== -1
       ? this.flags.precision
       : DEFAULT_PRECISION;
-    P = P === 0 ? 1 : P;
+    p = p === 0 ? 1 : p;
     const m = n.toExponential().match(FLOAT_REGEXP);
     if (!m) {
       throw new Error(
@@ -787,14 +787,14 @@ class Printf {
     }
     const X = parseInt(m[F.exponent]) * (m[F.esign] === "-" ? -1 : 1);
     let nStr = "";
-    if (P > X && X >= -4) {
-      this.flags.precision = P - (X + 1);
+    if (p > X && X >= -4) {
+      this.flags.precision = p - (X + 1);
       nStr = this.fmtFloatF(n);
       if (!this.flags.sharp) {
         nStr = nStr.replace(/\.?0*$/, "");
       }
     } else {
-      this.flags.precision = P - 1;
+      this.flags.precision = p - 1;
       nStr = this.fmtFloatE(n);
       if (!this.flags.sharp) {
         nStr = nStr.replace(/\.?0*e/, upcase ? "E" : "e");

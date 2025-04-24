@@ -83,7 +83,7 @@ export function generate(options = {}) {
     nsecs = 0;
   }
   if (nsecs > 10000) {
-    throw new Error("Can't create more than 10M uuids/sec");
+    throw new Error("Cannot create more than 10M uuids/sec");
   }
   if (node.length !== 6) {
     throw new Error(

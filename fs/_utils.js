@@ -42,6 +42,24 @@ export function getNodeProcess() {
   return globalThis.process.getBuiltinModule("node:process");
 }
 /**
+ * @returns The Node.js `stream` module.
+ */
+export function getNodeStream() {
+  return globalThis.process.getBuiltinModule("node:stream");
+}
+/**
+ * @returns The Node.js `tty` module.
+ */
+export function getNodeTty() {
+  return globalThis.process.getBuiltinModule("node:tty");
+}
+/**
+ * @returns The Node.js `util` module.
+ */
+export function getNodeUtil() {
+  return globalThis.process.getBuiltinModule("node:util");
+}
+/**
  * Used for naming temporary files. See {@linkcode makeTempFile} and
  * {@linkcode makeTempFileSync}.
  * @returns A randomized 6-digit hexadecimal string.
