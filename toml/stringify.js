@@ -164,6 +164,9 @@ class Dumper {
     return `${this.#declaration(keys)}${JSON.stringify(value)}`;
   }
   #numberDeclaration(keys, value) {
+    if (Number.isNaN(value)) {
+      return `${this.#declaration(keys)}nan`;
+    }
     switch (value) {
       case Infinity:
         return `${this.#declaration(keys)}inf`;

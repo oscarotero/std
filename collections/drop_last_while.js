@@ -1,15 +1,15 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
 /**
- * Returns a new array that drops all elements in the given collection until the
+ * Returns an array that drops all elements in the given iterable until the
  * last element that does not match the given predicate.
  *
- * @typeParam T The type of the elements in the input array.
+ * @typeParam T The type of the elements in the input iterable.
  *
- * @param array The array to drop elements from.
+ * @param iterable The iterable to drop elements from.
  * @param predicate The function to test each element for a condition.
  *
- * @returns A new array that drops all elements until the last element that does
+ * @returns An array that drops all elements until the last element that does
  * not match the given predicate.
  *
  * @example Basic usage
@@ -24,10 +24,11 @@
  * assertEquals(notFortyFour, [11, 42, 55, 20]);
  * ```
  */
-export function dropLastWhile(array, predicate) {
-  let offset = array.length;
-  while (0 < offset && predicate(array[offset - 1])) {
+export function dropLastWhile(iterable, predicate) {
+  const array = Array.isArray(iterable) ? iterable : Array.from(iterable);
+  let offset = array.length - 1;
+  while (offset >= 0 && predicate(array[offset])) {
     offset--;
   }
-  return array.slice(0, offset);
+  return array.slice(0, offset + 1);
 }

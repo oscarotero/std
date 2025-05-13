@@ -152,10 +152,6 @@ export async function serveFile(req, filePath, options) {
     return createStandardResponse(STATUS_CODE.NotFound);
   }
   const headers = createBaseHeaders();
-  // Set date header if access timestamp is available
-  if (fileInfo.atime) {
-    headers.set(HEADER.Date, fileInfo.atime.toUTCString());
-  }
   const etag = fileInfo.mtime
     ? await eTag(fileInfo, { algorithm })
     : await HASHED_DENO_DEPLOYMENT_ID;

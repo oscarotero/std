@@ -59,6 +59,7 @@
  * );
  * ```
  */
+// deno-lint-ignore deno-style-guide/exported-function-args-maximum
 export function toTransformStream(
   transformer,
   writableStrategy,

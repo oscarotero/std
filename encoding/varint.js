@@ -197,6 +197,7 @@ export function decodeVarint32(buf, offset = 0) {
  * assertEquals(encodeVarint(42n, buf), [new Uint8Array([42]), 1]);
  * ```
  */
+// deno-lint-ignore deno-style-guide/exported-function-args-maximum
 export function encodeVarint(
   num,
   buf = new Uint8Array(MaxVarintLen64),

@@ -894,6 +894,9 @@ class Printf {
  *
  * See the module documentation for the available format strings.
  *
+ * `%v`, `%i`, and `%` are only supported in Deno runtime. Other formats are supported in
+ * other major runtimes.
+ *
  * @example Usage
  * ```ts
  * import { sprintf } from "printf.js";
@@ -921,6 +924,8 @@ export function sprintf(format, ...args) {
  * `printf` writes the formatted string to standard output.
  *
  * See the module documentation for the available format strings.
+ *
+ * This API only supports Deno runtime.
  *
  * @example Usage
  * ```ts no-assert

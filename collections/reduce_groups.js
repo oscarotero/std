@@ -34,6 +34,7 @@ import { mapValues } from "./map_values.js";
  * });
  * ```
  */
+// deno-lint-ignore deno-style-guide/exported-function-args-maximum
 export function reduceGroups(record, reducer, initialValue) {
   return mapValues(record, (value) => value.reduce(reducer, initialValue));
 }

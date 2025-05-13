@@ -25,6 +25,7 @@
  * assertEquals(sumSteps, [1, 3, 6, 10, 15]);
  * ```
  */
+// deno-lint-ignore deno-style-guide/exported-function-args-maximum
 export function runningReduce(array, reducer, initialValue) {
   let currentResult = initialValue;
   return array.map((el, currentIndex) =>

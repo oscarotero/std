@@ -108,7 +108,7 @@
  *
  * @module
  */
-import { DIGEST_ALGORITHM_NAMES, instantiateWasm } from "./_wasm/mod.js";
+import { digest, DIGEST_ALGORITHM_NAMES, DigestContext } from "./_wasm/mod.js";
 export { DIGEST_ALGORITHM_NAMES };
 /** Digest algorithms supported by WebCrypto. */
 const WEB_CRYPTO_DIGEST_ALGORITHM_NAMES = [
@@ -182,8 +182,7 @@ const stdCrypto = ((x) => x)({
         } else if (isIterable(data)) {
           return stdCrypto.subtle.digestSync(algorithm, data);
         } else if (isAsyncIterable(data)) {
-          const wasmCrypto = instantiateWasm();
-          const context = new wasmCrypto.DigestContext(name);
+          const context = new DigestContext(name);
           for await (const chunk of data) {
             const chunkBytes = toUint8Array(chunk);
             if (!chunkBytes) {
@@ -210,13 +209,12 @@ const stdCrypto = ((x) => x)({
     digestSync(algorithm, data) {
       const { name, length } = normalizeAlgorithm(algorithm);
       assertValidDigestLength(length);
-      const wasmCrypto = instantiateWasm();
       if (isBufferSource(data)) {
         const bytes = toUint8Array(data);
-        return wasmCrypto.digest(name, bytes, length).buffer;
+        return digest(name, bytes, length).buffer;
       }
       if (isIterable(data)) {
-        const context = new wasmCrypto.DigestContext(name);
+        const context = new DigestContext(name);
         for (const chunk of data) {
           const chunkBytes = toUint8Array(chunk);
           if (!chunkBytes) {

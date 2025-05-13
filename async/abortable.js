@@ -8,11 +8,11 @@ export function abortable(p, signal) {
   }
 }
 function abortablePromise(p, signal) {
-  if (signal.aborted) {
-    return Promise.reject(signal.reason);
-  }
   const { promise, reject } = Promise.withResolvers();
   const abort = () => reject(signal.reason);
+  if (signal.aborted) {
+    abort();
+  }
   signal.addEventListener("abort", abort, { once: true });
   return Promise.race([promise, p]).finally(() => {
     signal.removeEventListener("abort", abort);
