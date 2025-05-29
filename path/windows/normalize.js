@@ -4,6 +4,7 @@ import { assertArg } from "../_common/normalize.js";
 import { CHAR_COLON } from "../_common/constants.js";
 import { normalizeString } from "../_common/normalize_string.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
+import { fromFileUrl } from "./from_file_url.js";
 /**
  * Normalize the `path`, resolving `'..'` and `'.'` segments.
  * Note that resolving these segments does not necessarily mean that all will be eliminated.
@@ -14,17 +15,17 @@ import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
  * import { normalize } from "normalize.js";
  * import { assertEquals } from "../../assert/mod.js";
  *
- * const normalized = normalize("C:\\foo\\..\\bar");
- * assertEquals(normalized, "C:\\bar");
+ * assertEquals(normalize("C:\\foo\\..\\bar"), "C:\\bar");
+ * assertEquals(normalize(new URL("file:///C:/foo/../bar")), "C:\\bar");
  * ```
- *
- * Note: If you are working with file URLs,
- * use the new version of `normalize` from `@std/path/windows/unstable-normalize`.
  *
  * @param path The path to normalize
  * @returns The normalized path
  */
 export function normalize(path) {
+  if (path instanceof URL) {
+    path = fromFileUrl(path);
+  }
   assertArg(path);
   const len = path.length;
   let rootEnd = 0;

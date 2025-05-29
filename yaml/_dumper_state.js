@@ -169,6 +169,7 @@ function chooseScalarStyle(
   indentPerLevel,
   lineWidth,
   implicitTypes,
+  quoteStyle,
 ) {
   const shouldTrackWidth = lineWidth !== -1;
   let hasLineBreak = false;
@@ -221,7 +222,9 @@ function chooseScalarStyle(
     // e.g. the string 'true' vs. the boolean true.
     return plain && !implicitTypes.some((type) => type.resolve(string))
       ? STYLE_PLAIN
-      : STYLE_SINGLE;
+      : quoteStyle === "'"
+      ? STYLE_SINGLE
+      : STYLE_DOUBLE;
   }
   // Edge case: block indentation indicator can only have one digit.
   if (indentPerLevel > 9 && needIndentIndicator(string)) {
@@ -376,6 +379,7 @@ export class DumperState {
   duplicates = [];
   usedDuplicates = new Set();
   styleMap = new Map();
+  quoteStyle;
   constructor({
     schema = DEFAULT_SCHEMA,
     indent = 2,
@@ -388,6 +392,7 @@ export class DumperState {
     useAnchors = true,
     compatMode = true,
     condenseFlow = false,
+    quoteStyle = "'",
   }) {
     this.indent = Math.max(1, indent);
     this.arrayIndent = arrayIndent;
@@ -403,6 +408,7 @@ export class DumperState {
     this.condenseFlow = condenseFlow;
     this.implicitTypes = schema.implicitTypes;
     this.explicitTypes = schema.explicitTypes;
+    this.quoteStyle = quoteStyle;
   }
   // Note: line breaking/folding is implemented for only the folded style.
   // NB. We drop the last trailing newline (if any) of a returned block scalar
@@ -441,6 +447,7 @@ export class DumperState {
       this.indent,
       lineWidth,
       this.implicitTypes,
+      this.quoteStyle,
     );
     switch (scalarStyle) {
       case STYLE_PLAIN:

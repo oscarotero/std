@@ -8,6 +8,7 @@ import {
 import { CHAR_COLON } from "../_common/constants.js";
 import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
+import { fromFileUrl } from "./from_file_url.js";
 /**
  * Return the last portion of a `path`.
  * Trailing directory separators are ignored, and optional suffix is removed.
@@ -20,16 +21,18 @@ import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
  * assertEquals(basename("C:\\user\\Documents\\"), "Documents");
  * assertEquals(basename("C:\\user\\Documents\\image.png"), "image.png");
  * assertEquals(basename("C:\\user\\Documents\\image.png", ".png"), "image");
+ * assertEquals(basename(new URL("file:///C:/user/Documents/image.png")), "image.png");
+ * assertEquals(basename(new URL("file:///C:/user/Documents/image.png"), ".png"), "image");
  * ```
- *
- * Note: If you are working with file URLs,
- * use the new version of `basename` from `@std/path/windows/unstable-basename`.
  *
  * @param path The path to extract the name from.
  * @param suffix The suffix to remove from extracted name.
  * @returns The extracted name.
  */
 export function basename(path, suffix = "") {
+  if (path instanceof URL) {
+    path = fromFileUrl(path);
+  }
   assertArgs(path, suffix);
   // Check for a drive letter prefix so as not to mistake the following
   // path separator as an extra separator at the end of the path that can be

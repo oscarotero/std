@@ -8,6 +8,7 @@ import {
   isPosixPathSeparator,
   isWindowsDeviceRoot,
 } from "./_util.js";
+import { fromFileUrl } from "./from_file_url.js";
 /**
  * Return the directory path of a `path`.
  *
@@ -16,17 +17,17 @@ import {
  * import { dirname } from "dirname.js";
  * import { assertEquals } from "../../assert/mod.js";
  *
- * const dir = dirname("C:\\foo\\bar\\baz.ext");
- * assertEquals(dir, "C:\\foo\\bar");
+ * assertEquals(dirname("C:\\foo\\bar\\baz.ext"), "C:\\foo\\bar");
+ * assertEquals(dirname(new URL("file:///C:/foo/bar/baz.ext")), "C:\\foo\\bar");
  * ```
- *
- * Note: If you are working with file URLs,
- * use the new version of `dirname` from `@std/path/windows/unstable-dirname`.
  *
  * @param path The path to get the directory from.
  * @returns The directory path.
  */
 export function dirname(path) {
+  if (path instanceof URL) {
+    path = fromFileUrl(path);
+  }
   assertArg(path);
   const len = path.length;
   let rootEnd = -1;

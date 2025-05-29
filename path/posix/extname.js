@@ -3,6 +3,7 @@
 import { CHAR_DOT } from "../_common/constants.js";
 import { assertPath } from "../_common/assert_path.js";
 import { isPosixPathSeparator } from "./_util.js";
+import { fromFileUrl } from "./from_file_url.js";
 /**
  * Return the extension of the `path` with leading period.
  *
@@ -14,6 +15,9 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(extname("/home/user/Documents/file.ts"), ".ts");
  * assertEquals(extname("/home/user/Documents/"), "");
  * assertEquals(extname("/home/user/Documents/image.png"), ".png");
+ * assertEquals(extname(new URL("file:///home/user/Documents/file.ts")), ".ts");
+ * assertEquals(extname(new URL("file:///home/user/Documents/file.ts?a=b")), ".ts");
+ * assertEquals(extname(new URL("file:///home/user/Documents/file.ts#header")), ".ts");
  * ```
  *
  * @example Working with URLs
@@ -32,13 +36,13 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(extname("https://deno.land/std/path/mod.ts#header"), ".ts#header");
  * ```
  *
- * Note: If you are working with file URLs,
- * use the new version of `extname` from `@std/path/posix/unstable-extname`.
- *
  * @param path The path to get the extension from.
  * @returns The extension (ex. for `file.ts` returns `.ts`).
  */
 export function extname(path) {
+  if (path instanceof URL) {
+    path = fromFileUrl(path);
+  }
   assertPath(path);
   let startDot = -1;
   let startPart = 0;

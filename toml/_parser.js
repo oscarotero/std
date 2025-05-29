@@ -100,37 +100,59 @@ function failure() {
 export function unflat(keys, values = {}) {
   return keys.reduceRight((acc, key) => ({ [key]: acc }), values);
 }
-export function deepAssignWithTable(target, table) {
-  if (table.key.length === 0 || table.key[0] == null) {
+function isObject(value) {
+  return typeof value === "object" && value !== null;
+}
+function getTargetValue(target, keys) {
+  const key = keys[0];
+  if (!key) {
     throw new Error(
       "Cannot parse the TOML: key length is not a positive number",
     );
   }
-  const value = target[table.key[0]];
-  if (typeof value === "undefined") {
-    Object.assign(
-      target,
-      unflat(table.key, table.type === "Table" ? table.value : [table.value]),
-    );
-  } else if (Array.isArray(value)) {
-    if (table.type === "TableArray" && table.key.length === 1) {
-      value.push(table.value);
-    } else {
-      const last = value[value.length - 1];
-      deepAssignWithTable(last, {
-        type: table.type,
-        key: table.key.slice(1),
-        value: table.value,
-      });
-    }
-  } else if (typeof value === "object" && value !== null) {
-    deepAssignWithTable(value, {
-      type: table.type,
-      key: table.key.slice(1),
-      value: table.value,
-    });
-  } else {
-    throw new Error("Unexpected assign");
+  return target[key];
+}
+function deepAssignTable(target, table) {
+  const { keys, type, value } = table;
+  const currentValue = getTargetValue(target, keys);
+  if (currentValue === undefined) {
+    return Object.assign(target, unflat(keys, value));
+  }
+  if (Array.isArray(currentValue)) {
+    const last = currentValue.at(-1);
+    deepAssign(last, { type, keys: keys.slice(1), value });
+    return target;
+  }
+  if (isObject(currentValue)) {
+    deepAssign(currentValue, { type, keys: keys.slice(1), value });
+    return target;
+  }
+  throw new Error("Unexpected assign");
+}
+function deepAssignTableArray(target, table) {
+  const { type, keys, value } = table;
+  const currentValue = getTargetValue(target, keys);
+  if (currentValue === undefined) {
+    return Object.assign(target, unflat(keys, [value]));
+  }
+  if (Array.isArray(currentValue)) {
+    currentValue.push(value);
+    return target;
+  }
+  if (isObject(currentValue)) {
+    deepAssign(currentValue, { type, keys: keys.slice(1), value });
+    return target;
+  }
+  throw new Error("Unexpected assign");
+}
+export function deepAssign(target, body) {
+  switch (body.type) {
+    case "Block":
+      return deepMerge(target, body.value);
+    case "Table":
+      return deepAssignTable(target, body);
+    case "TableArray":
+      return deepAssignTableArray(target, body);
   }
 }
 // ---------------------------------
@@ -535,7 +557,7 @@ export function hex(scanner) {
   const number = parseInt(value, 16);
   return isNaN(number) ? failure() : success(number);
 }
-const INTEGER_REGEXP = /[+-]?[0-9]+(?:_[0-9]+)*\b/y;
+const INTEGER_REGEXP = /[+-]?(?:0|[1-9][0-9]*(?:_[0-9]+)*)\b/y;
 export function integer(scanner) {
   scanner.skipWhitespaces();
   const match = scanner.match(INTEGER_REGEXP)?.[0];
@@ -671,7 +693,7 @@ export function table(scanner) {
   const b = block(scanner);
   return success({
     type: "Table",
-    key: header.body,
+    keys: header.body,
     value: b.ok ? b.body.value : {},
   });
 }
@@ -686,32 +708,16 @@ export function tableArray(scanner) {
   const b = block(scanner);
   return success({
     type: "TableArray",
-    key: header.body,
+    keys: header.body,
     value: b.ok ? b.body.value : {},
   });
 }
 export function toml(scanner) {
   const blocks = repeat(or([block, tableArray, table]))(scanner);
-  let body = {};
   if (!blocks.ok) {
-    return success(body);
+    return success({});
   }
-  for (const block of blocks.body) {
-    switch (block.type) {
-      case "Block": {
-        body = deepMerge(body, block.value);
-        break;
-      }
-      case "Table": {
-        deepAssignWithTable(body, block);
-        break;
-      }
-      case "TableArray": {
-        deepAssignWithTable(body, block);
-        break;
-      }
-    }
-  }
+  const body = blocks.body.reduce(deepAssign, {});
   return success(body);
 }
 function createParseErrorMessage(scanner, message) {

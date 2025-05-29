@@ -3,6 +3,7 @@
 import { assertArg } from "../_common/dirname.js";
 import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";
 import { isPosixPathSeparator } from "./_util.js";
+import { fromFileUrl } from "./from_file_url.js";
 /**
  * Return the directory path of a `path`.
  *
@@ -14,6 +15,7 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(dirname("/home/user/Documents/"), "/home/user");
  * assertEquals(dirname("/home/user/Documents/image.png"), "/home/user/Documents");
  * assertEquals(dirname("https://deno.land/std/path/mod.ts"), "https://deno.land/std/path");
+ * assertEquals(dirname(new URL("file:///home/user/Documents/image.png")), "/home/user/Documents");
  * ```
  *
  * @example Working with URLs
@@ -27,13 +29,13 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(dirname("https://deno.land/std/path/mod.ts#header"), "https://deno.land/std/path");
  * ```
  *
- * Note: If you are working with file URLs,
- * use the new version of `dirname` from `@std/path/posix/unstable-dirname`.
- *
  * @param path The path to get the directory from.
  * @returns The directory path.
  */
 export function dirname(path) {
+  if (path instanceof URL) {
+    path = fromFileUrl(path);
+  }
   assertArg(path);
   let end = -1;
   let matchedNonSeparator = false;
