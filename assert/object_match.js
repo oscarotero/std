@@ -88,7 +88,7 @@ function filter(a, b) {
       return filtered;
     }
     for (const [key, value] of entries) {
-      // On regexp references, keep value as it to avoid loosing pattern and flags
+      // On regexp references, keep value as it to avoid losing pattern and flags
       if (value instanceof RegExp) {
         defineProperty(filtered, key, value);
         continue;
@@ -142,7 +142,7 @@ function filter(a, b) {
     for (let i = 0; i < count; ++i) {
       const value = a[i];
       const subset = b[i];
-      // On regexp references, keep value as it to avoid loosing pattern and flags
+      // On regexp references, keep value as it to avoid losing pattern and flags
       if (value instanceof RegExp) {
         filtered.push(value);
         continue;

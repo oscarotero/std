@@ -1,6 +1,6 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
-import { isWindows } from "./_os.js";
+import { isWindows } from "../internal/os.js";
 import { resolve as posixResolve } from "./posix/resolve.js";
 import { resolve as windowsResolve } from "./windows/resolve.js";
 /**

@@ -41,5 +41,6 @@ export * from "./build_message.js";
 export * from "./diff.js";
 export * from "./diff_str.js";
 export * from "./format.js";
+export * from "./os.js";
 export * from "./styles.js";
 export * from "./types.js";

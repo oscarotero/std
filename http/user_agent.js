@@ -1092,13 +1092,14 @@ export class UserAgent {
    * ```
    *
    * @param inspect internal inspect function.
+   * @param options inspect options.
    *
    * @returns The custom value to inspect.
    */
-  [Symbol.for("Deno.customInspect")](inspect) {
+  [Symbol.for("Deno.customInspect")](inspect, options) {
     const { browser, cpu, device, engine, os, ua } = this;
     return `${this.constructor.name} ${
-      inspect({ browser, cpu, device, engine, os, ua })
+      inspect({ browser, cpu, device, engine, os, ua }, options)
     }`;
   }
   /**

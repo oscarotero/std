@@ -85,18 +85,20 @@ const FakeDate = new Proxy(Date, {
   },
 });
 let time = undefined;
-function fakeSetTimeout(
-  // deno-lint-ignore no-explicit-any
-  callback,
-  delay = 0,
-  // deno-lint-ignore no-explicit-any
-  ...args
-) {
+function assertIsCallbackFunction(callback, fnName) {
+  if (typeof callback !== "function") {
+    throw new TimeError(
+      `FakeTime does not support non-function callbacks to ${fnName}`,
+    );
+  }
+}
+const fakeSetTimeout = function (callback, delay = 0, ...args) {
+  assertIsCallbackFunction(callback, "setTimeout");
   if (!time) {
     throw new TimeError("Cannot set timeout: time is not faked");
   }
   return setTimer(callback, delay, args, false);
-}
+};
 function fakeClearTimeout(id) {
   if (!time) {
     throw new TimeError("Cannot clear timeout: time is not faked");
@@ -105,18 +107,13 @@ function fakeClearTimeout(id) {
     dueNodes.delete(id);
   }
 }
-function fakeSetInterval(
-  // deno-lint-ignore no-explicit-any
-  callback,
-  delay = 0,
-  // deno-lint-ignore no-explicit-any
-  ...args
-) {
+const fakeSetInterval = function (callback, delay = 0, ...args) {
+  assertIsCallbackFunction(callback, "setInterval");
   if (!time) {
     throw new TimeError("Cannot set interval: time is not faked");
   }
   return setTimer(callback, delay, args, true);
-}
+};
 function fakeClearInterval(id) {
   if (!time) {
     throw new TimeError("Cannot clear interval: time is not faked");

@@ -1,5 +1,5 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
-import { isWindows } from "./_utils.js";
+import { isWindows } from "../internal/os.js";
 export function toFileInfo(s) {
   return {
     atime: s.atime,

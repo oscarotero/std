@@ -38,6 +38,7 @@ import { join } from "../path/join.ts";
 import { relative } from "../path/relative.ts";
 import { resolve } from "../path/resolve.ts";
 import { SEPARATOR_PATTERN } from "../path/constants.ts";
+import { exists } from "../fs/exists.ts";
 import { contentType } from "../media-types/content_type.ts";
 import { eTag, ifNoneMatch } from "./etag.ts";
 import {
@@ -431,7 +432,12 @@ function html(
   strings: TemplateStringsArray,
   ...values: unknown[]
 ): string {
-  return String.raw({ raw: strings }, ...values);
+  let out = "";
+  for (let i = 0; i < strings.length; ++i) {
+    out += strings[i];
+    if (i < values.length) out += values[i] ?? "";
+  }
+  return out;
 }
 
 function dirViewerTemplate(dirname: string, entries: EntryInfo[]): string {
@@ -512,19 +518,19 @@ function dirViewerTemplate(dirname: string, entries: EntryInfo[]): string {
         <main>
           <h1>
             Index of ${headerPaths
-      .map((path, index) => {
-        if (path === "") return "";
-        const depth = headerPaths.length - index - 1;
-        let link;
-        if (depth == 0) {
-          link = ".";
-        } else {
-          link = "../".repeat(depth);
-        }
-        // deno-fmt-ignore
-        return html`<a href="${link}">${escape(path)}</a>`;
-      })
-      .join("/")}/
+              .map((path, index) => {
+                if (path === "") return "";
+                const depth = headerPaths.length - index - 1;
+                let link;
+                if (depth == 0) {
+                  link = ".";
+                } else {
+                  link = "../".repeat(depth);
+                }
+                // deno-fmt-ignore
+                return html`<a href="${link}">${escape(path)}</a>`;
+              })
+              .join("/")}/
           </h1>
           <table>
             <thead>
@@ -535,23 +541,23 @@ function dirViewerTemplate(dirname: string, entries: EntryInfo[]): string {
               </tr>
             </thead>
             ${entries
-      .map(
-        (entry) =>
-          html`
-            <tr>
-              <td class="mode">
-                ${entry.mode}
-              </td>
-              <td class="size">
-                ${entry.size}
-              </td>
-              <td>
-                <a href="${escape(entry.url)}">${escape(entry.name)}</a>
-              </td>
-            </tr>
-          `,
-      )
-      .join("")}
+              .map(
+                (entry) =>
+                  html`
+                    <tr>
+                      <td class="mode">
+                        ${entry.mode}
+                      </td>
+                      <td class="size">
+                        ${entry.size}
+                      </td>
+                      <td>
+                        <a href="${escape(entry.url)}">${escape(entry.name)}</a>
+                      </td>
+                    </tr>
+                  `,
+              )
+              .join("")}
           </table>
         </main>
       </body>
@@ -695,6 +701,7 @@ async function createServeDirResponse(
   const target = opts.fsRoot ?? ".";
   const urlRoot = opts.urlRoot;
   const showIndex = opts.showIndex ?? true;
+  const cleanUrls = (opts as { cleanUrls?: boolean }).cleanUrls ?? false;
   const showDotfiles = opts.showDotfiles || false;
   const { etagAlgorithm = "SHA-256", showDirListing = false, quiet = false } =
     opts;
@@ -728,7 +735,13 @@ async function createServeDirResponse(
     return createStandardResponse(STATUS_CODE.NotFound);
   }
 
-  const fsPath = join(target, normalizedPath);
+  // Resolve path
+  // If cleanUrls is enabled, automatically append ".html" if not present
+  // and it does not shadow another existing file or directory
+  let fsPath = join(target, normalizedPath);
+  if (cleanUrls && !fsPath.endsWith(".html") && !(await exists(fsPath))) {
+    fsPath += ".html";
+  }
   const fileInfo = await Deno.stat(fsPath);
 
   // For files, remove the trailing slash from the path.

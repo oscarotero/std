@@ -20,9 +20,11 @@
  */
 export function format(v) {
   // deno-lint-ignore no-explicit-any
-  const { Deno } = globalThis;
-  return typeof Deno?.inspect === "function"
-    ? Deno.inspect(v, {
+  const { Deno, process } = globalThis;
+  const inspect = Deno?.inspect ??
+    process?.getBuiltinModule?.("node:util")?.inspect;
+  return typeof inspect === "function"
+    ? inspect(v, {
       depth: Infinity,
       sorted: true,
       trailingComma: true,
@@ -32,5 +34,39 @@ export function format(v) {
       getters: true,
       strAbbreviateSize: Infinity,
     })
-    : `"${String(v).replace(/(?=["\\])/g, "\\")}"`;
+    : basicInspect(v);
+}
+const formatters = [
+  (v) => {
+    if (typeof v === "undefined") {
+      return "undefined";
+    }
+    if (typeof v === "bigint") {
+      return `${v}n`;
+    }
+    if (
+      typeof v === "string" ||
+      typeof v === "number" ||
+      typeof v === "boolean" ||
+      v === null ||
+      Array.isArray(v) ||
+      [null, Object.prototype].includes(Object.getPrototypeOf(v))
+    ) {
+      return JSON.stringify(v, null, 2);
+    }
+  },
+  (v) => String(v),
+  (v) => Object.prototype.toString.call(v),
+];
+// for environments lacking both `Deno.inspect` and `process.inspect`
+function basicInspect(v) {
+  for (const fmt of formatters) {
+    try {
+      const result = fmt(v);
+      if (typeof result === "string") {
+        return result;
+      }
+    } catch { /* try the next one */ }
+  }
+  return "[[Unable to format value]]";
 }

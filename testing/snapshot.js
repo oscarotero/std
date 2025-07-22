@@ -5,7 +5,7 @@
  * to a reference snapshot, which is stored alongside the test file in the
  * `__snapshots__` directory.
  *
- * ```ts
+ * ```ts ignore
  * // example_test.ts
  * import { assertSnapshot } from "snapshot.js";
  *
@@ -33,7 +33,7 @@
  * The `assertInlineSnapshot` function will create a snapshot of a value and compare it
  * to a reference snapshot, which is stored in the test file.
  *
- * ```ts
+ * ```ts ignore
  * // example_test.ts
  * import { assertInlineSnapshot } from "unstable_snapshot.js";
  *
@@ -98,8 +98,8 @@
  * The `assertSnapshot` and `assertInlineSnapshot` functions optionally accept an
  * options object.
  *
- * ```ts
- * // example_test.ts
+ * ```ts ignore
+ * // example_test.ts ignore
  * import { assertSnapshot } from "snapshot.js";
  *
  * Deno.test("isSnapshotMatch", async function (t): Promise<void> {
@@ -136,7 +136,7 @@
  * It is possible to "extend" an `assertSnapshot` or `assertInlineSnapshot` function which
  * has been configured with default options.
  *
- * ```ts
+ * ```ts ignore
  * // example_test.ts
  * import { createAssertSnapshot } from "snapshot.js";
  * import { stripAnsiCode } from "../fmt/colors.js";
@@ -479,7 +479,7 @@ export async function assertSnapshot(context, actual, msgOrOpts) {
  * The specified option becomes the default for returned {@linkcode assertSnapshot}
  *
  * @example Usage
- * ```ts
+ * ```ts ignore
  * import { createAssertSnapshot } from "snapshot.js";
  *
  * const assertSnapshot = createAssertSnapshot({

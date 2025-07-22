@@ -1,6 +1,6 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
-import { isWindows } from "./_os.js";
+import { isWindows } from "../internal/os.js";
 import { toFileUrl as posixToFileUrl } from "./posix/to_file_url.js";
 import { toFileUrl as windowsToFileUrl } from "./windows/to_file_url.js";
 /**

@@ -8,8 +8,7 @@ import { SEPARATOR_PATTERN } from "../path/constants.js";
 import { walk, walkSync } from "./walk.js";
 import { toPathString } from "./_to_path_string.js";
 import { createWalkEntry, createWalkEntrySync } from "./_create_walk_entry.js";
-// deno-lint-ignore no-explicit-any
-const isWindows = globalThis.Deno?.build.os === "windows";
+import { isWindows } from "../internal/os.js";
 function split(path) {
   const s = SEPARATOR_PATTERN.source;
   const segments = path

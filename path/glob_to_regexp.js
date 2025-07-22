@@ -1,6 +1,6 @@
 // Copyright 2018-2025 the Deno authors. MIT license.
 // This module is browser compatible.
-import { isWindows } from "./_os.js";
+import { isWindows } from "../internal/os.js";
 import { globToRegExp as posixGlobToRegExp } from "./posix/glob_to_regexp.js";
 import { globToRegExp as windowsGlobToRegExp } from "./windows/glob_to_regexp.js";
 /**
