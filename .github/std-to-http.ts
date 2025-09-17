@@ -30,7 +30,7 @@ const stablePackages = [
   "encoding",
   "expect",
   "fmt",
-  // "front-matter",
+  "front-matter",
   // "fs",
   // "ini",
   "html",
