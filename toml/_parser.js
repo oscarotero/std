@@ -104,7 +104,7 @@ function failure() {
  *
  * e.g. `unflat(["a", "b", "c"], 1)` returns `{ a: { b: { c: 1 } } }`
  */
-export function unflat(keys, values = {}) {
+export function unflat(keys, values = { __proto__: null }) {
   return keys.reduceRight((acc, key) => ({ [key]: acc }), values);
 }
 function isObject(value) {
@@ -143,7 +143,16 @@ function deepAssignTableArray(target, table) {
     return Object.assign(target, unflat(keys, [value]));
   }
   if (Array.isArray(currentValue)) {
-    currentValue.push(value);
+    if (table.keys.length === 1) {
+      currentValue.push(value);
+    } else {
+      const last = currentValue.at(-1);
+      deepAssign(last, {
+        type: table.type,
+        keys: table.keys.slice(1),
+        value: table.value,
+      });
+    }
     return target;
   }
   if (isObject(currentValue)) {
@@ -258,7 +267,7 @@ function merge(parser) {
     if (!result.ok) {
       return failure();
     }
-    let body = {};
+    let body = { __proto__: null };
     for (const record of result.body) {
       if (typeof record === "object" && record !== null) {
         body = deepMerge(body, record);
@@ -663,13 +672,13 @@ export function inlineTable(scanner) {
   scanner.nextUntilChar();
   if (scanner.char(1) === "}") {
     scanner.next(2);
-    return success({});
+    return success({ __proto__: null });
   }
   const pairs = surround("{", join(pair, ","), "}")(scanner);
   if (!pairs.ok) {
     return failure();
   }
-  let table = {};
+  let table = { __proto__: null };
   for (const pair of pairs.body) {
     table = deepMerge(table, pair);
   }
@@ -714,7 +723,7 @@ export function table(scanner) {
   return success({
     type: "Table",
     keys: header.body,
-    value: b.ok ? b.body.value : {},
+    value: b.ok ? b.body.value : { __proto__: null },
   });
 }
 export const tableArrayHeader = surround("[[", dottedKey, "]]");
@@ -729,15 +738,15 @@ export function tableArray(scanner) {
   return success({
     type: "TableArray",
     keys: header.body,
-    value: b.ok ? b.body.value : {},
+    value: b.ok ? b.body.value : { __proto__: null },
   });
 }
 export function toml(scanner) {
   const blocks = repeat(or([block, tableArray, table]))(scanner);
   if (!blocks.ok) {
-    return success({});
+    return success({ __proto__: null });
   }
-  const body = blocks.body.reduce(deepAssign, {});
+  const body = blocks.body.reduce(deepAssign, { __proto__: null });
   return success(body);
 }
 function createParseErrorMessage(scanner, message) {

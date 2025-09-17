@@ -38,14 +38,14 @@ export function delay(ms, options = {}) {
   }
   return new Promise((resolve, reject) => {
     const abort = () => {
-      clearTimeout(i);
+      clearTimeout(+i);
       reject(signal?.reason);
     };
     const done = () => {
       signal?.removeEventListener("abort", abort);
       resolve();
     };
-    const i = setTimeout(done, ms);
+    const i = setArbitraryLengthTimeout(done, ms);
     signal?.addEventListener("abort", abort, { once: true });
     if (persistent === false) {
       try {
@@ -60,4 +60,19 @@ export function delay(ms, options = {}) {
       }
     }
   });
+}
+const I32_MAX = 2 ** 31 - 1;
+function setArbitraryLengthTimeout(callback, delay) {
+  // ensure non-negative integer (but > I32_MAX is OK, even if Infinity)
+  let currentDelay = delay = Math.trunc(Math.max(delay, 0) || 0);
+  const start = Date.now();
+  let timeoutId;
+  const queueTimeout = () => {
+    currentDelay = delay - (Date.now() - start);
+    timeoutId = currentDelay > I32_MAX
+      ? setTimeout(queueTimeout, I32_MAX)
+      : setTimeout(callback, currentDelay);
+  };
+  queueTimeout();
+  return { valueOf: () => timeoutId };
 }
