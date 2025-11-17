@@ -52,7 +52,8 @@ export function assertEquals(actual, expected, msg) {
   const diffResult = stringDiff
     ? diffStr(actual, expected)
     : diff(actualString.split("\n"), expectedString.split("\n"));
-  const diffMsg = buildMessage(diffResult, { stringDiff }).join("\n");
+  const diffMsg = buildMessage(diffResult, { stringDiff }, arguments[3])
+    .join("\n");
   message = `${message}\n${diffMsg}`;
   throw new AssertionError(message);
 }

@@ -49,10 +49,10 @@ export function delay(ms, options = {}) {
     signal?.addEventListener("abort", abort, { once: true });
     if (persistent === false) {
       try {
-        // @ts-ignore For browser compatibility
-        Deno.unrefTimer(i);
+        Deno.unrefTimer(+i);
       } catch (error) {
         if (!(error instanceof ReferenceError)) {
+          clearTimeout(+i);
           throw error;
         }
         // deno-lint-ignore no-console
@@ -70,8 +70,8 @@ function setArbitraryLengthTimeout(callback, delay) {
   const queueTimeout = () => {
     currentDelay = delay - (Date.now() - start);
     timeoutId = currentDelay > I32_MAX
-      ? setTimeout(queueTimeout, I32_MAX)
-      : setTimeout(callback, currentDelay);
+      ? Number(setTimeout(queueTimeout, I32_MAX))
+      : Number(setTimeout(callback, currentDelay));
   };
   queueTimeout();
   return { valueOf: () => timeoutId };

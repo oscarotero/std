@@ -2,8 +2,6 @@
 const SAFE_PADDING = 4;
 const MORE_CONTENT_BEFORE_INDICATOR = "...";
 const MORE_CONTENT_AFTER_INDICATOR = "...";
-const input = Deno.stdin;
-const output = Deno.stdout;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 const CLEAR_ALL = encoder.encode("\x1b[J"); // Clear all lines after cursor
@@ -27,6 +25,8 @@ export function handlePromptSelect(
   valueChange,
   handleInput,
 ) {
+  const input = Deno.stdin;
+  const output = Deno.stdout;
   const indexedValues = values.map((value, absoluteIndex) => ({
     value,
     absoluteIndex,

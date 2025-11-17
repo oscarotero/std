@@ -43,4 +43,5 @@ export * from "./diff_str.js";
 export * from "./format.js";
 export * from "./os.js";
 export * from "./styles.js";
+export * from "./truncate_build_message.js";
 export * from "./types.js";

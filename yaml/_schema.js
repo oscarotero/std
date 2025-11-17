@@ -105,3 +105,13 @@ export const SCHEMA_MAP = new Map([
   ["json", JSON_SCHEMA],
   ["extended", EXTENDED_SCHEMA],
 ]);
+export function getSchema(schema = "default", types) {
+  const schemaObj = SCHEMA_MAP.get(schema);
+  if (!types) {
+    return schemaObj;
+  }
+  return createSchema({
+    implicitTypes: [...types, ...schemaObj.implicitTypes],
+    explicitTypes: [...schemaObj.explicitTypes],
+  });
+}

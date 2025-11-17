@@ -33,8 +33,7 @@ function getKeysDeep(obj) {
   return keys;
 }
 // deno-lint-ignore no-explicit-any
-const Temporal = globalThis.Temporal ??
-  new Proxy({}, { get: () => {} });
+const Temporal = globalThis.Temporal ?? Object.create(null);
 /** A non-exhaustive list of prototypes that can be accurately fast-path compared with `String(instance)` */
 const stringComparablePrototypes = new Set(
   [
@@ -109,6 +108,9 @@ export function equal(a, b) {
       }
       if (a instanceof TypedArray) {
         return compareTypedArrays(a, b);
+      }
+      if (a instanceof ArrayBuffer || a instanceof SharedArrayBuffer) {
+        return compareTypedArrays(new Uint8Array(a), new Uint8Array(b));
       }
       if (a instanceof WeakMap) {
         throw new TypeError("Cannot compare WeakMap instances");
