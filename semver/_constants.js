@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 /**
  * ANY is a sentinel value used by some range calculations. It is not a valid
  * SemVer object and should not be used directly.

@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import db from "./vendor/db.js";
 /** A map of the media type for a given extension */
 export const types = new Map();

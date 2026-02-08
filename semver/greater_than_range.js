@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { testComparatorSet } from "./_test_comparator_set.js";
 import { isWildcardComparator } from "./_shared.js";
@@ -52,7 +52,7 @@ function lessThanComparator(version, comparator) {
     case undefined:
       return cmp < 0;
     case "!=":
-      return false;
+      return cmp >= 0;
     case ">":
       return cmp <= 0;
     case "<":

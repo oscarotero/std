@@ -1,14 +1,38 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 export function maxBy(array, selector) {
-  let max;
-  let maxValue;
-  for (const current of array) {
-    const currentValue = selector(current);
-    if (maxValue === undefined || currentValue > maxValue) {
-      max = current;
+  if (Array.isArray(array)) {
+    const length = array.length;
+    if (length === 0) {
+      return undefined;
+    }
+    let max = array[0];
+    let maxValue = selector(max);
+    for (let i = 1; i < length; i++) {
+      const current = array[i];
+      const currentValue = selector(current);
+      if (currentValue > maxValue) {
+        max = current;
+        maxValue = currentValue;
+      }
+    }
+    return max;
+  }
+  const iter = array[Symbol.iterator]();
+  const first = iter.next();
+  if (first.done) {
+    return undefined;
+  }
+  let max = first.value;
+  let maxValue = selector(max);
+  let next = iter.next();
+  while (!next.done) {
+    const currentValue = selector(next.value);
+    if (currentValue > maxValue) {
+      max = next.value;
       maxValue = currentValue;
     }
+    next = iter.next();
   }
   return max;
 }

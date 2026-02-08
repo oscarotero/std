@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 const UNIT_RATE_MAP = new Map([
   ["KiB", 2 ** 10],
   ["MiB", 2 ** 20],

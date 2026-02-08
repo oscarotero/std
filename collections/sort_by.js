@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 /**
  * Returns all elements in the given collection, sorted by their result using
@@ -102,14 +102,18 @@
  * ```
  */
 export function sortBy(iterator, selector, options) {
-  const array = [];
-  for (const item of iterator) {
-    array.push({ value: item, selected: selector(item) });
+  const array = Array.isArray(iterator) ? iterator : Array.from(iterator);
+  const len = array.length;
+  const selected = new Array(len);
+  const indices = new Array(len);
+  for (let i = 0; i < len; i++) {
+    selected[i] = selector(array[i]);
+    indices[i] = i;
   }
-  array.sort((oa, ob) => {
-    const a = oa.selected;
-    const b = ob.selected;
-    const order = options?.order === "desc" ? -1 : 1;
+  const order = options?.order === "desc" ? -1 : 1;
+  indices.sort((ia, ib) => {
+    const a = selected[ia];
+    const b = selected[ib];
     if (Number.isNaN(a)) {
       return order;
     }
@@ -118,5 +122,9 @@ export function sortBy(iterator, selector, options) {
     }
     return order * (a > b ? 1 : a < b ? -1 : 0);
   });
-  return array.map((item) => item.value);
+  const result = new Array(len);
+  for (let i = 0; i < len; i++) {
+    result[i] = array[indices[i]];
+  }
+  return result;
 }

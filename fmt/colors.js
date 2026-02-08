@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 // A module to print ANSI terminal colors. Inspired by chalk, kleur, and colors
 // on npm.
@@ -151,6 +151,9 @@ export function bold(str) {
 /**
  * The text emits only a small amount of light.
  *
+ * Warning: Not all terminal emulators support `dim`.
+ * For compatibility across all terminals, use {@linkcode gray} or {@linkcode brightBlack} instead.
+ *
  * @example Usage
  * ```ts no-assert
  * import { dim } from "colors.js";
@@ -160,9 +163,6 @@ export function bold(str) {
  *
  * @param str The text to dim
  * @returns The dimmed text
- *
- * Warning: Not all terminal emulators support `dim`.
- * For compatibility across all terminals, use {@linkcode gray} or {@linkcode brightBlack} instead.
  */
 export function dim(str) {
   return run(str, code([2], 22));
@@ -600,7 +600,7 @@ export function bgBlue(str) {
   return run(str, code([44], 49));
 }
 /**
- *  Set background color to magenta.
+ * Set background color to magenta.
  *
  * @example Usage
  * ```ts no-assert
@@ -777,7 +777,7 @@ export function bgBrightWhite(str) {
 }
 /* Special Color Sequences */
 /**
- * Clam and truncate color codes
+ * Clamp and truncate color codes
  * @param n The input number
  * @param max The number to truncate to
  * @param min The number to truncate from
@@ -796,7 +796,7 @@ function clampAndTruncate(n, max = 255, min = 0) {
  * console.log(rgb8("Hello, world!", 42));
  * ```
  *
- * @param str The text color to apply paletted 8bit colors to
+ * @param str The text to color
  * @param color The color code
  * @returns The text with paletted 8bit color
  */
@@ -814,8 +814,8 @@ export function rgb8(str, color) {
  * console.log(bgRgb8("Hello, world!", 42));
  * ```
  *
- * @param str The text color to apply paletted 8bit background colors to
- * @param color code
+ * @param str The text to set the background color of
+ * @param color The color code
  * @returns The text with paletted 8bit background color
  */
 export function bgRgb8(str, color) {
@@ -826,14 +826,14 @@ export function bgRgb8(str, color) {
  * `color` can be a number in range `0x000000` to `0xffffff` or
  * an `Rgb`.
  *
- * @example To produce the color magenta:
+ * @example Usage
  * ```ts no-assert
  * import { rgb24 } from "colors.js";
  *
  * rgb24("foo", 0xff00ff);
  * rgb24("foo", {r: 255, g: 0, b: 255});
  * ```
- * @param str The text color to apply 24bit rgb to
+ * @param str The text to color
  * @param color The color code
  * @returns The text with 24bit rgb color
  */
@@ -863,16 +863,16 @@ export function rgb24(str, color) {
  * `color` can be a number in range `0x000000` to `0xffffff` or
  * an `Rgb`.
  *
- * @example To produce the color magenta:
+ * @example Usage
  * ```ts no-assert
  * import { bgRgb24 } from "colors.js";
  *
  * bgRgb24("foo", 0xff00ff);
  * bgRgb24("foo", {r: 255, g: 0, b: 255});
  * ```
- * @param str The text color to apply 24bit rgb to
+ * @param str The text to set the background color of
  * @param color The color code
- * @returns The text with 24bit rgb color
+ * @returns The text with 24bit rgb background color
  */
 export function bgRgb24(str, color) {
   if (typeof color === "number") {

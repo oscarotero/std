@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 // This module was heavily inspired by ua-parser-js
 // (https://www.npmjs.com/package/ua-parser-js) which is MIT licensed and

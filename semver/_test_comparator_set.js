@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { isWildcardComparator } from "./_shared.js";
 import { compare } from "./compare.js";
 function testComparator(version, comparator) {
@@ -34,27 +34,29 @@ export function testComparatorSet(version, set) {
       return false;
     }
   }
-  if (version.prerelease && version.prerelease.length > 0) {
-    // Find the comparator that is allowed to have prereleases
-    // For example, ^1.2.3-pr.1 desugars to >=1.2.3-pr.1 <2.0.0
-    // That should allow `1.2.3-pr.2` to pass.
-    // However, `1.2.4-alpha.notready` should NOT be allowed,
-    // even though it's within the range set by the comparators.
-    for (const comparator of set) {
-      if (isWildcardComparator(comparator)) {
-        continue;
-      }
-      const { major, minor, patch, prerelease } = comparator;
-      if (prerelease && prerelease.length > 0) {
-        if (
-          version.major === major && version.minor === minor &&
-          version.patch === patch
-        ) {
-          return true;
-        }
-      }
-    }
-    return false;
+  if (!version.prerelease?.length) {
+    return true;
   }
-  return true;
+  // Find the comparator that is allowed to have prereleases
+  // For example, ^1.2.3-pr.1 desugars to >=1.2.3-pr.1 <2.0.0
+  // That should allow `1.2.3-pr.2` to pass.
+  // However, `1.2.4-alpha.notready` should NOT be allowed,
+  // even though it's within the range set by the comparators.
+  for (const comparator of set) {
+    if (isWildcardComparator(comparator)) {
+      continue;
+    }
+    if (!comparator.prerelease?.length) {
+      continue;
+    }
+    const { major, minor, patch } = comparator;
+    if (
+      version.major === major &&
+      version.minor === minor &&
+      version.patch === patch
+    ) {
+      return true;
+    }
+  }
+  return false;
 }

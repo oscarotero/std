@@ -1,7 +1,7 @@
 // Ported from js-yaml v3.13.1:
 // https://github.com/nodeca/js-yaml/commit/665aadda42349dcae869f12040d9b10ef18d12da
 // Copyright 2011-2015 by Vitaly Puzrin. All rights reserved. MIT license.
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import {
   AMPERSAND,
   ASTERISK,
@@ -51,7 +51,7 @@ const ESCAPE_SEQUENCES = new Map([
   [0x2028, "\\L"],
   [0x2029, "\\P"],
 ]);
-const DEPRECATED_BOOLEANS_SYNTAX = [
+const DEPRECATED_BOOLEANS_SYNTAX = new Set([
   "y",
   "Y",
   "yes",
@@ -68,7 +68,7 @@ const DEPRECATED_BOOLEANS_SYNTAX = [
   "off",
   "Off",
   "OFF",
-];
+]);
 /**
  * Encodes a Unicode character code point as a hexadecimal escape sequence.
  */
@@ -350,19 +350,30 @@ function blockHeader(string, indentPerLevel) {
   const chomp = keep ? "+" : clip ? "" : "-";
   return `${indentIndicator}${chomp}\n`;
 }
-function inspectNode(object, objects, duplicateObjects) {
-  if (!isObject(object)) {
-    return;
+function getDuplicateObjects(root) {
+  const seenObjects = new Set();
+  const duplicateObjects = new Set();
+  const queue = [root];
+  for (let i = 0; i < queue.length; i++) {
+    const value = queue[i];
+    if (!isObject(value)) {
+      continue;
+    }
+    if (seenObjects.has(value)) {
+      duplicateObjects.add(value);
+      continue;
+    }
+    seenObjects.add(value);
+    const children = Array.isArray(value) ? value : Object.values(value);
+    queue.push(...children);
   }
-  if (objects.has(object)) {
-    duplicateObjects.add(object);
-    return;
+  return [...duplicateObjects];
+}
+function stringifyValue(value, tag) {
+  if (tag !== null && tag !== "?") {
+    return `!<${tag}> ${value}`;
   }
-  objects.add(object);
-  const entries = Array.isArray(object) ? object : Object.values(object);
-  for (const value of entries) {
-    inspectNode(value, objects, duplicateObjects);
-  }
+  return value;
 }
 export class DumperState {
   indent;
@@ -420,7 +431,7 @@ export class DumperState {
     if (string.length === 0) {
       return "''";
     }
-    if (this.compatMode && DEPRECATED_BOOLEANS_SYNTAX.includes(string)) {
+    if (this.compatMode && DEPRECATED_BOOLEANS_SYNTAX.has(string)) {
       return `'${string}'`;
     }
     const indent = this.indent * Math.max(1, level); // no 0-indent scalars
@@ -639,7 +650,9 @@ export class DumperState {
       if (tag !== "?") {
         value = this.stringifyScalar(value, { level, isKey });
       }
-    } else if (isObject(value)) {
+      return stringifyValue(value, tag);
+    }
+    if (isObject(value)) {
       const duplicateIndex = this.duplicates.indexOf(value);
       const duplicate = duplicateIndex !== -1;
       if (duplicate) {
@@ -665,42 +678,35 @@ export class DumperState {
           if (duplicate) {
             value = `&ref_${duplicateIndex}${value}`;
           }
-        } else {
-          value = this.stringifyFlowSequence(value, { level: arrayLevel });
-          if (duplicate) {
-            value = `&ref_${duplicateIndex} ${value}`;
-          }
+          return stringifyValue(value, tag);
         }
-      } else {
-        if (block && Object.keys(value).length !== 0) {
-          value = this.stringifyBlockMapping(value, { tag, level, compact });
-          if (duplicate) {
-            value = `&ref_${duplicateIndex}${value}`;
-          }
-        } else {
-          value = this.stringifyFlowMapping(value, { level });
-          if (duplicate) {
-            value = `&ref_${duplicateIndex} ${value}`;
-          }
+        value = this.stringifyFlowSequence(value, { level: arrayLevel });
+        if (duplicate) {
+          value = `&ref_${duplicateIndex} ${value}`;
         }
+        return stringifyValue(value, tag);
       }
-    } else {
-      if (this.skipInvalid) {
-        return null;
+      if (block && Object.keys(value).length !== 0) {
+        value = this.stringifyBlockMapping(value, { tag, level, compact });
+        if (duplicate) {
+          value = `&ref_${duplicateIndex}${value}`;
+        }
+        return stringifyValue(value, tag);
       }
-      throw new TypeError(`Cannot stringify ${typeof value}`);
+      value = this.stringifyFlowMapping(value, { level });
+      if (duplicate) {
+        value = `&ref_${duplicateIndex} ${value}`;
+      }
+      return stringifyValue(value, tag);
     }
-    if (tag !== null && tag !== "?") {
-      value = `!<${tag}> ${value}`;
+    if (this.skipInvalid) {
+      return null;
     }
-    return value;
+    throw new TypeError(`Cannot stringify ${typeof value}`);
   }
   stringify(value) {
     if (this.useAnchors) {
-      const values = new Set();
-      const duplicateObjects = new Set();
-      inspectNode(value, values, duplicateObjects);
-      this.duplicates = [...duplicateObjects];
+      this.duplicates = getDuplicateObjects(value);
       this.usedDuplicates = new Set();
     }
     const string = this.stringifyNode(value, {

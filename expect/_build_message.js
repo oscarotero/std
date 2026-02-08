@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { buildMessage } from "../internal/build_message.js";
 import { diff } from "../internal/diff.js";
 import { diffStr } from "../internal/diff_str.js";

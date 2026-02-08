@@ -1,8 +1,18 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { filterInPlace } from "./_utils.js";
+/** Default merging options - cached to avoid object allocation on each call */
+const DEFAULT_OPTIONS = {
+  arrays: "merge",
+  sets: "merge",
+  maps: "merge",
+};
 export function deepMerge(record, other, options) {
-  return deepMergeInternal(record, other, new Set(), options);
+  return deepMergeInternal(
+    record,
+    other,
+    new Set(),
+    options ?? DEFAULT_OPTIONS,
+  );
 }
 function deepMergeInternal(record, other, seen, options) {
   const result = {};
@@ -35,11 +45,7 @@ function deepMergeInternal(record, other, seen, options) {
   }
   return result;
 }
-function mergeObjects(left, right, seen, options = {
-  arrays: "merge",
-  sets: "merge",
-  maps: "merge",
-}) {
+function mergeObjects(left, right, seen, options) {
   // Recursively merge mergeable objects
   if (isMergeable(left) && isMergeable(right)) {
     return deepMergeInternal(left, right, seen, options);
@@ -55,20 +61,22 @@ function mergeObjects(left, right, seen, options = {
     // Handle maps
     if ((left instanceof Map) && (right instanceof Map)) {
       if (options.maps === "merge") {
-        return new Map([
-          ...left,
-          ...right,
-        ]);
+        const result = new Map(left);
+        for (const [k, v] of right) {
+          result.set(k, v);
+        }
+        return result;
       }
       return right;
     }
     // Handle sets
     if ((left instanceof Set) && (right instanceof Set)) {
       if (options.sets === "merge") {
-        return new Set([
-          ...left,
-          ...right,
-        ]);
+        const result = new Set(left);
+        for (const v of right) {
+          result.add(v);
+        }
+        return result;
       }
       return right;
     }
@@ -90,11 +98,16 @@ function isNonNullObject(value) {
   return value !== null && typeof value === "object";
 }
 function getKeys(record) {
-  const result = Object.getOwnPropertySymbols(record);
-  filterInPlace(
-    result,
-    (key) => Object.prototype.propertyIsEnumerable.call(record, key),
-  );
-  result.push(...Object.keys(record));
-  return result;
+  const keys = Object.keys(record);
+  const symbols = Object.getOwnPropertySymbols(record);
+  // Fast path: most objects have no symbol keys
+  if (symbols.length === 0) {
+    return keys;
+  }
+  for (const sym of symbols) {
+    if (Object.prototype.propertyIsEnumerable.call(record, sym)) {
+      keys.push(sym);
+    }
+  }
+  return keys;
 }

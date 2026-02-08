@@ -1,5 +1,5 @@
 #!/usr/bin/env -S deno bench
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { crypto as stdCrypto } from "../mod.js";
 import nodeCrypto from "node:crypto";
 import { crypto as oldCrypto } from "jsr:@std/crypto@0.220.1";

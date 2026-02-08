@@ -1,17 +1,13 @@
 // Copyright 2014-2021 Sindre Sorhus. All rights reserved. MIT license.
 // Copyright 2021 Yoshiya Hinosawa. All rights reserved. MIT license.
 // Copyright 2021 Giuseppe Eletto. All rights reserved. MIT license.
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 /**
  * Convert bytes to a human-readable string: 1337 → 1.34 kB
  *
  * Based on {@link https://github.com/sindresorhus/pretty-bytes | pretty-bytes}.
  * A utility for displaying file sizes for humans.
- *
- * @param num The bytes value to format
- * @param options The options for formatting
- * @returns The formatted string
  *
  * @example Basic usage
  * ```ts
@@ -49,6 +45,11 @@
  *
  * assertEquals(format(1337, { locale: "de" }), "1,34 kB");
  * ```
+ *
+ * @param num The bytes value to format
+ * @param options The options for formatting
+ * @returns The formatted string
+ * @throws {TypeError} If `num` is not a finite number.
  */
 export function format(num, options = {}) {
   if (!Number.isFinite(num)) {

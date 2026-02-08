@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 export const alphabet = new TextEncoder().encode("0123456789abcdef");
 export const rAlphabet = new Uint8Array(128).fill(16); // alphabet.Hex.length
 alphabet.forEach((byte, i) => rAlphabet[byte] = i);

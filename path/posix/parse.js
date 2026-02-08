@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { CHAR_DOT } from "../_common/constants.js";
 import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";

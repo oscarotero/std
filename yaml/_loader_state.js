@@ -1,7 +1,7 @@
 // Ported from js-yaml v3.13.1:
 // https://github.com/nodeca/js-yaml/commit/665aadda42349dcae869f12040d9b10ef18d12da
 // Copyright 2011-2015 by Vitaly Puzrin. All rights reserved. MIT license.
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import {
   AMPERSAND,
   ASTERISK,
@@ -157,6 +157,24 @@ function markToString(buffer, position, line, column) {
   }
   return where;
 }
+function getIndentStatus(lineIndent, parentIndent) {
+  if (lineIndent > parentIndent) {
+    return 1;
+  }
+  if (lineIndent < parentIndent) {
+    return -1;
+  }
+  return 0;
+}
+function writeFoldedLines(count) {
+  if (count === 1) {
+    return " ";
+  }
+  if (count > 1) {
+    return "\n".repeat(count - 1);
+  }
+  return "";
+}
 export class LoaderState {
   input;
   length;
@@ -171,10 +189,6 @@ export class LoaderState {
   checkLineBreaks = false;
   tagMap = new Map();
   anchorMap = new Map();
-  tag;
-  anchor;
-  kind;
-  result = "";
   constructor(
     input,
     { schema = DEFAULT_SCHEMA, onWarning, allowDuplicateKeys = false },
@@ -300,16 +314,14 @@ export class LoaderState {
       } else if (PATTERN_NON_PRINTABLE.test(result)) {
         throw this.#createError("Stream contains non-printable characters");
       }
-      this.result += result;
+      return result;
     }
   }
-  readBlockSequence(nodeIndent) {
+  readBlockSequence(tag, anchor, nodeIndent) {
     let detected = false;
-    const tag = this.tag;
-    const anchor = this.anchor;
     const result = [];
-    if (this.anchor !== null && typeof this.anchor !== "undefined") {
-      this.anchorMap.set(this.anchor, result);
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
     }
     let ch = this.peek();
     while (ch !== 0) {
@@ -330,13 +342,15 @@ export class LoaderState {
         }
       }
       const line = this.line;
-      this.composeNode({
+      const newState = this.composeNode({
         parentIndent: nodeIndent,
         nodeContext: CONTEXT_BLOCK_IN,
         allowToSeek: false,
         allowCompact: true,
       });
-      result.push(this.result);
+      if (newState) {
+        result.push(newState.result);
+      }
       this.skipSeparationSpace(true, -1);
       ch = this.peek();
       if ((this.line === line || this.lineIndent > nodeIndent) && ch !== 0) {
@@ -348,13 +362,8 @@ export class LoaderState {
       }
     }
     if (detected) {
-      this.tag = tag;
-      this.anchor = anchor;
-      this.kind = "sequence";
-      this.result = result;
-      return true;
+      return { tag, anchor, kind: "sequence", result };
     }
-    return false;
   }
   mergeMappings(destination, source, overridableKeys) {
     if (!isObject(source)) {
@@ -496,16 +505,7 @@ export class LoaderState {
     }
     return false;
   }
-  writeFoldedLines(count) {
-    if (count === 1) {
-      this.result += " ";
-    } else if (count > 1) {
-      this.result += "\n".repeat(count - 1);
-    }
-  }
-  readPlainScalar(nodeIndent, withinFlowCollection) {
-    const kind = this.kind;
-    const result = this.result;
+  readPlainScalar(tag, anchor, nodeIndent, withinFlowCollection) {
     let ch = this.peek();
     if (
       isWhiteSpaceOrEOL(ch) ||
@@ -522,7 +522,7 @@ export class LoaderState {
       ch === COMMERCIAL_AT ||
       ch === GRAVE_ACCENT
     ) {
-      return false;
+      return;
     }
     let following;
     if (ch === QUESTION || ch === MINUS) {
@@ -531,11 +531,10 @@ export class LoaderState {
         isWhiteSpaceOrEOL(following) ||
         (withinFlowCollection && isFlowIndicator(following))
       ) {
-        return false;
+        return;
       }
     }
-    this.kind = "scalar";
-    this.result = "";
+    let result = "";
     let captureEnd = this.position;
     let captureStart = this.position;
     let hasPendingContent = false;
@@ -577,8 +576,11 @@ export class LoaderState {
         }
       }
       if (hasPendingContent) {
-        this.captureSegment(captureStart, captureEnd, false);
-        this.writeFoldedLines(this.line - line);
+        const segment = this.captureSegment(captureStart, captureEnd, false);
+        if (segment) {
+          result += segment;
+        }
+        result += writeFoldedLines(this.line - line);
         captureStart = captureEnd = this.position;
         hasPendingContent = false;
       }
@@ -587,39 +589,50 @@ export class LoaderState {
       }
       ch = this.next();
     }
-    this.captureSegment(captureStart, captureEnd, false);
-    if (this.result) {
-      return true;
+    const segment = this.captureSegment(captureStart, captureEnd, false);
+    if (segment) {
+      result += segment;
     }
-    this.kind = kind;
-    this.result = result;
-    return false;
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
+    }
+    if (result) {
+      return { tag, anchor, kind: "scalar", result };
+    }
   }
-  readSingleQuotedScalar(nodeIndent) {
+  readSingleQuotedScalar(tag, anchor, nodeIndent) {
     let ch = this.peek();
     if (ch !== SINGLE_QUOTE) {
-      return false;
+      return;
     }
-    this.kind = "scalar";
-    this.result = "";
+    let result = "";
     this.position++;
     let captureStart = this.position;
     let captureEnd = this.position;
     ch = this.peek();
     while (ch !== 0) {
       if (ch === SINGLE_QUOTE) {
-        this.captureSegment(captureStart, this.position, true);
+        const segment = this.captureSegment(captureStart, this.position, true);
+        if (segment) {
+          result += segment;
+        }
         ch = this.next();
         if (ch === SINGLE_QUOTE) {
           captureStart = this.position;
           this.position++;
           captureEnd = this.position;
         } else {
-          return true;
+          if (anchor !== null) {
+            this.anchorMap.set(anchor, result);
+          }
+          return { tag, anchor, kind: "scalar", result };
         }
       } else if (isEOL(ch)) {
-        this.captureSegment(captureStart, captureEnd, true);
-        this.writeFoldedLines(this.skipSeparationSpace(false, nodeIndent));
+        const segment = this.captureSegment(captureStart, captureEnd, true);
+        if (segment) {
+          result += segment;
+        }
+        result += writeFoldedLines(this.skipSeparationSpace(false, nodeIndent));
         captureStart = captureEnd = this.position;
       } else if (
         this.position === this.lineStart &&
@@ -638,13 +651,12 @@ export class LoaderState {
       "Unexpected end of the stream within a single quoted scalar",
     );
   }
-  readDoubleQuotedScalar(nodeIndent) {
+  readDoubleQuotedScalar(tag, anchor, nodeIndent) {
     let ch = this.peek();
     if (ch !== DOUBLE_QUOTE) {
-      return false;
+      return;
     }
-    this.kind = "scalar";
-    this.result = "";
+    let result = "";
     this.position++;
     let captureEnd = this.position;
     let captureStart = this.position;
@@ -652,17 +664,26 @@ export class LoaderState {
     ch = this.peek();
     while (ch !== 0) {
       if (ch === DOUBLE_QUOTE) {
-        this.captureSegment(captureStart, this.position, true);
+        const segment = this.captureSegment(captureStart, this.position, true);
+        if (segment) {
+          result += segment;
+        }
         this.position++;
-        return true;
+        if (anchor !== null) {
+          this.anchorMap.set(anchor, result);
+        }
+        return { tag, anchor, kind: "scalar", result };
       }
       if (ch === BACKSLASH) {
-        this.captureSegment(captureStart, this.position, true);
+        const segment = this.captureSegment(captureStart, this.position, true);
+        if (segment) {
+          result += segment;
+        }
         ch = this.next();
         if (isEOL(ch)) {
           this.skipSeparationSpace(false, nodeIndent);
         } else if (ch < 256 && SIMPLE_ESCAPE_SEQUENCES.has(ch)) {
-          this.result += SIMPLE_ESCAPE_SEQUENCES.get(ch);
+          result += SIMPLE_ESCAPE_SEQUENCES.get(ch);
           this.position++;
         } else if ((tmp = ESCAPED_HEX_LENGTHS.get(ch) ?? 0) > 0) {
           let hexLength = tmp;
@@ -677,7 +698,7 @@ export class LoaderState {
               );
             }
           }
-          this.result += codepointToChar(hexResult);
+          result += codepointToChar(hexResult);
           this.position++;
         } else {
           throw this.#createError(
@@ -686,8 +707,11 @@ export class LoaderState {
         }
         captureStart = captureEnd = this.position;
       } else if (isEOL(ch)) {
-        this.captureSegment(captureStart, captureEnd, true);
-        this.writeFoldedLines(this.skipSeparationSpace(false, nodeIndent));
+        const segment = this.captureSegment(captureStart, captureEnd, true);
+        if (segment) {
+          result += segment;
+        }
+        result += writeFoldedLines(this.skipSeparationSpace(false, nodeIndent));
         captureStart = captureEnd = this.position;
       } else if (
         this.position === this.lineStart &&
@@ -706,7 +730,7 @@ export class LoaderState {
       "Unexpected end of the stream within a double quoted scalar",
     );
   }
-  readFlowCollection(nodeIndent) {
+  readFlowCollection(tag, anchor, nodeIndent) {
     let ch = this.peek();
     let terminator;
     let isMapping = true;
@@ -718,14 +742,12 @@ export class LoaderState {
     } else if (ch === LEFT_CURLY_BRACKET) {
       terminator = RIGHT_CURLY_BRACKET;
     } else {
-      return false;
+      return;
     }
-    if (this.anchor !== null && typeof this.anchor !== "undefined") {
-      this.anchorMap.set(this.anchor, result);
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
     }
     ch = this.next();
-    const tag = this.tag;
-    const anchor = this.anchor;
     let readNext = true;
     let valueNode = null;
     let keyNode = null;
@@ -740,11 +762,8 @@ export class LoaderState {
       ch = this.peek();
       if (ch === terminator) {
         this.position++;
-        this.tag = tag;
-        this.anchor = anchor;
-        this.kind = isMapping ? "mapping" : "sequence";
-        this.result = result;
-        return true;
+        const kind = isMapping ? "mapping" : "sequence";
+        return { tag, anchor, kind, result };
       }
       if (!readNext) {
         throw this.#createError(
@@ -762,27 +781,31 @@ export class LoaderState {
         }
       }
       line = this.line;
-      this.composeNode({
+      const newState = this.composeNode({
         parentIndent: nodeIndent,
         nodeContext: CONTEXT_FLOW_IN,
         allowToSeek: false,
         allowCompact: true,
       });
-      keyTag = this.tag || null;
-      keyNode = this.result;
+      if (newState) {
+        keyTag = newState.tag || null;
+        keyNode = newState.result;
+      }
       this.skipSeparationSpace(true, nodeIndent);
       ch = this.peek();
       if ((isExplicitPair || this.line === line) && ch === COLON) {
         isPair = true;
         ch = this.next();
         this.skipSeparationSpace(true, nodeIndent);
-        this.composeNode({
+        const newState = this.composeNode({
           parentIndent: nodeIndent,
           nodeContext: CONTEXT_FLOW_IN,
           allowToSeek: false,
           allowCompact: true,
         });
-        valueNode = this.result;
+        if (newState) {
+          valueNode = newState.result;
+        }
       }
       if (isMapping) {
         this.storeMappingPair(
@@ -820,7 +843,7 @@ export class LoaderState {
   }
   // Handles block scaler styles: e.g. '|', '>', '|-' and '>-'.
   // https://yaml.org/spec/1.2.2/#81-block-scalar-styles
-  readBlockScalar(nodeIndent) {
+  readBlockScalar(tag, anchor, nodeIndent) {
     let chomping = CHOMPING_CLIP;
     let didReadContent = false;
     let detectedIndent = false;
@@ -834,10 +857,9 @@ export class LoaderState {
     } else if (ch === GREATER_THAN) {
       folding = true;
     } else {
-      return false;
+      return;
     }
-    this.kind = "scalar";
-    this.result = "";
+    let result = "";
     let tmp = 0;
     while (ch !== 0) {
       ch = this.next();
@@ -893,13 +915,11 @@ export class LoaderState {
       if (this.lineIndent < textIndent) {
         // Perform the chomping.
         if (chomping === CHOMPING_KEEP) {
-          this.result += "\n".repeat(
-            didReadContent ? 1 + emptyLines : emptyLines,
-          );
+          result += "\n".repeat(didReadContent ? 1 + emptyLines : emptyLines);
         } else if (chomping === CHOMPING_CLIP) {
           if (didReadContent) {
             // i.e. only if the scalar is not empty.
-            this.result += "\n";
+            result += "\n";
           }
         }
         // Break this `while` cycle and go to the function's epilogue.
@@ -911,29 +931,25 @@ export class LoaderState {
         if (isWhiteSpace(ch)) {
           atMoreIndented = true;
           // except for the first content line (cf. Example 8.1)
-          this.result += "\n".repeat(
-            didReadContent ? 1 + emptyLines : emptyLines,
-          );
+          result += "\n".repeat(didReadContent ? 1 + emptyLines : emptyLines);
           // End of more-indented block.
         } else if (atMoreIndented) {
           atMoreIndented = false;
-          this.result += "\n".repeat(emptyLines + 1);
+          result += "\n".repeat(emptyLines + 1);
           // Just one line break - perceive as the same line.
         } else if (emptyLines === 0) {
           if (didReadContent) {
             // i.e. only if we have already read some scalar content.
-            this.result += " ";
+            result += " ";
           }
           // Several line breaks - perceive as different lines.
         } else {
-          this.result += "\n".repeat(emptyLines);
+          result += "\n".repeat(emptyLines);
         }
         // Literal style: just add exact number of line breaks between content lines.
       } else {
         // Keep all line breaks except the header line break.
-        this.result += "\n".repeat(
-          didReadContent ? 1 + emptyLines : emptyLines,
-        );
+        result += "\n".repeat(didReadContent ? 1 + emptyLines : emptyLines);
       }
       didReadContent = true;
       detectedIndent = true;
@@ -942,13 +958,17 @@ export class LoaderState {
       while (!isEOL(ch) && ch !== 0) {
         ch = this.next();
       }
-      this.captureSegment(captureStart, this.position, false);
+      const segment = this.captureSegment(captureStart, this.position, false);
+      if (segment) {
+        result += segment;
+      }
     }
-    return true;
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
+    }
+    return { tag, anchor, kind: "scalar", result };
   }
-  readBlockMapping(nodeIndent, flowIndent) {
-    const tag = this.tag;
-    const anchor = this.anchor;
+  readBlockMapping(tag, anchor, nodeIndent, flowIndent) {
     const result = {};
     const overridableKeys = new Set();
     let allowCompact = false;
@@ -959,8 +979,8 @@ export class LoaderState {
     let valueNode = null;
     let atExplicitKey = false;
     let detected = false;
-    if (this.anchor !== null && typeof this.anchor !== "undefined") {
-      this.anchorMap.set(this.anchor, result);
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
     }
     let ch = this.peek();
     while (ch !== 0) {
@@ -1002,14 +1022,16 @@ export class LoaderState {
         //
         // Implicit notation case. Flow-style node as the key first, then ":", and the value.
         //
-      } else if (
-        this.composeNode({
+      } else {
+        const newState = this.composeNode({
           parentIndent: flowIndent,
           nodeContext: CONTEXT_FLOW_OUT,
           allowToSeek: false,
           allowCompact: true,
-        })
-      ) {
+        });
+        if (!newState) {
+          break; // Reading is done. Go to the epilogue.
+        }
         if (this.line === line) {
           ch = this.peek();
           this.skipWhitespaces();
@@ -1036,45 +1058,40 @@ export class LoaderState {
             detected = true;
             atExplicitKey = false;
             allowCompact = false;
-            keyTag = this.tag;
-            keyNode = this.result;
+            keyTag = newState.tag;
+            keyNode = newState.result;
           } else if (detected) {
             throw this.#createError(
               "Cannot read an implicit mapping pair: missing colon",
             );
           } else {
-            this.tag = tag;
-            this.anchor = anchor;
-            return true; // Keep the result of `composeNode`.
+            const { kind, result } = newState;
+            return { tag, anchor, kind, result }; // Keep the result of `composeNode`.
           }
         } else if (detected) {
           throw this.#createError(
             "Cannot read a block mapping entry: a multiline key may not be an implicit key",
           );
         } else {
-          this.tag = tag;
-          this.anchor = anchor;
-          return true; // Keep the result of `composeNode`.
+          const { kind, result } = newState;
+          return { tag, anchor, kind, result }; // Keep the result of `composeNode`.
         }
-      } else {
-        break; // Reading is done. Go to the epilogue.
       }
       //
       // Common reading code for both explicit and implicit notations.
       //
       if (this.line === line || this.lineIndent > nodeIndent) {
-        if (
-          this.composeNode({
-            parentIndent: nodeIndent,
-            nodeContext: CONTEXT_BLOCK_OUT,
-            allowToSeek: true,
-            allowCompact,
-          })
-        ) {
+        const newState = this.composeNode({
+          parentIndent: nodeIndent,
+          nodeContext: CONTEXT_BLOCK_OUT,
+          allowToSeek: true,
+          allowCompact,
+        });
+        if (newState) {
           if (atExplicitKey) {
-            keyNode = this.result;
+            keyNode = newState.result;
           } else {
-            valueNode = this.result;
+            valueNode = newState.result;
           }
         }
         if (!atExplicitKey) {
@@ -1109,23 +1126,19 @@ export class LoaderState {
     }
     // Expose the resulting mapping.
     if (detected) {
-      this.tag = tag;
-      this.anchor = anchor;
-      this.kind = "mapping";
-      this.result = result;
+      return { tag, anchor, kind: "mapping", result };
     }
-    return detected;
   }
-  readTagProperty() {
+  readTagProperty(tag) {
     let isVerbatim = false;
     let isNamed = false;
     let tagHandle = "";
     let tagName;
     let ch = this.peek();
     if (ch !== EXCLAMATION) {
-      return false;
+      return;
     }
-    if (this.tag !== null) {
+    if (tag !== null) {
       throw this.#createError(
         "Cannot read tag property: duplication of a tag property",
       );
@@ -1187,26 +1200,24 @@ export class LoaderState {
       );
     }
     if (isVerbatim) {
-      this.tag = tagName;
+      return tagName;
     } else if (this.tagMap.has(tagHandle)) {
-      this.tag = this.tagMap.get(tagHandle) + tagName;
+      return this.tagMap.get(tagHandle) + tagName;
     } else if (tagHandle === "!") {
-      this.tag = `!${tagName}`;
+      return `!${tagName}`;
     } else if (tagHandle === "!!") {
-      this.tag = `tag:yaml.org,2002:${tagName}`;
-    } else {
-      throw this.#createError(
-        `Cannot read tag property: undeclared tag handle "${tagHandle}"`,
-      );
+      return `tag:yaml.org,2002:${tagName}`;
     }
-    return true;
+    throw this.#createError(
+      `Cannot read tag property: undeclared tag handle "${tagHandle}"`,
+    );
   }
-  readAnchorProperty() {
+  readAnchorProperty(anchor) {
     let ch = this.peek();
     if (ch !== AMPERSAND) {
-      return false;
+      return;
     }
-    if (this.anchor !== null) {
+    if (anchor !== null) {
       throw this.#createError(
         "Cannot read anchor property: duplicate anchor property",
       );
@@ -1221,12 +1232,11 @@ export class LoaderState {
         "Cannot read anchor property: name of an anchor node must contain at least one character",
       );
     }
-    this.anchor = this.input.slice(position, this.position);
-    return true;
+    return this.input.slice(position, this.position);
   }
   readAlias() {
     if (this.peek() !== ASTERISK) {
-      return false;
+      return;
     }
     let ch = this.next();
     const position = this.position;
@@ -1244,19 +1254,63 @@ export class LoaderState {
         `Cannot read alias: unidentified alias "${alias}"`,
       );
     }
-    this.result = this.anchorMap.get(alias);
     this.skipSeparationSpace(true, -1);
-    return true;
+    return this.anchorMap.get(alias);
+  }
+  resolveTag(state) {
+    switch (state.tag) {
+      case null:
+      case "!":
+        return state;
+      case "?": {
+        for (const type of this.implicitTypes) {
+          // Implicit resolving is not allowed for non-scalar types, and '?'
+          // non-specific tag is only assigned to plain scalars. So, it isn't
+          // needed to check for 'kind' conformity.
+          if (!type.resolve(state.result)) {
+            continue;
+          }
+          // `state.result` updated in resolver if matched
+          const result = type.construct(state.result);
+          state.result = result;
+          state.tag = type.tag;
+          const { anchor } = state;
+          if (anchor !== null) {
+            this.anchorMap.set(anchor, result);
+          }
+          return state;
+        }
+        return state;
+      }
+    }
+    const kind = state.kind ?? "fallback";
+    const map = this.typeMap[kind];
+    const type = map.get(state.tag);
+    if (!type) {
+      throw this.#createError(`Cannot resolve unknown tag !<${state.tag}>`);
+    }
+    if (state.result !== null && type.kind !== state.kind) {
+      throw this.#createError(
+        `Unacceptable node kind for !<${state.tag}> tag: it should be "${type.kind}", not "${state.kind}"`,
+      );
+    }
+    if (!type.resolve(state.result)) {
+      // `state.result` updated in resolver if matched
+      throw this.#createError(
+        `Cannot resolve a node with !<${state.tag}> explicit tag`,
+      );
+    }
+    const result = type.construct(state.result);
+    state.result = result;
+    const { anchor } = state;
+    if (anchor !== null) {
+      this.anchorMap.set(anchor, result);
+    }
+    return state;
   }
   composeNode({ parentIndent, nodeContext, allowToSeek, allowCompact }) {
     let indentStatus = 1; // 1: this>parent, 0: this=parent, -1: this<parent
     let atNewLine = false;
-    let hasContent = false;
-    let type;
-    this.tag = null;
-    this.anchor = null;
-    this.kind = null;
-    this.result = null;
     const allowBlockScalars = CONTEXT_BLOCK_OUT === nodeContext ||
       CONTEXT_BLOCK_IN === nodeContext;
     let allowBlockCollections = allowBlockScalars;
@@ -1264,27 +1318,27 @@ export class LoaderState {
     if (allowToSeek) {
       if (this.skipSeparationSpace(true, -1)) {
         atNewLine = true;
-        if (this.lineIndent > parentIndent) {
-          indentStatus = 1;
-        } else if (this.lineIndent === parentIndent) {
-          indentStatus = 0;
-        } else if (this.lineIndent < parentIndent) {
-          indentStatus = -1;
-        }
+        indentStatus = getIndentStatus(this.lineIndent, parentIndent);
       }
     }
+    let tag = null;
+    let anchor = null;
     if (indentStatus === 1) {
-      while (this.readTagProperty() || this.readAnchorProperty()) {
+      while (true) {
+        const newTag = this.readTagProperty(tag);
+        if (newTag) {
+          tag = newTag;
+        } else {
+          const newAnchor = this.readAnchorProperty(anchor);
+          if (!newAnchor) {
+            break;
+          }
+          anchor = newAnchor;
+        }
         if (this.skipSeparationSpace(true, -1)) {
           atNewLine = true;
           allowBlockCollections = allowBlockStyles;
-          if (this.lineIndent > parentIndent) {
-            indentStatus = 1;
-          } else if (this.lineIndent === parentIndent) {
-            indentStatus = 0;
-          } else if (this.lineIndent < parentIndent) {
-            indentStatus = -1;
-          }
+          indentStatus = getIndentStatus(this.lineIndent, parentIndent);
         } else {
           allowBlockCollections = false;
         }
@@ -1293,97 +1347,96 @@ export class LoaderState {
     if (allowBlockCollections) {
       allowBlockCollections = atNewLine || allowCompact;
     }
-    if (indentStatus === 1 || CONTEXT_BLOCK_OUT === nodeContext) {
+    if (indentStatus === 1) {
       const cond = CONTEXT_FLOW_IN === nodeContext ||
         CONTEXT_FLOW_OUT === nodeContext;
       const flowIndent = cond ? parentIndent : parentIndent + 1;
+      if (allowBlockCollections) {
+        const blockIndent = this.position - this.lineStart;
+        const blockSequenceState = this.readBlockSequence(
+          tag,
+          anchor,
+          blockIndent,
+        );
+        if (blockSequenceState) {
+          return this.resolveTag(blockSequenceState);
+        }
+        const blockMappingState = this.readBlockMapping(
+          tag,
+          anchor,
+          blockIndent,
+          flowIndent,
+        );
+        if (blockMappingState) {
+          return this.resolveTag(blockMappingState);
+        }
+      }
+      const flowCollectionState = this.readFlowCollection(
+        tag,
+        anchor,
+        flowIndent,
+      );
+      if (flowCollectionState) {
+        return this.resolveTag(flowCollectionState);
+      }
+      if (allowBlockScalars) {
+        const blockScalarState = this.readBlockScalar(tag, anchor, flowIndent);
+        if (blockScalarState) {
+          return this.resolveTag(blockScalarState);
+        }
+      }
+      const singleQuoteState = this.readSingleQuotedScalar(
+        tag,
+        anchor,
+        flowIndent,
+      );
+      if (singleQuoteState) {
+        return this.resolveTag(singleQuoteState);
+      }
+      const doubleQuoteState = this.readDoubleQuotedScalar(
+        tag,
+        anchor,
+        flowIndent,
+      );
+      if (doubleQuoteState) {
+        return this.resolveTag(doubleQuoteState);
+      }
+      const alias = this.readAlias();
+      if (alias) {
+        if (tag !== null || anchor !== null) {
+          throw this.#createError(
+            "Cannot compose node: alias node should not have any properties",
+          );
+        }
+        return this.resolveTag({ tag, anchor, kind: null, result: alias });
+      }
+      const plainScalarState = this.readPlainScalar(
+        tag,
+        anchor,
+        flowIndent,
+        CONTEXT_FLOW_IN === nodeContext,
+      );
+      if (plainScalarState) {
+        plainScalarState.tag ??= "?";
+        return this.resolveTag(plainScalarState);
+      }
+    } else if (
+      indentStatus === 0 &&
+      CONTEXT_BLOCK_OUT === nodeContext &&
+      allowBlockCollections
+    ) {
+      // Special case: block sequences are allowed to have same indentation level as the parent.
+      // http://www.yaml.org/spec/1.2/spec.html#id2799784
       const blockIndent = this.position - this.lineStart;
-      if (indentStatus === 1) {
-        if (
-          (allowBlockCollections &&
-            (this.readBlockSequence(blockIndent) ||
-              this.readBlockMapping(blockIndent, flowIndent))) ||
-          this.readFlowCollection(flowIndent)
-        ) {
-          hasContent = true;
-        } else {
-          if (
-            (allowBlockScalars && this.readBlockScalar(flowIndent)) ||
-            this.readSingleQuotedScalar(flowIndent) ||
-            this.readDoubleQuotedScalar(flowIndent)
-          ) {
-            hasContent = true;
-          } else if (this.readAlias()) {
-            hasContent = true;
-            if (this.tag !== null || this.anchor !== null) {
-              throw this.#createError(
-                "Cannot compose node: alias node should not have any properties",
-              );
-            }
-          } else if (
-            this.readPlainScalar(flowIndent, CONTEXT_FLOW_IN === nodeContext)
-          ) {
-            hasContent = true;
-            if (this.tag === null) {
-              this.tag = "?";
-            }
-          }
-          if (this.anchor !== null) {
-            this.anchorMap.set(this.anchor, this.result);
-          }
-        }
-      } else if (indentStatus === 0) {
-        // Special case: block sequences are allowed to have same indentation level as the parent.
-        // http://www.yaml.org/spec/1.2/spec.html#id2799784
-        hasContent = allowBlockCollections &&
-          this.readBlockSequence(blockIndent);
+      const newState = this.readBlockSequence(tag, anchor, blockIndent);
+      if (newState) {
+        return this.resolveTag(newState);
       }
     }
-    if (this.tag !== null && this.tag !== "!") {
-      if (this.tag === "?") {
-        for (
-          let typeIndex = 0;
-          typeIndex < this.implicitTypes.length;
-          typeIndex++
-        ) {
-          type = this.implicitTypes[typeIndex];
-          // Implicit resolving is not allowed for non-scalar types, and '?'
-          // non-specific tag is only assigned to plain scalars. So, it isn't
-          // needed to check for 'kind' conformity.
-          if (type.resolve(this.result)) {
-            // `state.result` updated in resolver if matched
-            this.result = type.construct(this.result);
-            this.tag = type.tag;
-            if (this.anchor !== null) {
-              this.anchorMap.set(this.anchor, this.result);
-            }
-            break;
-          }
-        }
-      } else if (this.typeMap[this.kind ?? "fallback"].has(this.tag)) {
-        const map = this.typeMap[this.kind ?? "fallback"];
-        type = map.get(this.tag);
-        if (this.result !== null && type.kind !== this.kind) {
-          throw this.#createError(
-            `Unacceptable node kind for !<${this.tag}> tag: it should be "${type.kind}", not "${this.kind}"`,
-          );
-        }
-        if (!type.resolve(this.result)) {
-          // `state.result` updated in resolver if matched
-          throw this.#createError(
-            `Cannot resolve a node with !<${this.tag}> explicit tag`,
-          );
-        } else {
-          this.result = type.construct(this.result);
-          if (this.anchor !== null) {
-            this.anchorMap.set(this.anchor, this.result);
-          }
-        }
-      } else {
-        throw this.#createError(`Cannot resolve unknown tag !<${this.tag}>`);
-      }
+    const newState = this.resolveTag({ tag, anchor, kind: null, result: null });
+    if (newState.tag !== null || newState.anchor !== null) {
+      return newState;
     }
-    return this.tag !== null || this.anchor !== null || hasContent;
   }
   readDirectives() {
     let hasDirectives = false;
@@ -1451,6 +1504,7 @@ export class LoaderState {
     this.anchorMap = new Map();
     const hasDirectives = this.readDirectives();
     this.skipSeparationSpace(true, -1);
+    let result = null;
     if (
       this.lineIndent === 0 &&
       this.peek() === MINUS &&
@@ -1464,12 +1518,15 @@ export class LoaderState {
         "Cannot read document: directives end mark is expected",
       );
     }
-    this.composeNode({
+    const newState = this.composeNode({
       parentIndent: this.lineIndent - 1,
       nodeContext: CONTEXT_BLOCK_OUT,
       allowToSeek: false,
       allowCompact: true,
     });
+    if (newState) {
+      result = newState.result;
+    }
     this.skipSeparationSpace(true, -1);
     if (
       this.checkLineBreaks &&
@@ -1489,7 +1546,7 @@ export class LoaderState {
         "Cannot read document: end of the stream or a document separator is expected",
       );
     }
-    return this.result;
+    return result;
   }
   *readDocuments() {
     while (this.position < this.length - 1) {

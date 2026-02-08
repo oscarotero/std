@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 /**
  * {@linkcode sprintf} and {@linkcode printf} for printing formatted strings to
  * stdout.
@@ -17,7 +17,7 @@
  * implementation code.
  *
  * sprintf converts and formats a variable number of arguments as is specified
- * by a `format string`. In it's basic form, a format string may just be a
+ * by a `format string`. In its basic form, a format string may just be a
  * literal. In case arguments are meant to be formatted, a `directive` is
  * contained in the format string, preceded by a '%' character:
  *
@@ -32,7 +32,7 @@
  * applied to the arguments "World" yields "Hello World!".
  *
  * The meaning of the format string is modelled after [POSIX][1] format strings
- * as well as well as [Golang format strings][2]. Both contain elements specific
+ * as well as [Golang format strings][2]. Both contain elements specific
  * to the respective programming language that don't apply to JavaScript, so
  * they can not be fully supported. Furthermore we implement some functionality
  * that is specific to JS.
@@ -48,6 +48,7 @@
  * | `b`   | eval as number, print binary                                   |
  * | `c`   | eval as number, print character corresponding to the codePoint |
  * | `o`   | eval as number, print octal                                    |
+ * | `d`   | eval as number, print decimal                                  |
  * | `x X` | print as hex (ff FF), treat string as list of bytes            |
  * | `e E` | print number in scientific/exponent format 1.123123e+01        |
  * | `f F` | print number as float with decimal point and no exponent       |
@@ -83,6 +84,8 @@
  * | `T`       | truncate                                                        |
  * | `v`       | truncate, or depth if used with # see "'default' format", below |
  * | `j`       | n/a                                                             |
+ * | `i`       | n/a                                                             |
+ * | `I`       | n/a                                                             |
  *
  * Numerical values for width and precision can be substituted for the `*` char,
  * in which case the values are obtained from the next args, e.g.:
@@ -115,7 +118,7 @@
  * ## 'default' format
  *
  * The default format used by `%v` is the result of calling `toString()` on the
- * relevant argument. If the `#` flags is used, the result of calling `inspect()`
+ * relevant argument. If the `#` flag is used, the result of calling `inspect()`
  * is interpolated. In this case, the precision, if set is passed to `inspect()`
  * as the 'depth' config parameter.
  *
@@ -133,7 +136,7 @@
  *
  * returns `dec[1]=255 hex[1]=0xff oct[1]=0377 Third`
  *
- * Width and precision my also use positionals:
+ * Width and precision may also use positionals:
  *
  *     "%[2]*.[1]*d", 1, 2
  *
@@ -149,7 +152,7 @@
  *
  * Too few arguments:
  *
- *     S("%d") %!(MISSING 'd')"
+ *     S("%d") %!(MISSING 'd')
  *
  * [1]: https://pubs.opengroup.org/onlinepubs/009695399/functions/fprintf.html
  * [2]: https://golang.org/pkg/fmt/
@@ -894,7 +897,7 @@ class Printf {
  *
  * See the module documentation for the available format strings.
  *
- * `%v`, `%i`, and `%` are only supported in Deno runtime. Other formats are supported in
+ * `%v`, `%i`, and `%I` are only supported in Deno runtime. Other formats are supported in
  * other major runtimes.
  *
  * @example Usage
@@ -914,13 +917,14 @@ class Printf {
  * @param format The format string to use
  * @param args The arguments to format
  * @returns The formatted string
+ * @throws {Error} If an invalid argument type is provided for a format specifier.
  */
 export function sprintf(format, ...args) {
   const printf = new Printf(format, ...args);
   return printf.doPrintf();
 }
 /**
- * Converts and format a variable number of `args` as is specified by `format`.
+ * Converts and formats a variable number of `args` as is specified by `format`.
  * `printf` writes the formatted string to standard output.
  *
  * See the module documentation for the available format strings.
@@ -942,6 +946,7 @@ export function sprintf(format, ...args) {
  *
  * @param format The format string to use
  * @param args The arguments to format
+ * @throws {Error} If an invalid argument type is provided for a format specifier.
  */
 export function printf(format, ...args) {
   const s = sprintf(format, ...args);

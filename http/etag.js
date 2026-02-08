@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 /**
  * Provides functions for dealing with and matching ETags, including
@@ -49,7 +49,10 @@ export async function eTag(entity, options = {}) {
     await (isFileInfo(entity)
       ? calcFileInfo(entity, options)
       : calcEntity(entity, options));
-  return tag ? weak ? `W/"${tag}"` : `"${tag}"` : undefined;
+  if (!tag) {
+    return undefined;
+  }
+  return weak ? `W/"${tag}"` : `"${tag}"`;
 }
 const STAR_REGEXP = /^\s*\*\s*$/;
 const COMMA_REGEXP = /\s*,\s*/;

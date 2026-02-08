@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { assertNotStrictEquals } from "../assert/not_strict_equals.js";
 import { assertStrictEquals } from "../assert/strict_equals.js";
 import { assertInstanceOf } from "../assert/instance_of.js";

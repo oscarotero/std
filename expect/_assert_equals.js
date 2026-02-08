@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This file is copied from `std/assert`.
 import { AssertionError } from "../assert/assertion_error.js";
 import { buildEqualErrorMessage } from "./_build_message.js";

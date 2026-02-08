@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { expect } from "./expect.js";
 import { AssertionError, assertRejects, assertThrows } from "../assert/mod.js";
 Deno.test("expect().resolves.toEqual()", async () => {

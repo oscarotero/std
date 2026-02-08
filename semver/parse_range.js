@@ -1,10 +1,9 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import {
   COMPARATOR_REGEXP,
   OPERATOR_XRANGE_REGEXP,
   parseBuild,
-  parseNumber,
   parsePrerelease,
   XRANGE,
 } from "./_shared.js";
@@ -15,26 +14,8 @@ function parseComparator(comparator) {
   if (!groups) {
     return null;
   }
-  const { operator, prerelease, buildmetadata } = groups;
-  const semver = groups.major
-    ? {
-      major: parseNumber(
-        groups.major,
-        `Cannot parse comparator ${comparator}: invalid major version`,
-      ),
-      minor: parseNumber(
-        groups.minor,
-        `Cannot parse comparator ${comparator}: invalid minor version`,
-      ),
-      patch: parseNumber(
-        groups.patch,
-        `Cannot parse comparator ${comparator}: invalid patch version`,
-      ),
-      prerelease: prerelease ? parsePrerelease(prerelease) : [],
-      build: buildmetadata ? parseBuild(buildmetadata) : [],
-    }
-    : ANY;
-  return { operator: operator || undefined, ...semver };
+  const { operator } = groups;
+  return { operator: operator || undefined, ...ANY };
 }
 function isWildcard(id) {
   return !id || id.toLowerCase() === "x" || id === "*";
@@ -133,9 +114,6 @@ function parseHyphenRange(range) {
     new RegExp(`^${XRANGE}\\s*$`),
   );
   const rightGroups = rightMatch?.groups;
-  if (!rightGroups) {
-    return null;
-  }
   const from = handleLeftHyphenRangeGroups(leftGroup);
   const to = handleRightHyphenRangeGroups(rightGroups);
   return [from, to].filter(Boolean);
@@ -244,10 +222,7 @@ function handleLessThanOrEqualOperator(groups) {
   const minor = +groups.minor;
   const patch = +groups.patch;
   if (minorIsWildcard) {
-    if (patchIsWildcard) {
-      return [{ operator: "<", major: major + 1, minor: 0, patch: 0 }];
-    }
-    return [{ operator: "<", major, minor: minor + 1, patch: 0 }];
+    return [{ operator: "<", major: major + 1, minor: 0, patch: 0 }];
   }
   if (patchIsWildcard) {
     return [{ operator: "<", major, minor: minor + 1, patch: 0 }];
@@ -287,9 +262,6 @@ function handleGreaterOrEqualOperator(groups) {
     return [ALL];
   }
   if (minorIsWildcard) {
-    if (patchIsWildcard) {
-      return [{ operator: ">=", major, minor: 0, patch: 0 }];
-    }
     return [{ operator: ">=", major, minor: 0, patch: 0 }];
   }
   if (patchIsWildcard) {
@@ -323,7 +295,14 @@ function handleEqualOperator(groups) {
   }
   const prerelease = parsePrerelease(groups.prerelease ?? "");
   const build = parseBuild(groups.build ?? "");
-  return [{ operator: undefined, major, minor, patch, prerelease, build }];
+  return [{
+    operator: groups.operator === "=" ? "=" : undefined,
+    major,
+    minor,
+    patch,
+    prerelease,
+    build,
+  }];
 }
 function parseOperatorRange(string) {
   const groups = string.match(OPERATOR_XRANGE_REGEXP)
@@ -345,13 +324,8 @@ function parseOperatorRange(string) {
       return handleGreaterThanOperator(groups);
     case ">=":
       return handleGreaterOrEqualOperator(groups);
-    case "=":
-    case "":
-      return handleEqualOperator(groups);
     default:
-      throw new Error(
-        `Cannot parse version range: '${groups.operator}' is not a valid operator`,
-      );
+      return handleEqualOperator(groups);
   }
 }
 function parseOperatorRanges(string) {
@@ -384,7 +358,7 @@ function parseOperatorRanges(string) {
 export function parseRange(value) {
   const result = value
     // remove spaces between operators and versions
-    .replaceAll(/(?<=<|>|=|~|\^)(\s+)/g, "")
+    .replaceAll(/(?<=[<>=~^])(\s+)/g, "")
     .split(/\s*\|\|\s*/)
     .map((string) => parseHyphenRange(string) || parseOperatorRanges(string));
   if (result.some((r) => r.includes(null))) {

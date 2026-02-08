@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { abortable } from "./abortable.js";
 /**
@@ -16,7 +16,8 @@ import { abortable } from "./abortable.js";
  * custom `reason` before resolving or timing out.
  * @typeParam T The type of the provided and returned promise.
  * @param p The promise to make rejectable.
- * @param ms Duration in milliseconds for when the promise should time out.
+ * @param ms Duration in milliseconds for when the promise should time out. If
+ * greater than `Number.MAX_SAFE_INTEGER`, the deadline will never expire.
  * @param options Additional options.
  * @returns A promise that will reject if the provided duration runs out before resolving.
  *
@@ -31,7 +32,10 @@ import { abortable } from "./abortable.js";
  * ```
  */
 export async function deadline(p, ms, options = {}) {
-  const signals = [AbortSignal.timeout(ms)];
+  const signals = [];
+  if (ms < Number.MAX_SAFE_INTEGER) {
+    signals.push(AbortSignal.timeout(ms));
+  }
   if (options.signal) {
     signals.push(options.signal);
   }

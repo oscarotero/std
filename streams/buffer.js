@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { copy } from "../bytes/copy.js";
 const MAX_SIZE = 2 ** 32 - 2;
@@ -116,9 +116,6 @@ export class Buffer {
   constructor(ab) {
     if (ab === undefined) {
       this.#buf = new Uint8Array(0);
-    } else if (ab instanceof SharedArrayBuffer) {
-      // Note: This is necessary to avoid type error
-      this.#buf = new Uint8Array(ab);
     } else {
       this.#buf = new Uint8Array(ab);
     }

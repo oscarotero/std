@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 import { AssertionError } from "../assert/assertion_error.js";
 import { equal } from "../assert/equal.js";
 import { getMockCalls } from "./_mock_util.js";

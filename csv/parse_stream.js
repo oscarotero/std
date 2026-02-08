@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { convertRowToObject, parseRecord } from "./_io.js";
 import { TextDelimiterStream } from "../streams/text_delimiter_stream.js";

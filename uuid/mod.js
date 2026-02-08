@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 /**
  * Generators and validators for
@@ -30,6 +30,11 @@ import { generate as generateV1, validate as validateV1 } from "./v1.js";
 import { generate as generateV3, validate as validateV3 } from "./v3.js";
 import { validate as validateV4 } from "./v4.js";
 import { generate as generateV5, validate as validateV5 } from "./v5.js";
+import {
+  extractTimestamp as extractTimestampV7,
+  generate as generateV7,
+  validate as validateV7,
+} from "./v7.js";
 /**
  * Generator and validator for
  * {@link https://www.rfc-editor.org/rfc/rfc9562.html#section-5.1 | UUIDv1}.
@@ -98,4 +103,24 @@ export const v4 = {
 export const v5 = {
   generate: generateV5,
   validate: validateV5,
+};
+/**
+ * Generator and validator for
+ * {@link https://www.rfc-editor.org/rfc/rfc9562.html#section-5.7 | UUIDv7}
+ *
+ * @example Usage
+ * ```ts
+ * import { v7 } from "mod.js";
+ * import { assert, assertEquals } from "../assert/mod.js";
+ *
+ * const TIMESTAMP = 1527897600000;
+ * const uuid = v7.generate(TIMESTAMP); // optional timestamp, otherwise defaults to Date.now();
+ * assert(v7.validate(uuid as string));
+ * assertEquals(v7.extractTimestamp(uuid), TIMESTAMP);
+ * ```
+ */
+export const v7 = {
+  generate: generateV7,
+  validate: validateV7,
+  extractTimestamp: extractTimestampV7,
 };

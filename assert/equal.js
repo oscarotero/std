@@ -1,4 +1,4 @@
-// Copyright 2018-2025 the Deno authors. MIT license.
+// Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 function isKeyedCollection(x) {
   return x instanceof Set || x instanceof Map;
@@ -109,7 +109,10 @@ export function equal(a, b) {
       if (a instanceof TypedArray) {
         return compareTypedArrays(a, b);
       }
-      if (a instanceof ArrayBuffer || a instanceof SharedArrayBuffer) {
+      if (
+        a instanceof ArrayBuffer ||
+        (globalThis.SharedArrayBuffer && a instanceof SharedArrayBuffer)
+      ) {
         return compareTypedArrays(new Uint8Array(a), new Uint8Array(b));
       }
       if (a instanceof WeakMap) {
