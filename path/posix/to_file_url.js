@@ -12,6 +12,7 @@ import { isAbsolute } from "./is_absolute.js";
  *
  * assertEquals(toFileUrl("/home/foo"), new URL("file:///home/foo"));
  * assertEquals(toFileUrl("/home/foo bar"), new URL("file:///home/foo%20bar"));
+ * assertEquals(toFileUrl("//foo/bar"), new URL("file:///foo/bar"));
  * ```
  *
  * @param path The path to convert.
@@ -23,7 +24,7 @@ export function toFileUrl(path) {
   }
   const url = new URL("file:///");
   url.pathname = encodeWhitespace(
-    path.replace(/%/g, "%25").replace(/\\/g, "%5C"),
+    path.replace(/^\/+/, "/").replace(/%/g, "%25").replace(/\\/g, "%5C"),
   );
   return url;
 }

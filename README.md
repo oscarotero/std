@@ -13,9 +13,9 @@ standard HTTPS JavaScript modules:
 
 ```html
 <script type="module">
-  import { basename } from "https://cdn.jsdelivr.net/gh/oscarotero/std@1.0.0/path/mod.js";
+import { basename } from "https://cdn.jsdelivr.net/gh/oscarotero/std@1.0.0/path/mod.js";
 
-  console.log(basename("/hello/world.html"));
+console.log(basename("/hello/world.html"));
 </script>
 ```
 

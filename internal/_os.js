@@ -2,10 +2,14 @@
 export function checkWindows() {
   // deno-lint-ignore no-explicit-any
   const global = globalThis;
+  // Check Node/Bun/Deno via `process.platform`, then the Deno global, then the browser
+  const platform = global.process?.platform;
+  if (typeof platform === "string") {
+    return platform.startsWith("win");
+  }
   const os = global.Deno?.build?.os;
-  // Check Deno, then the remaining runtimes (e.g. Node, Bun and the browser)
-  return typeof os === "string"
-    ? os === "windows"
-    : global.navigator?.platform?.startsWith("Win") ??
-      global.process?.platform?.startsWith("win") ?? false;
+  if (typeof os === "string") {
+    return os === "windows";
+  }
+  return global.navigator?.platform?.startsWith("Win") ?? false;
 }

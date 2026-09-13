@@ -2,7 +2,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 import { crypto as stdCrypto } from "../mod.js";
 import nodeCrypto from "node:crypto";
-import { crypto as oldCrypto } from "jsr:@std/crypto@0.220.1";
 const webCrypto = globalThis.crypto;
 const BENCHMARKED_DIGEST_ALGORITHM_NAMES = [
   "SHA-256",
@@ -48,16 +47,6 @@ for (
         await stdCrypto.subtle.digest(name, [buffer]);
       },
     });
-    if (name.startsWith("FNV")) {
-      Deno.bench({
-        group: `digesting ${humanLength}`,
-        name:
-          `${name} from std/crypto (v0.220.1) TypeScript digesting ${humanLength}`,
-        async fn() {
-          await oldCrypto.subtle.digest(name, buffer);
-        },
-      });
-    }
     if (WEB_CRYPTO_DIGEST_ALGORITHM_NAMES.includes(name)) {
       Deno.bench({
         group: `digesting ${humanLength}`,

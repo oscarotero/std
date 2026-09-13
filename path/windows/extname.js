@@ -18,6 +18,7 @@ import { fromFileUrl } from "./from_file_url.js";
  *
  * @param path The path to get the extension from.
  * @returns The extension of the `path`.
+ * @throws {TypeError} If `path` is a `URL` instance whose protocol is not `file:`.
  */
 export function extname(path) {
   if (path instanceof URL) {

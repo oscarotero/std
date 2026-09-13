@@ -140,6 +140,8 @@ export class BinarySearchTree {
           const node = nodes.pop();
           const left = node.left ? BinarySearchNode.from(node.left) : null;
           const right = node.right ? BinarySearchNode.from(node.right) : null;
+          node.left = left;
+          node.right = right;
           if (left) {
             left.parent = node;
             nodes.push(left);

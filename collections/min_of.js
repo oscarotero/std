@@ -6,12 +6,12 @@ export function minOf(array, selector) {
     if (length === 0) {
       return undefined;
     }
-    let min = selector(array[0]);
+    let min = selector(array[0], 0);
     if (Number.isNaN(min)) {
       return min;
     }
     for (let i = 1; i < length; i++) {
-      const currentValue = selector(array[i]);
+      const currentValue = selector(array[i], i);
       if (currentValue < min) {
         min = currentValue;
       } else if (Number.isNaN(currentValue)) {
@@ -20,18 +20,19 @@ export function minOf(array, selector) {
     }
     return min;
   }
+  let index = 0;
   const iter = array[Symbol.iterator]();
   const first = iter.next();
   if (first.done) {
     return undefined;
   }
-  let min = selector(first.value);
+  let min = selector(first.value, index++);
   if (Number.isNaN(min)) {
     return min;
   }
   let next = iter.next();
   while (!next.done) {
-    const currentValue = selector(next.value);
+    const currentValue = selector(next.value, index++);
     if (currentValue < min) {
       min = currentValue;
     } else if (Number.isNaN(currentValue)) {

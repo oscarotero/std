@@ -130,6 +130,12 @@ function validateDomain(domain) {
 /**
  * Parse cookies of a header
  *
+ * The returned object has a null prototype (so it does not inherit from
+ * `Object.prototype` — properties like `toString` or `hasOwnProperty` will be
+ * `undefined` rather than the inherited methods). The return type is
+ * `Partial<Record<string, string>>` to reflect that arbitrary key access may
+ * yield `undefined` when no cookie of that name was set.
+ *
  * @example Usage
  * ```ts
  * import { getCookies } from "cookie.js";
@@ -139,11 +145,15 @@ function validateDomain(domain) {
  * headers.set("Cookie", "full=of; tasty=chocolate");
  *
  * const cookies = getCookies(headers);
- * assertEquals(cookies, { full: "of", tasty: "chocolate" });
+ * assertEquals(cookies.full, "of");
+ * assertEquals(cookies.tasty, "chocolate");
+ * assertEquals(cookies.missing, undefined);
  * ```
  *
  * @param headers The headers instance to get cookies from
- * @return Object with cookie names as keys
+ * @return Object with cookie names as keys (null-prototype). Values are
+ *   typed as `string | undefined` so missing-key access is caught at compile
+ *   time.
  */
 export function getCookies(headers) {
   const cookie = headers.get("Cookie");

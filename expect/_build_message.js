@@ -7,11 +7,12 @@ function isString(value) {
   return typeof value === "string";
 }
 export function buildEqualErrorMessage(actual, expected, options = {}) {
-  const { formatter = format, msg } = options;
+  const { formatter = format, msg, summary = "Values are not equal." } =
+    options;
   const msgPrefix = msg ? `${msg}: ` : "";
   const actualString = formatter(actual);
   const expectedString = formatter(expected);
-  let message = `${msgPrefix}Values are not equal.`;
+  let message = `${msgPrefix}${summary}`;
   const stringDiff = isString(actual) && isString(expected);
   const diffResult = stringDiff
     ? diffStr(actual, expected)

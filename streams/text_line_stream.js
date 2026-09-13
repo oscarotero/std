@@ -54,43 +54,79 @@
  * ```
  */
 export class TextLineStream extends TransformStream {
-  #currentLine = "";
+  #pending = [];
+  #pendingTrailsCR = false;
   /**
    * Constructs a new instance.
    *
    * @param options Options for the stream.
    */
   constructor(options = { allowCR: false }) {
+    const allowCR = options.allowCR ?? false;
     super({
       transform: (chars, controller) => {
-        chars = this.#currentLine + chars;
+        if (chars.length === 0) {
+          return;
+        }
+        // Fast path: if no line can complete within this chunk, buffer it
+        // without rescanning the accumulated text. This keeps the total cost
+        // linear when a single line spans many chunks. (With `allowCR`, a
+        // buffered chunk-final "\r" resolves as soon as the next chunk
+        // arrives, so it forces processing.)
+        if (
+          !chars.includes("\n") &&
+          (!allowCR || (!this.#pendingTrailsCR && !chars.includes("\r")))
+        ) {
+          this.#pending.push(chars);
+          return;
+        }
+        this.#pending.push(chars);
+        const text = this.#pending.length === 1
+          ? this.#pending[0]
+          : this.#pending.join("");
+        this.#pending.length = 0;
+        let start = 0;
+        let lfIndex = text.indexOf("\n");
+        let crIndex = allowCR ? text.indexOf("\r") : -1;
         while (true) {
-          const lfIndex = chars.indexOf("\n");
-          const crIndex = options.allowCR ? chars.indexOf("\r") : -1;
           if (
-            crIndex !== -1 && crIndex !== (chars.length - 1) &&
+            crIndex !== -1 && crIndex !== (text.length - 1) &&
             (lfIndex === -1 || (lfIndex - 1) > crIndex)
           ) {
-            controller.enqueue(chars.slice(0, crIndex));
-            chars = chars.slice(crIndex + 1);
+            controller.enqueue(text.slice(start, crIndex));
+            start = crIndex + 1;
+            crIndex = text.indexOf("\r", start);
             continue;
           }
           if (lfIndex === -1) {
             break;
           }
-          const endIndex = chars[lfIndex - 1] === "\r" ? lfIndex - 1 : lfIndex;
-          controller.enqueue(chars.slice(0, endIndex));
-          chars = chars.slice(lfIndex + 1);
+          const endIndex = text[lfIndex - 1] === "\r" ? lfIndex - 1 : lfIndex;
+          controller.enqueue(text.slice(start, endIndex));
+          start = lfIndex + 1;
+          lfIndex = text.indexOf("\n", start);
+          if (crIndex !== -1 && crIndex < start) {
+            crIndex = text.indexOf("\r", start);
+          }
         }
-        this.#currentLine = chars;
+        if (start < text.length) {
+          const leftover = start === 0 ? text : text.slice(start);
+          this.#pending.push(leftover);
+          this.#pendingTrailsCR = allowCR && leftover.endsWith("\r");
+        } else {
+          this.#pendingTrailsCR = false;
+        }
       },
       flush: (controller) => {
-        if (this.#currentLine === "") {
+        if (this.#pending.length === 0) {
           return;
         }
-        const currentLine = options.allowCR && this.#currentLine.endsWith("\r")
-          ? this.#currentLine.slice(0, -1)
-          : this.#currentLine;
+        let currentLine = this.#pending.length === 1
+          ? this.#pending[0]
+          : this.#pending.join("");
+        if (allowCR && currentLine.endsWith("\r")) {
+          currentLine = currentLine.slice(0, -1);
+        }
         controller.enqueue(currentLine);
       },
     });

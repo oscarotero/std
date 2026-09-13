@@ -103,6 +103,7 @@ export class RetryError extends Error {
  * @param options Additional options.
  * @returns The promise that resolves with the value returned by the function to retry.
  * @throws {RetryError} If the function fails after `maxAttempts` attempts.
+ * @throws If the `signal` is aborted, throws the signal's reason.
  * @throws If `isRetriable` returns `false` for an error, throws that error immediately.
  */
 export async function retry(fn, options) {
@@ -113,6 +114,7 @@ export async function retry(fn, options) {
     minTimeout = 1000,
     jitter = 1,
     isRetriable = () => true,
+    signal,
   } = options ?? {};
   if (!Number.isInteger(maxAttempts) || maxAttempts < 1) {
     throw new RangeError(
@@ -146,6 +148,7 @@ export async function retry(fn, options) {
   }
   let attempt = 0;
   while (true) {
+    signal?.throwIfAborted();
     try {
       return await fn();
     } catch (error) {
@@ -162,7 +165,7 @@ export async function retry(fn, options) {
         multiplier,
         jitter,
       );
-      await delay(timeout);
+      await delay(timeout, signal ? { signal } : undefined);
     }
     attempt++;
   }

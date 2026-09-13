@@ -21,3 +21,4 @@ export * from "./concatenated_json_parse_stream.js";
 export * from "./types.js";
 export * from "./parse_stream.js";
 export * from "./stringify_stream.js";
+export * from "./canonicalize.js";

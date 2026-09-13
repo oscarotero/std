@@ -6,12 +6,12 @@ export function maxOf(array, selector) {
     if (length === 0) {
       return undefined;
     }
-    let max = selector(array[0]);
+    let max = selector(array[0], 0);
     if (Number.isNaN(max)) {
       return max;
     }
     for (let i = 1; i < length; i++) {
-      const currentValue = selector(array[i]);
+      const currentValue = selector(array[i], i);
       if (currentValue > max) {
         max = currentValue;
       } else if (Number.isNaN(currentValue)) {
@@ -20,18 +20,19 @@ export function maxOf(array, selector) {
     }
     return max;
   }
+  let index = 0;
   const iter = array[Symbol.iterator]();
   const first = iter.next();
   if (first.done) {
     return undefined;
   }
-  let max = selector(first.value);
+  let max = selector(first.value, index++);
   if (Number.isNaN(max)) {
     return max;
   }
   let next = iter.next();
   while (!next.done) {
-    const currentValue = selector(next.value);
+    const currentValue = selector(next.value, index++);
     if (currentValue > max) {
       max = currentValue;
     } else if (Number.isNaN(currentValue)) {

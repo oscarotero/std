@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-function toDataView(value) {
-  if (value instanceof DataView) {
+function toUint8Array(value) {
+  if (value instanceof Uint8Array) {
     return value;
   }
   return ArrayBuffer.isView(value)
-    ? new DataView(value.buffer, value.byteOffset, value.byteLength)
-    : new DataView(value);
+    ? new Uint8Array(value.buffer, value.byteOffset, value.byteLength)
+    : new Uint8Array(value);
 }
 /**
  * When checking the values of cryptographic hashes are equal, default
@@ -17,7 +17,12 @@ function toDataView(value) {
  * It is likely some form of timing safe equality will make its way to the
  * WebCrypto standard (see:
  * {@link https://github.com/w3c/webcrypto/issues/270 | w3c/webcrypto#270}), but until
- * that time, `timingSafeEqual()` is provided:
+ * that time, `timingSafeEqual()` is provided.
+ *
+ * Note: This is a best-effort constant-time comparison implemented in
+ * JavaScript. The V8 JIT compiler does not provide formal constant-time
+ * guarantees, and inputs backed by `SharedArrayBuffer` are susceptible to
+ * concurrent modification during comparison.
  *
  * @example Usage
  * ```ts
@@ -39,18 +44,20 @@ function toDataView(value) {
  * @param a The first value to compare.
  * @param b The second value to compare.
  * @returns `true` if the values are equal, otherwise `false`.
+ * @throws {TypeError} If the byte lengths of the two buffers are not equal.
  */
 export function timingSafeEqual(a, b) {
   if (a.byteLength !== b.byteLength) {
-    return false;
+    throw new TypeError(
+      `Cannot compare buffers of different byte lengths (${a.byteLength} vs ${b.byteLength})`,
+    );
   }
-  const dataViewA = toDataView(a);
-  const dataViewB = toDataView(b);
-  const length = a.byteLength;
+  const ua = toUint8Array(a);
+  const ub = toUint8Array(b);
+  const length = ua.length;
   let out = 0;
-  let i = -1;
-  while (++i < length) {
-    out |= dataViewA.getUint8(i) ^ dataViewB.getUint8(i);
+  for (let i = 0; i < length; i++) {
+    out |= ua[i] ^ ub[i];
   }
   return out === 0;
 }

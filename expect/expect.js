@@ -1,5 +1,4 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-// This module is browser compatible.
 // Copyright 2019 Allain Lalonde. All rights reserved. ISC License.
 // Copyright (c) Meta Platforms, Inc. and affiliates.
 // The documentation is extracted from https://github.com/jestjs/jest/blob/main/website/versioned_docs/version-29.7/ExpectAPI.md
@@ -46,13 +45,19 @@ import {
   toHaveReturnedTimes,
   toHaveReturnedWith,
   toMatch,
+  toMatchInlineSnapshot,
   toMatchObject,
+  toMatchSnapshot,
   toStrictEqual,
   toThrow,
 } from "./_matchers.js";
 import { addSerializer } from "./_serializer.js";
 import { isPromiseLike } from "./_utils.js";
 import * as asymmetricMatchers from "./_asymmetric_matchers.js";
+import {
+  getState as getSnapshotState,
+  setState as setSnapshotState,
+} from "./_snapshot_state.js";
 const matchers = {
   lastCalledWith: toHaveBeenLastCalledWith,
   lastReturnedWith: toHaveLastReturnedWith,
@@ -89,7 +94,9 @@ const matchers = {
   toHaveReturnedTimes,
   toHaveReturnedWith,
   toHaveReturned,
+  toMatchInlineSnapshot,
   toMatchObject,
+  toMatchSnapshot,
   toMatch,
   toReturn: toHaveReturned,
   toReturnTimes: toHaveReturnedTimes,
@@ -454,7 +461,7 @@ expect.stringMatching = asymmetricMatchers.stringMatching;
  * Note: expect.hasAssertions only can use in bdd function test suite, such as `test` or `it`.
  *
  * @example
- * ```ts
+ * ```ts ignore
  *
  * import { test } from "../testing/bdd.js";
  * import { expect } from "mod.js";
@@ -472,7 +479,7 @@ expect.hasAssertions = hasAssertions;
  * Note: expect.assertions only can use in bdd function test suite, such as `test` or `it`.
  *
  * @example
- * ```ts
+ * ```ts ignore
  *
  * import { test } from "../testing/bdd.js";
  * import { expect } from "mod.js";
@@ -563,3 +570,39 @@ expect.not = {
  * ```
  */
 expect.addSnapshotSerializer = addSerializer;
+/**
+ * `expect.setState` sets the state for snapshot matchers. This must be called
+ * before using `toMatchSnapshot()` to provide the current test name and
+ * optionally the test file path.
+ *
+ * @experimental
+ *
+ * @example
+ * ```ts ignore
+ * import { expect } from "mod.js";
+ *
+ * Deno.test("my test", () => {
+ *   expect.setState({
+ *     currentTestName: "my test",
+ *     testPath: import.meta.url,
+ *   });
+ *   expect({ foo: 42 }).toMatchSnapshot();
+ * });
+ * ```
+ */
+expect.setState = setSnapshotState;
+/**
+ * `expect.getState` returns the current state for snapshot matchers.
+ *
+ * @experimental
+ *
+ * @example
+ * ```ts
+ * import { expect } from "mod.js";
+ *
+ * expect.setState({ currentTestName: "my test" });
+ * const state = expect.getState();
+ * expect(state.currentTestName).toBe("my test");
+ * ```
+ */
+expect.getState = getSnapshotState;

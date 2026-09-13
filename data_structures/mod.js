@@ -26,4 +26,5 @@
 export * from "./binary_heap.js";
 export * from "./binary_search_tree.js";
 export * from "./comparators.js";
+export * from "./deque.js";
 export * from "./red_black_tree.js";

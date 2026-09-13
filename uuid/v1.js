@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { bytesToUuid } from "./_common.js";
-const UUID_RE =
+const UUID_REGEXP =
   /^[0-9a-f]{8}-[0-9a-f]{4}-1[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 /**
  * Determines whether a string is a valid
@@ -21,7 +21,7 @@ const UUID_RE =
  * ```
  */
 export function validate(id) {
-  return UUID_RE.test(id);
+  return UUID_REGEXP.test(id);
 }
 let _nodeId;
 let _clockseq;

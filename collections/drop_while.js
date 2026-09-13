@@ -7,7 +7,8 @@
  * @typeParam T The type of the elements in the input iterable.
  *
  * @param iterable The iterable to drop elements from.
- * @param predicate The function to test each element for a condition.
+ * @param predicate The function to test each element for a condition. The
+ * function receives the element and its index.
  *
  * @returns An array that drops all elements until the first element that
  * does not match the given predicate.
@@ -22,19 +23,31 @@
  *
  * assertEquals(dropWhileNumbers, [2, 5, 2, 5]);
  * ```
+ *
+ * @example Using the index parameter
+ * ```ts
+ * import { dropWhile } from "drop_while.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * const array = [20, 30, 20];
+ * const result = dropWhile(array, (_, index) => index < 1);
+ *
+ * assertEquals(result, [30, 20]);
+ * ```
  */
 export function dropWhile(iterable, predicate) {
   if (Array.isArray(iterable)) {
-    const idx = iterable.findIndex((el) => !predicate(el));
+    const idx = iterable.findIndex((el, index) => !predicate(el, index));
     if (idx === -1) {
       return [];
     }
     return iterable.slice(idx);
   }
   const array = [];
+  let index = 0;
   let found = false;
   for (const item of iterable) {
-    if (found || !predicate(item)) {
+    if (found || !predicate(item, index++)) {
       found = true;
       array.push(item);
     }

@@ -14,15 +14,12 @@ function assertHasNoNewline(value, varName, errPrefix) {
  */
 function stringify(message) {
   const lines = [];
-  if (message.comment) {
-    assertHasNoNewline(
-      message.comment,
-      "`message.comment`",
-      "Cannot serialize message",
+  if (message.comment !== undefined) {
+    message.comment.split(NEWLINE_REGEXP).forEach((line) =>
+      lines.push(`:${line}`)
     );
-    lines.push(`:${message.comment}`);
   }
-  if (message.event) {
+  if (message.event !== undefined) {
     assertHasNoNewline(
       message.event,
       "`message.event`",
@@ -30,12 +27,12 @@ function stringify(message) {
     );
     lines.push(`event:${message.event}`);
   }
-  if (message.data) {
+  if (message.data !== undefined) {
     message.data.split(NEWLINE_REGEXP).forEach((line) =>
       lines.push(`data:${line}`)
     );
   }
-  if (message.id) {
+  if (message.id !== undefined) {
     assertHasNoNewline(
       message.id.toString(),
       "`message.id`",
@@ -43,7 +40,7 @@ function stringify(message) {
     );
     lines.push(`id:${message.id}`);
   }
-  if (message.retry) {
+  if (message.retry !== undefined) {
     lines.push(`retry:${message.retry}`);
   }
   return encoder.encode(lines.join("\n") + "\n\n");

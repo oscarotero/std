@@ -17,7 +17,7 @@
  * @module
  */
 import { bytesToUuid } from "./_common.js";
-const UUID_RE =
+const UUID_REGEXP =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[7][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 /**
  * Determines whether a string is a valid
@@ -37,7 +37,7 @@ const UUID_RE =
  * ```
  */
 export function validate(id) {
-  return UUID_RE.test(id);
+  return UUID_REGEXP.test(id);
 }
 /**
  * Generates a {@link https://www.rfc-editor.org/rfc/rfc9562.html#section-5.7 | UUIDv7}.

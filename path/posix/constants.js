@@ -11,4 +11,5 @@ export const SEPARATOR = "/";
 /**
  * A regular expression that matches one or more path separators.
  */
+// deno-lint-ignore deno-style-guide/naming-convention
 export const SEPARATOR_PATTERN = /\/+/;

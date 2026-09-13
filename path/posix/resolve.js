@@ -2,6 +2,7 @@
 // This module is browser compatible.
 import { normalizeString } from "../_common/normalize_string.js";
 import { assertPath } from "../_common/assert_path.js";
+import { cwd } from "../_common/env.js";
 import { isPosixPathSeparator } from "./_util.js";
 /**
  * Resolves path segments into a `path`.
@@ -26,14 +27,9 @@ export function resolve(...pathSegments) {
     if (i >= 0) {
       path = pathSegments[i];
     } else {
-      // deno-lint-ignore no-explicit-any
-      const { Deno } = globalThis;
-      if (typeof Deno?.cwd !== "function") {
-        throw new TypeError(
-          "Resolved a relative path without a current working directory (CWD)",
-        );
-      }
-      path = Deno.cwd();
+      path = cwd(
+        "Resolved a relative path without a current working directory (CWD)",
+      );
     }
     assertPath(path);
     // Skip empty entries
@@ -44,7 +40,7 @@ export function resolve(...pathSegments) {
     resolvedAbsolute = isPosixPathSeparator(path.charCodeAt(0));
   }
   // At this point the path should be resolved to a full absolute path, but
-  // handle relative paths to be safe (might happen when Deno.cwd() fails)
+  // handle relative paths to be safe (might happen when cwd() fails)
   // Normalize the path
   resolvedPath = normalizeString(
     resolvedPath,

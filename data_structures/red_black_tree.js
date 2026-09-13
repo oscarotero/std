@@ -126,13 +126,16 @@ export class RedBlackTree extends BinarySearchTree {
         const nodes = [];
         const root = getRoot(collection);
         if (root) {
-          setRoot(result, root);
-          nodes.push(root);
+          const rootCopy = RedBlackNode.from(root);
+          setRoot(result, rootCopy);
+          nodes.push(rootCopy);
         }
         while (nodes.length) {
           const node = nodes.pop();
           const left = node.left ? RedBlackNode.from(node.left) : null;
           const right = node.right ? RedBlackNode.from(node.right) : null;
+          node.left = left;
+          node.right = right;
           if (left) {
             left.parent = node;
             nodes.push(left);

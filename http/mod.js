@@ -101,5 +101,6 @@ export * from "./etag.js";
 export * from "./status.js";
 export * from "./negotiation.js";
 export * from "./server_sent_event_stream.js";
+export * from "./server_sent_event_parse_stream.js";
 export * from "./user_agent.js";
 export * from "./file_server.js";

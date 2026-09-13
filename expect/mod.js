@@ -1,6 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // Copyright 2019 Allain Lalonde. All rights reserved. ISC License.
-// This module is browser compatible.
 /**
  * This module provides Jest compatible expect assertion functionality.
  *
@@ -38,6 +37,8 @@
  *   - {@linkcode Expected.toBeInstanceOf | toBeInstanceOf}
  *   - {@linkcode Expected.toThrow | toThrow}
  *   - {@linkcode Expected.toHaveProperty | toHaveProperty}
+ *   - {@linkcode Expected.toMatchSnapshot | toMatchSnapshot}
+ *   - {@linkcode Expected.toMatchInlineSnapshot | toMatchInlineSnapshot}
  * - Mock related matchers:
  *   - {@linkcode Expected.toHaveBeenCalled | toHaveBeenCalled}
  *   - {@linkcode Expected.toHaveBeenCalledTimes | toHaveBeenCalledTimes}
@@ -70,8 +71,6 @@
  *
  * Only these functions are still not available:
  * - Matchers:
- *   - `toMatchSnapshot`
- *   - `toMatchInlineSnapshot`
  *   - `toThrowErrorMatchingSnapshot`
  *   - `toThrowErrorMatchingInlineSnapshot`
  *

@@ -6,6 +6,10 @@
  * again before the timeout expires, the previous call will be
  * aborted.
  *
+ * If an {@linkcode AbortSignal} is provided via `options.signal`, aborting the
+ * signal clears any pending debounce timeout, equivalent to calling
+ * {@linkcode DebouncedFunction.clear}.
+ *
  * @example Usage
  * ```ts ignore
  * import { debounce } from "debounce.js";
@@ -20,38 +24,69 @@
  *   log(event);
  * }
  * // wait 200ms ...
- * // output: Function debounced after 200ms with baz
+ * // output: [modify] /path/to/file
+ * ```
+ *
+ * @example With AbortSignal
+ * ```ts ignore
+ * import { debounce } from "debounce.js";
+ *
+ * const controller = new AbortController();
+ * const log = debounce(
+ *   (event: Deno.FsEvent) =>
+ *     console.log("[%s] %s", event.kind, event.paths[0]),
+ *   200,
+ *   { signal: controller.signal },
+ * );
+ *
+ * for await (const event of Deno.watchFs("./")) {
+ *   log(event);
+ * }
+ *
+ * // Abort clears any pending debounce
+ * controller.abort();
  * ```
  *
  * @typeParam T The arguments of the provided function.
  * @param fn The function to debounce.
  * @param wait The time in milliseconds to delay the function.
+ * Must be a positive integer.
+ * @param options Optional parameters.
+ * @throws {RangeError} If `wait` is not a non-negative integer.
  * @returns The debounced function.
  */
 // deno-lint-ignore no-explicit-any
-export function debounce(fn, wait) {
+export function debounce(fn, wait, options) {
+  if (!Number.isInteger(wait) || wait < 0) {
+    throw new RangeError("'wait' must be a positive integer");
+  }
   let timeout = null;
-  let flush = null;
+  let pendingFlush = null;
   const debounced = (...args) => {
     debounced.clear();
-    flush = () => {
+    pendingFlush = () => {
       debounced.clear();
       fn.call(debounced, ...args);
     };
-    timeout = Number(setTimeout(flush, wait));
+    timeout = Number(setTimeout(pendingFlush, wait));
   };
   debounced.clear = () => {
-    if (typeof timeout === "number") {
+    if (timeout !== null) {
       clearTimeout(timeout);
       timeout = null;
-      flush = null;
+      pendingFlush = null;
     }
   };
   debounced.flush = () => {
-    flush?.();
+    pendingFlush?.();
   };
   Object.defineProperty(debounced, "pending", {
-    get: () => typeof timeout === "number",
+    get: () => timeout !== null,
   });
+  const signal = options?.signal;
+  if (signal) {
+    signal.throwIfAborted();
+    signal.addEventListener("abort", () => debounced.clear(), { once: true });
+  }
   return debounced;
 }

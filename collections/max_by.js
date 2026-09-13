@@ -7,10 +7,10 @@ export function maxBy(array, selector) {
       return undefined;
     }
     let max = array[0];
-    let maxValue = selector(max);
+    let maxValue = selector(max, 0);
     for (let i = 1; i < length; i++) {
       const current = array[i];
-      const currentValue = selector(current);
+      const currentValue = selector(current, i);
       if (currentValue > maxValue) {
         max = current;
         maxValue = currentValue;
@@ -23,11 +23,12 @@ export function maxBy(array, selector) {
   if (first.done) {
     return undefined;
   }
+  let index = 0;
   let max = first.value;
-  let maxValue = selector(max);
+  let maxValue = selector(max, index++);
   let next = iter.next();
   while (!next.done) {
-    const currentValue = selector(next.value);
+    const currentValue = selector(next.value, index++);
     if (currentValue > maxValue) {
       max = next.value;
       maxValue = currentValue;

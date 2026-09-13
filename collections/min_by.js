@@ -7,10 +7,10 @@ export function minBy(array, selector) {
       return undefined;
     }
     let min = array[0];
-    let minValue = selector(min);
+    let minValue = selector(min, 0);
     for (let i = 1; i < length; i++) {
       const current = array[i];
-      const currentValue = selector(current);
+      const currentValue = selector(current, i);
       if (currentValue < minValue) {
         min = current;
         minValue = currentValue;
@@ -18,16 +18,17 @@ export function minBy(array, selector) {
     }
     return min;
   }
+  let index = 0;
   const iter = array[Symbol.iterator]();
   const first = iter.next();
   if (first.done) {
     return undefined;
   }
   let min = first.value;
-  let minValue = selector(min);
+  let minValue = selector(min, index++);
   let next = iter.next();
   while (!next.done) {
-    const currentValue = selector(next.value);
+    const currentValue = selector(next.value, index++);
     if (currentValue < minValue) {
       min = next.value;
       minValue = currentValue;

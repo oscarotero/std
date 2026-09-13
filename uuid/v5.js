@@ -3,7 +3,7 @@
 import { bytesToUuid, uuidToBytes } from "./_common.js";
 import { concat } from "../bytes/concat.js";
 import { validate as validateCommon } from "./common.js";
-const UUID_RE =
+const UUID_REGEXP =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 /**
  * Determines whether a string is a valid
@@ -23,7 +23,7 @@ const UUID_RE =
  * ```
  */
 export function validate(id) {
-  return UUID_RE.test(id);
+  return UUID_REGEXP.test(id);
 }
 /**
  * Generates a

@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 const FLAG_REGEXP =
-  /^(?:-(?:(?<doubleDash>-)(?<negated>no-)?)?)(?<key>.+?)(?:=(?<value>.+?))?$/s;
+  /^(?:-(?:(?<doubleDash>-)(?<negated>no-)?)?)(?<key>.+?)(?:=(?<value>.*))?$/s;
 const LETTER_REGEXP = /[A-Za-z]/;
 const NUMBER_REGEXP = /-?\d+(\.\d*)?(e-?\d+)?$/;
 const HYPHEN_REGEXP = /^(-|--)[^-]/;
@@ -12,10 +12,22 @@ const NON_WHITESPACE_REGEXP = /\S/;
 function isNumber(string) {
   return NON_WHITESPACE_REGEXP.test(string) && Number.isFinite(Number(string));
 }
+function isConstructorOrProto(obj, key) {
+  return (key === "constructor" && typeof obj[key] === "function") ||
+    key === "__proto__";
+}
 function setNested(object, keys, value, collect = false) {
   keys = [...keys];
   const key = keys.pop();
-  keys.forEach((key) => object = object[key] ??= {});
+  for (const k of keys) {
+    if (isConstructorOrProto(object, k)) {
+      return;
+    }
+    object = object[k] ??= {};
+  }
+  if (isConstructorOrProto(object, key)) {
+    return;
+  }
   if (collect) {
     const v = object[key];
     if (Array.isArray(v)) {
@@ -260,7 +272,7 @@ export function parseArgs(args, options) {
       let key = groups.key;
       let value = groups.value;
       if (doubleDash) {
-        if (value) {
+        if (value != null) {
           if (booleanSet.has(key)) {
             value = parseBooleanString(value);
           }
@@ -304,6 +316,10 @@ export function parseArgs(args, options) {
         if (next === "-") {
           setArgument(letter, next, arg, true);
           continue;
+        }
+        if (next === "=") {
+          setArgument(letter, "", arg, true);
+          continue argsLoop;
         }
         if (LETTER_REGEXP.test(letter)) {
           const groups = VALUE_REGEXP.exec(next)?.groups;

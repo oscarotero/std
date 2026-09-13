@@ -41,6 +41,7 @@ export * from "./filter_values.js";
 export * from "./find_single.js";
 export * from "./first_not_nullish_of.js";
 export * from "./includes_value.js";
+export * from "./interleave.js";
 export * from "./intersect.js";
 export * from "./invert_by.js";
 export * from "./invert.js";

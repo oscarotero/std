@@ -93,6 +93,11 @@ function filter(a, b) {
         defineProperty(filtered, key, value);
         continue;
       }
+      // On date references, keep value as it to avoid losing the timestamp
+      if (value instanceof Date) {
+        defineProperty(filtered, key, value);
+        continue;
+      }
       const subset = b[key];
       // On array references, build a filtered array and filter nested objects inside
       if (Array.isArray(value) && Array.isArray(subset)) {
@@ -144,6 +149,11 @@ function filter(a, b) {
       const subset = b[i];
       // On regexp references, keep value as it to avoid losing pattern and flags
       if (value instanceof RegExp) {
+        filtered.push(value);
+        continue;
+      }
+      // On date references, keep value as it to avoid losing the timestamp
+      if (value instanceof Date) {
         filtered.push(value);
         continue;
       }

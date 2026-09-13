@@ -47,15 +47,21 @@ import { getNetworkAddress } from "../net/unstable_get_network_address.js";
 import { escape } from "../html/entities.js";
 import { HEADER } from "./unstable_header.js";
 import { METHOD } from "./unstable_method.js";
-const ENV_PERM_STATUS =
-  Deno.permissions.querySync?.({ name: "env", variable: "DENO_DEPLOYMENT_ID" })
-    .state ?? "granted"; // for deno deploy
-const NET_PERM_STATUS =
-  Deno.permissions.querySync?.({ name: "sys", kind: "networkInterfaces" })
-    .state ?? "granted"; // for deno deploy
-const DENO_DEPLOYMENT_ID = ENV_PERM_STATUS === "granted"
-  ? Deno.env.get("DENO_DEPLOYMENT_ID")
-  : undefined;
+import { html } from "../html/unstable_html.js";
+const ENV_PERM_STATUS = typeof Deno !== "undefined"
+  ? Deno.permissions.querySync?.({
+    name: "env",
+    variable: "DENO_DEPLOYMENT_ID",
+  }).state ?? "granted"
+  : "granted"; // for deno deploy
+const NET_PERM_STATUS = typeof Deno !== "undefined"
+  ? Deno.permissions.querySync?.({ name: "sys", kind: "networkInterfaces" })
+    .state ?? "granted"
+  : "granted"; // for deno deploy
+const DENO_DEPLOYMENT_ID =
+  ENV_PERM_STATUS === "granted" && typeof Deno !== "undefined"
+    ? Deno.env.get("DENO_DEPLOYMENT_ID")
+    : undefined;
 const HASHED_DENO_DEPLOYMENT_ID = DENO_DEPLOYMENT_ID
   ? eTag(DENO_DEPLOYMENT_ID, { weak: true })
   : undefined;
@@ -134,6 +140,7 @@ function parseRangeHeader(rangeValue, fileSize) {
  * @returns A response for the request.
  */
 export async function serveFile(req, filePath, options) {
+  await req.body?.cancel();
   if (req.method !== METHOD.Get && req.method !== METHOD.Head) {
     return createStandardResponse(STATUS_CODE.MethodNotAllowed);
   }
@@ -142,14 +149,12 @@ export async function serveFile(req, filePath, options) {
     fileInfo ??= await Deno.stat(filePath);
   } catch (error) {
     if (error instanceof Deno.errors.NotFound) {
-      await req.body?.cancel();
       return createStandardResponse(STATUS_CODE.NotFound);
     } else {
       throw error;
     }
   }
   if (fileInfo.isDirectory) {
-    await req.body?.cancel();
     return createStandardResponse(STATUS_CODE.NotFound);
   }
   const headers = createBaseHeaders();
@@ -262,7 +267,7 @@ export async function serveFile(req, filePath, options) {
     headers,
   });
 }
-async function serveDirIndex(dirPath, options) {
+async function serveDirIndex(req, dirPath, options) {
   const { showDotfiles } = options;
   const dirUrl = `/${
     relative(options.target, dirPath).replaceAll(
@@ -322,8 +327,12 @@ async function serveDirIndex(dirPath, options) {
   const page = dirViewerTemplate(formattedDirUrl, listEntry);
   const headers = createBaseHeaders();
   headers.set(HEADER.ContentType, "text/html; charset=UTF-8");
+  if (req.method === METHOD.Head) {
+    const pageSize = new TextEncoder().encode(page).byteLength;
+    headers.set(HEADER.ContentLength, String(pageSize));
+  }
   const status = STATUS_CODE.OK;
-  return new Response(page, {
+  return new Response(req.method === METHOD.Head ? null : page, {
     status,
     statusText: STATUS_TEXT[status],
     headers,
@@ -344,16 +353,6 @@ function createBaseHeaders() {
     // Set "accept-ranges" so that the client knows it can make range requests on future requests
     [HEADER.AcceptRanges]: "bytes",
   });
-}
-function html(strings, ...values) {
-  let out = "";
-  for (let i = 0; i < strings.length; ++i) {
-    out += strings[i];
-    if (i < values.length) {
-      out += values[i] ?? "";
-    }
-  }
-  return out;
 }
 function dirViewerTemplate(dirname, entries) {
   const splitDirname = dirname.split("/").filter((path) => Boolean(path));
@@ -516,7 +515,7 @@ function dirViewerTemplate(dirname, entries) {
  * @returns A response for the request.
  */
 export async function serveDir(req, opts = {}) {
-  if (req.method !== METHOD.Get) {
+  if (req.method !== METHOD.Get && req.method !== METHOD.Head) {
     return createStandardResponse(STATUS_CODE.MethodNotAllowed);
   }
   let response;
@@ -633,7 +632,7 @@ async function createServeDirResponse(req, opts) {
     }
   }
   if (showDirListing) { // serve directory list
-    return serveDirIndex(fsPath, { showDotfiles, target, quiet });
+    return serveDirIndex(req, fsPath, { showDotfiles, target, quiet });
   }
   return createStandardResponse(STATUS_CODE.NotFound);
 }

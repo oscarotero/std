@@ -23,6 +23,7 @@ import { fromFileUrl } from "./from_file_url.js";
  *
  * @param path The path to get the directory from.
  * @returns The directory path.
+ * @throws {TypeError} If `path` is a `URL` instance whose protocol is not `file:`.
  */
 export function dirname(path) {
   if (path instanceof URL) {

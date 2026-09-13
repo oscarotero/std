@@ -10,7 +10,8 @@
  * @typeParam U The type of the selected values.
  *
  * @param iterator The iterator to sort.
- * @param selector The selector function to get the value to sort by.
+ * @param selector The selector function to get the value to sort by. The
+ * function receives the element and its index.
  * @param options The options for sorting.
  *
  * @returns A new array containing all elements sorted by the selector.
@@ -100,6 +101,17 @@
  *   { name: "John", startedAt: new Date("2020-06-01") },
  * ]);
  * ```
+ *
+ * @example Using the index parameter
+ * ```ts
+ * import { sortBy } from "sort_by.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * const array = [2, 3, 1];
+ * const result = sortBy(array, (_, index) => -index);
+ *
+ * assertEquals(result, [1, 3, 2]);
+ * ```
  */
 export function sortBy(iterator, selector, options) {
   const array = Array.isArray(iterator) ? iterator : Array.from(iterator);
@@ -107,7 +119,7 @@ export function sortBy(iterator, selector, options) {
   const selected = new Array(len);
   const indices = new Array(len);
   for (let i = 0; i < len; i++) {
-    selected[i] = selector(array[i]);
+    selected[i] = selector(array[i], i);
     indices[i] = i;
   }
   const order = options?.order === "desc" ? -1 : 1;

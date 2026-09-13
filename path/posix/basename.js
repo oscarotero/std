@@ -26,6 +26,9 @@ import { isPosixPathSeparator } from "./_util.js";
  *
  * @example Working with URLs
  *
+ * Only `URL` instances with the `file:` protocol are accepted. To process a
+ * non-`file:` URL, pass it as a string or pass its `pathname` property.
+ *
  * Note: This function doesn't automatically strip hash and query parts from
  * URLs. If your URL contains a hash or query, remove them before passing the
  * URL to the function. This can be done by passing the URL to `new URL(url)`,
@@ -39,11 +42,13 @@ import { isPosixPathSeparator } from "./_util.js";
  * assertEquals(basename("https://deno.land/std/path/mod.ts", ".ts"), "mod");
  * assertEquals(basename("https://deno.land/std/path/mod.ts?a=b"), "mod.ts?a=b");
  * assertEquals(basename("https://deno.land/std/path/mod.ts#header"), "mod.ts#header");
+ * assertEquals(basename(new URL("https://deno.land/std/path/mod.ts").pathname), "mod.ts");
  * ```
  *
  * @param path The path to extract the name from.
  * @param suffix The suffix to remove from extracted name.
  * @returns The extracted name.
+ * @throws {TypeError} If `path` is a `URL` instance whose protocol is not `file:`.
  */
 export function basename(path, suffix = "") {
   if (path instanceof URL) {

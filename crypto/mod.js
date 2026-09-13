@@ -18,5 +18,6 @@
  *
  * @module
  */
+export * from "./aes_gcm.js";
 export * from "./crypto.js";
 export * from "./timing_safe_equal.js";

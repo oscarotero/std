@@ -20,8 +20,11 @@ import { dirname as windowsDirname } from "./windows/dirname.js";
  * }
  * ```
  *
- * @param path Path to extract the directory from.
+ * @param path Path to extract the directory from. When passed as a `URL`
+ * instance, its protocol must be `file:`. For other protocols, pass the URL
+ * as a string or pass its `pathname` property.
  * @returns The directory path.
+ * @throws {TypeError} If `path` is a `URL` instance whose protocol is not `file:`.
  */
 export function dirname(path) {
   return isWindows ? windowsDirname(path) : posixDirname(path);

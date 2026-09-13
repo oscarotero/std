@@ -8,7 +8,7 @@
  *
  * @param iterable The iterable to take elements from.
  * @param predicate The predicate function to determine if an element should be
- * included.
+ * included. The function receives the element and its index.
  *
  * @returns An array containing all elements after the last element that does
  * not match the predicate.
@@ -22,18 +22,30 @@
  * const result = takeLastWhile(numbers, (number) => number > 4);
  * assertEquals(result, [5, 6]);
  * ```
+ *
+ * @example Using the index parameter
+ * ```ts
+ * import { takeLastWhile } from "take_last_while.js";
+ * import { assertEquals } from "../assert/mod.js";
+ *
+ * const array = [20, 30, 20];
+ * const result = takeLastWhile(array, (_, index) => index > 0);
+ *
+ * assertEquals(result, [30, 20]);
+ * ```
  */
 export function takeLastWhile(iterable, predicate) {
   if (Array.isArray(iterable)) {
     let offset = iterable.length;
-    while (0 < offset && predicate(iterable[offset - 1])) {
+    while (0 < offset && predicate(iterable[offset - 1], offset - 1)) {
       offset--;
     }
     return iterable.slice(offset);
   }
+  let index = 0;
   const result = [];
   for (const el of iterable) {
-    if (predicate(el)) {
+    if (predicate(el, index++)) {
       result.push(el);
     } else {
       result.length = 0;

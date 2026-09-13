@@ -29,6 +29,7 @@ export * from "./text_delimiter_stream.js";
 export * from "./text_line_stream.js";
 export * from "./to_array_buffer.js";
 export * from "./to_blob.js";
+export * from "./to_bytes.js";
 export * from "./to_json.js";
 export * from "./to_text.js";
 export * from "./to_transform_stream.js";
