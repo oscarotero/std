@@ -34,7 +34,7 @@ const stablePackages = [
   // "fs",
   // "ini",
   "html",
-  "http",
+  // "http",
   "internal",
   "json",
   "jsonc",
