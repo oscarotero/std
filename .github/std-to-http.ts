@@ -142,6 +142,8 @@ await Deno.writeTextFile(
         target: "es2022",
         allowImportingTsExtensions: true,
         moduleResolution: "NodeNext",
+        rewriteRelativeImportExtensions: true,
+        declaration: true,
       },
     },
     null,
@@ -185,12 +187,12 @@ await Deno.writeTextFile(
       },
       homepage: "https://github.com/oscarotero/std#readme",
       files: ["**/*.js"],
-      exports: Object.fromEntries(
-        Array.from(Deno.readDirSync("."))
-          .sort((a, b) => a.name.localeCompare(b.name))
-          .filter((entry) => entry.isDirectory && !entry.name.startsWith("."))
-          .map((entry) => [`./${entry.name}/*.js`, `./${entry.name}/*.js`]),
-      ),
+      exports: {
+        "./*.js": {
+          import: "./*.js",
+          types: "./*.d.ts",
+        },
+      },
     },
     null,
     2,
