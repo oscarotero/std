@@ -25,3 +25,4 @@ export * from "./to_camel_case.js";
 export * from "./to_kebab_case.js";
 export * from "./to_pascal_case.js";
 export * from "./to_snake_case.js";
+export * from "./truncate.js";

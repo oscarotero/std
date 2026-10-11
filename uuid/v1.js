@@ -33,7 +33,7 @@ let _lastNSecs = 0;
  *
  * @param options Can use RFC time sequence values as overwrites.
  *
- * @returns Returns a UUIDv1 string or an array of 16 bytes.
+ * @returns Returns a UUIDv1 string.
  *
  * @example Usage
  * ```ts
@@ -48,7 +48,7 @@ let _lastNSecs = 0;
  * };
  *
  * const uuid = generate(options);
- * assert(validate(uuid as string));
+ * assert(validate(uuid));
  * ```
  */
 export function generate(options = {}) {

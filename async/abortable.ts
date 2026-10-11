@@ -1,7 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-// TODO(iuioiua): Remove `ignore` directives from following snippets
 /**
  * Make a {@linkcode Promise} abortable with the given signal.
  *
@@ -13,7 +12,7 @@
  * @returns A promise that can be aborted.
  *
  * @example Error-handling a timeout
- * ```ts ignore
+ * ```ts
  * import { abortable, delay } from "mod.ts";
  * import { assertRejects, assertEquals } from "../assert/mod.ts";
  *
@@ -28,7 +27,7 @@
  * ```
  *
  * @example Error-handling an abort
- * ```ts ignore
+ * ```ts
  * import { abortable, delay } from "mod.ts";
  * import { assertRejects, assertEquals } from "../assert/mod.ts";
  *
@@ -147,22 +146,21 @@ async function* abortableAsyncIterable<T>(
   signal.addEventListener("abort", abort, { once: true });
 
   const it = p[Symbol.asyncIterator]();
+  let completed = false;
   try {
     while (true) {
-      const race = Promise.race([promise, it.next()]);
-      race.catch(() => {
-        signal.removeEventListener("abort", abort);
-      });
-      const { done, value } = await race;
+      const { done, value } = await Promise.race([promise, it.next()]);
       if (done) {
-        signal.removeEventListener("abort", abort);
+        completed = true;
         const result = await it.return?.(value);
         return result?.value;
       }
       yield value;
     }
-  } catch (e) {
-    await it.return?.();
-    throw e;
+  } finally {
+    signal.removeEventListener("abort", abort);
+    // Close the source on abort or early consumer exit; the done path has
+    // already closed it with the forwarded return value.
+    if (!completed) await it.return?.();
   }
 }

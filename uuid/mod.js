@@ -45,7 +45,7 @@ import {
  * import { assert } from "../assert/mod.js";
  *
  * const uuid = v1.generate();
- * assert(v1.validate(uuid as string));
+ * assert(v1.validate(uuid));
  * ```
  */
 export const v1 = {
@@ -115,7 +115,7 @@ export const v5 = {
  *
  * const TIMESTAMP = 1527897600000;
  * const uuid = v7.generate(TIMESTAMP); // optional timestamp, otherwise defaults to Date.now();
- * assert(v7.validate(uuid as string));
+ * assert(v7.validate(uuid));
  * assertEquals(v7.extractTimestamp(uuid), TIMESTAMP);
  * ```
  */

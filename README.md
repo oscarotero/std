@@ -1,15 +1,16 @@
 # Deno std
 
-Use [Deno std library](https://jsr.io/@std) from NPM or HTTP modules, in a single
-package, with no dependencies. Compatible with browsers, Node, Bun, and Deno.
+Use [Deno std library](https://jsr.io/@std) from NPM or HTTP modules, in a
+single package, with no dependencies. Compatible with browsers, Node, Bun, and
+Deno.
 
 Note: This package only includes stable APIs that are browser compatible.
 
 ## Use in browsers
 
 The package can be imported from
-[jsDelivr](https://cdn.jsdelivr.net/npm/deno-std/) as
-standard HTTPS JavaScript modules:
+[jsDelivr](https://cdn.jsdelivr.net/npm/deno-std/) as standard HTTPS JavaScript
+modules:
 
 ```html
 <script type="module">

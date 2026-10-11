@@ -17,6 +17,7 @@
  *
  * @module
  */
+export * from "./batch_stream.js";
 export * from "./buffer.js";
 export * from "./byte_slice_stream.js";
 export * from "./concat_readable_streams.js";

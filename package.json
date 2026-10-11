@@ -1,6 +1,6 @@
 {
   "name": "deno-std",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Deno std packages in a single package",
   "type": "module",
   "repository": {
@@ -21,33 +21,9 @@
     "**/*.js"
   ],
   "exports": {
-    "./assert/*.js": "./assert/*.js",
-    "./async/*.js": "./async/*.js",
-    "./bytes/*.js": "./bytes/*.js",
-    "./cli/*.js": "./cli/*.js",
-    "./collections/*.js": "./collections/*.js",
-    "./crypto/*.js": "./crypto/*.js",
-    "./csv/*.js": "./csv/*.js",
-    "./data_structures/*.js": "./data_structures/*.js",
-    "./encoding/*.js": "./encoding/*.js",
-    "./expect/*.js": "./expect/*.js",
-    "./fmt/*.js": "./fmt/*.js",
-    "./front_matter/*.js": "./front_matter/*.js",
-    "./html/*.js": "./html/*.js",
-    "./http/*.js": "./http/*.js",
-    "./internal/*.js": "./internal/*.js",
-    "./json/*.js": "./json/*.js",
-    "./jsonc/*.js": "./jsonc/*.js",
-    "./media_types/*.js": "./media_types/*.js",
-    "./msgpack/*.js": "./msgpack/*.js",
-    "./path/*.js": "./path/*.js",
-    "./regexp/*.js": "./regexp/*.js",
-    "./semver/*.js": "./semver/*.js",
-    "./streams/*.js": "./streams/*.js",
-    "./text/*.js": "./text/*.js",
-    "./toml/*.js": "./toml/*.js",
-    "./ulid/*.js": "./ulid/*.js",
-    "./uuid/*.js": "./uuid/*.js",
-    "./yaml/*.js": "./yaml/*.js"
+    "./*.js": {
+      "import": "./*.js",
+      "types": "./*.d.ts"
+    }
   }
 }

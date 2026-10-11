@@ -757,7 +757,7 @@ export interface Expected<IsAsync = false> {
    * running in update mode (`-- --update`).
    *
    * @example Usage
-   * ```ts ignore
+   * ```ts
    * import { expect } from "mod.ts";
    *
    * Deno.test("inline snapshot", () => {

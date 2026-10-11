@@ -27,7 +27,7 @@ import { AssertionError } from "./assertion_error.js";
  * assertEquals("hello", "world"); // Throws
  * ```
  * @example Compare `Blob` objects
- * ```ts ignore
+ * ```ts
  * import { assertEquals } from "mod.js";
  *
  * const bytes1 = await new Blob(["foo"]).bytes();

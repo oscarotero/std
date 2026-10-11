@@ -24,22 +24,23 @@ async function* abortableAsyncIterable(p, signal) {
   const abort = () => reject(signal.reason);
   signal.addEventListener("abort", abort, { once: true });
   const it = p[Symbol.asyncIterator]();
+  let completed = false;
   try {
     while (true) {
-      const race = Promise.race([promise, it.next()]);
-      race.catch(() => {
-        signal.removeEventListener("abort", abort);
-      });
-      const { done, value } = await race;
+      const { done, value } = await Promise.race([promise, it.next()]);
       if (done) {
-        signal.removeEventListener("abort", abort);
+        completed = true;
         const result = await it.return?.(value);
         return result?.value;
       }
       yield value;
     }
-  } catch (e) {
-    await it.return?.();
-    throw e;
+  } finally {
+    signal.removeEventListener("abort", abort);
+    // Close the source on abort or early consumer exit; the done path has
+    // already closed it with the forwarded return value.
+    if (!completed) {
+      await it.return?.();
+    }
   }
 }

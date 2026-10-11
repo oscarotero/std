@@ -20,7 +20,7 @@ function isPrimitive(value) {
  * ```
  *
  * @example Usage with objects (deep equality)
- * ```ts ignore
+ * ```ts
  * import { assertArrayIncludes } from "mod.js";
  *
  * assertArrayIncludes([{ a: 1 }, { b: 2 }], [{ a: 1 }]); // Passes

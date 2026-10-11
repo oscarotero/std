@@ -3,6 +3,7 @@
 import { ascend } from "./comparators.js";
 import { BinarySearchNode } from "./_binary_search_node.js";
 import { internals } from "./_binary_search_tree_internals.js";
+import { Deque } from "./deque.js";
 /**
  * An unbalanced binary search tree. The values are in ascending order by default,
  * using JavaScript's built-in comparison operators to sort the values.
@@ -12,13 +13,32 @@ import { internals } from "./_binary_search_tree_internals.js";
  * self-balancing tree. See {@link RedBlackTree} for an example of how BinarySearchTree
  * can be extended to create a self-balancing binary search tree.
  *
- * | Method        | Average Case | Worst Case |
- * | ------------- | ------------ | ---------- |
- * | find(value)   | O(log n)     | O(n)       |
- * | insert(value) | O(log n)     | O(n)       |
- * | remove(value) | O(log n)     | O(n)       |
- * | min()         | O(log n)     | O(n)       |
- * | max()         | O(log n)     | O(n)       |
+ * The following bounds are for a tree of n values, or an input collection of n
+ * values for `from()`. Traversal bounds cover consuming the entire iterator;
+ * comparison and mapping functions are assumed to take O(1).
+ *
+ * | Method                  | Average Case | Worst Case |
+ * | ----------------------- | ------------ | ---------- |
+ * | find(value)             | O(log n)     | O(n)       |
+ * | insert(value)           | O(log n)     | O(n)       |
+ * | remove(value)           | O(log n)     | O(n)       |
+ * | min()                   | O(log n)     | O(n)       |
+ * | max()                   | O(log n)     | O(n)       |
+ * | size                    | O(1)         | O(1)       |
+ * | isEmpty()               | O(1)         | O(1)       |
+ * | clear()                 | O(1)         | O(1)       |
+ * | lnrValues()             | O(n)         | O(n)       |
+ * | rnlValues()             | O(n)         | O(n)       |
+ * | nlrValues()             | O(n)         | O(n)       |
+ * | lrnValues()             | O(n)         | O(n)       |
+ * | lvlValues()             | O(n)         | O(n)       |
+ * | [Symbol.iterator]()     | O(n)         | O(n)       |
+ * | BinarySearchTree()      | O(1)         | O(1)       |
+ * | BinarySearchTree.from() | O(n log n)   | O(n²)      |
+ *
+ * {@linkcode BinarySearchTree.from} takes O(n) when copying a
+ * {@linkcode BinarySearchTree} without a `compare` or `map` option, since it
+ * clones the tree structure directly instead of reinserting the values.
  *
  * @example Usage
  * ```ts
@@ -161,7 +181,7 @@ export class BinarySearchTree {
     }
     const values = options?.map
       ? Array.from(unmappedValues, options.map, options.thisArg)
-      : unmappedValues;
+      : Array.from(unmappedValues);
     for (const value of values) {
       result.insert(value);
     }
@@ -582,17 +602,17 @@ export class BinarySearchTree {
    * @returns An iterator that traverses the tree in level-order (BFS).
    */
   *lvlValues() {
-    const children = [];
+    const children = new Deque();
     let cursor = this.#root;
     while (cursor) {
       yield cursor.value;
       if (cursor.left) {
-        children.push(cursor.left);
+        children.pushBack(cursor.left);
       }
       if (cursor.right) {
-        children.push(cursor.right);
+        children.pushBack(cursor.right);
       }
-      cursor = children.shift() ?? null;
+      cursor = children.popFront() ?? null;
     }
   }
   /**

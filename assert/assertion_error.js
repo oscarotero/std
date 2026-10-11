@@ -4,7 +4,7 @@
  * Error thrown when an assertion fails.
  *
  * @example Usage
- * ```ts ignore
+ * ```ts
  * import { AssertionError } from "mod.js";
  *
  * try {
