@@ -90,6 +90,8 @@ const filters = [
 const filterExceptions = [
   "/_test_comparator_set.ts",
   "/_test_comparator_get.ts",
+  "/yaml/unstable_parse.ts",
+  "/yaml/unstable_stringify.ts",
 ];
 
 // Extract the files from the std repository
@@ -186,7 +188,10 @@ await Deno.writeTextFile(
         url: "https://github.com/oscarotero/std/issues",
       },
       homepage: "https://github.com/oscarotero/std#readme",
-      files: ["**/*.js"],
+      files: [
+        "**/*.js",
+        "**/*.d.ts"
+      ],
       exports: {
         "./*.js": {
           import: "./*.js",
