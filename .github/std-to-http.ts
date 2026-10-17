@@ -34,7 +34,7 @@ const stablePackages = [
   // "fs",
   // "ini",
   "html",
-  // "http",
+  "http",
   "internal",
   "json",
   "jsonc",
@@ -85,6 +85,7 @@ const filters = [
   "/_test_",
   "_test.ts",
   "/unstable_",
+  "/http",
 ];
 
 const filterExceptions = [
@@ -92,6 +93,8 @@ const filterExceptions = [
   "/_test_comparator_get.ts",
   "/yaml/unstable_parse.ts",
   "/yaml/unstable_stringify.ts",
+  "/http/_negotiation",
+  "/http/negotiation.ts",
 ];
 
 // Extract the files from the std repository
@@ -190,7 +193,7 @@ await Deno.writeTextFile(
       homepage: "https://github.com/oscarotero/std#readme",
       files: [
         "**/*.js",
-        "**/*.d.ts"
+        "**/*.d.ts",
       ],
       exports: {
         "./*.js": {
