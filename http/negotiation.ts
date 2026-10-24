@@ -10,7 +10,7 @@
 
 import { preferredEncodings } from "./_negotiation/encoding.ts";
 import { preferredLanguages } from "./_negotiation/language.ts";
-import { preferredMediaTypes } from "./_negotiation/media_type.ts";
+import { preferredMediaTypes } from "./_negotiation/media-type.ts";
 
 /**
  * Returns an array of media types accepted by the request, in order of

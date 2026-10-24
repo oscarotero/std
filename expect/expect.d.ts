@@ -1,7 +1,7 @@
 import type { Expected, Matchers } from "./_types.ts";
-import * as asymmetricMatchers from "./_asymmetric_matchers.ts";
+import * as asymmetricMatchers from "./_asymmetric-matchers.ts";
 import type { SnapshotPlugin, Tester } from "./_types.ts";
-import { type ExpectSnapshotState } from "./_snapshot_state.ts";
+import { type ExpectSnapshotState } from "./_snapshot-state.ts";
 export type { AnyConstructor, Async, Expected } from "./_types.ts";
 /**
  * **Note:** the documentation for this module is taken from [Jest](https://github.com/jestjs/jest/blob/main/website/versioned_docs/version-29.7/ExpectAPI.md)

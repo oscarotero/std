@@ -1,13 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { testComparatorSet } from "./_test_comparator_set.js";
+import { testComparatorSet } from "./_test-comparator-set.js";
 /**
  * Test to see if the SemVer satisfies the range.
  *
  * @example Usage
  * ```ts
- * import { parse, parseRange, satisfies } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { parse, parseRange, satisfies } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const version = parse("1.2.3");
  * const range0 = parseRange(">=1.0.0 <2.0.0");

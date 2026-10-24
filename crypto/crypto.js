@@ -62,7 +62,7 @@
  *
  * @example
  * ```ts
- * import { crypto } from "mod.js";
+ * import { crypto } from "mod.ts";
  *
  * // This will delegate to the runtime's WebCrypto implementation.
  * console.log(
@@ -90,7 +90,7 @@
  * ```ts
  * import {
  *   crypto,
- * } from "mod.js";
+ * } from "mod.ts";
  * import { encodeHex } from "../encoding/hex.ts"
  * import { encodeBase64 } from "../encoding/base64.ts"
  *

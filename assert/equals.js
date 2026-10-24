@@ -1,11 +1,11 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { equal } from "./equal.js";
-import { buildMessage } from "../internal/build_message.js";
+import { buildMessage } from "../internal/build-message.js";
 import { diff } from "../internal/diff.js";
-import { diffStr } from "../internal/diff_str.js";
+import { diffStr } from "../internal/diff-str.js";
 import { format } from "../internal/format.js";
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Make an assertion that `actual` and `expected` are equal, deeply. If not
  * deeply equal, then throw.
@@ -21,14 +21,14 @@ import { AssertionError } from "./assertion_error.js";
  *
  * @example Usage
  * ```ts ignore
- * import { assertEquals } from "mod.js";
+ * import { assertEquals } from "mod.ts";
  *
  * assertEquals("world", "world"); // Doesn't throw
  * assertEquals("hello", "world"); // Throws
  * ```
  * @example Compare `Blob` objects
  * ```ts
- * import { assertEquals } from "mod.js";
+ * import { assertEquals } from "mod.ts";
  *
  * const bytes1 = await new Blob(["foo"]).bytes();
  * const bytes2 = await new Blob(["foo"]).bytes();

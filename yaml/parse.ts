@@ -5,7 +5,7 @@
 // This module is browser compatible.
 
 import { isEOL } from "./_chars.ts";
-import { LoaderState } from "./_loader_state.ts";
+import { LoaderState } from "./_loader-state.ts";
 import { SCHEMA_MAP, type SchemaType } from "./_schema.ts";
 import type { YamlSyntaxError } from "./types.ts";
 

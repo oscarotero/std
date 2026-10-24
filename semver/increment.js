@@ -63,8 +63,8 @@ function bumpPrerelease(currentPrerelease = [], newPrerelease) {
  *
  * @example Usage
  * ```ts
- * import { increment, parse } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { increment, parse } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const version = parse("1.2.3");
  * assertEquals(increment(version, "major"), parse("2.0.0"));

@@ -73,8 +73,8 @@ const ESCAPE_REGEXP = new RegExp(
  *
  * @example Usage
  * ```ts
- * import { escape } from "escape.js";
- * import { assertEquals, assertMatch, assertNotMatch } from "../assert/mod.js";
+ * import { escape } from "escape.ts";
+ * import { assertEquals, assertMatch, assertNotMatch } from "../assert/mod.ts";
  *
  * const re = new RegExp(`^${escape(".")}$`, "u");
  *

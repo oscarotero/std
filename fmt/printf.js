@@ -4,8 +4,8 @@
  * stdout.
  *
  * ```ts
- * import { sprintf } from "printf.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { sprintf } from "printf.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(sprintf("%d", 9), "9");
  * assertEquals(sprintf("%o", 9), "11");
@@ -902,8 +902,8 @@ class Printf {
  *
  * @example Usage
  * ```ts
- * import { sprintf } from "printf.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { sprintf } from "printf.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(sprintf("%d", 9), "9");
  *
@@ -933,7 +933,7 @@ export function sprintf(format, ...args) {
  *
  * @example Usage
  * ```ts no-assert
- * import { printf } from "printf.js";
+ * import { printf } from "printf.ts";
  *
  * printf("%d", 9); // Prints "9"
  *

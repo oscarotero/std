@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { interleave } from "interleave.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { interleave } from "interleave.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const numbers = [1, 2, 3];
  * const letters = ["a", "b", "c"];
@@ -25,8 +25,8 @@
  *
  * @example Unequal-length arrays
  * ```ts
- * import { interleave } from "interleave.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { interleave } from "interleave.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   interleave([1, 2, 3], ["a", "b"], [true]),
@@ -36,8 +36,8 @@
  *
  * @example With iterables
  * ```ts
- * import { interleave } from "interleave.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { interleave } from "interleave.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   interleave(new Set([1, 2, 3]), ["a", "b", "c"]),

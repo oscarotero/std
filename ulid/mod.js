@@ -10,7 +10,7 @@
  * ULID based on the current time.
  *
  * ```ts no-assert
- * import { ulid } from "mod.js";
+ * import { ulid } from "mod.ts";
  *
  * ulid(); // 01HYFKMDF3HVJ4J3JZW8KXPVTY
  * ```
@@ -21,7 +21,7 @@
  * {@linkcode monotonicUlid} function.
  *
  * ```ts no-assert
- * import { monotonicUlid } from "mod.js";
+ * import { monotonicUlid } from "mod.ts";
  *
  * monotonicUlid(); // 01HYFKHG5F8RHM2PM3D7NSTDAS
  * monotonicUlid(); // 01HYFKHG5F8RHM2PM3D7NSTDAT
@@ -31,8 +31,8 @@
  * timestamp from a ULID using the {@linkcode decodeTime} function.
  *
  * ```ts
- * import { decodeTime, ulid } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeTime, ulid } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const timestamp = 150_000;
  * const ulidString = ulid(timestamp);
@@ -42,6 +42,6 @@
  *
  * @module
  */
-export * from "./decode_time.js";
-export * from "./monotonic_ulid.js";
+export * from "./decode-time.js";
+export * from "./monotonic-ulid.js";
 export * from "./ulid.js";

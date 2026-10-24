@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { assertPath } from "./assert_path.js";
+import { assertPath } from "./assert-path.js";
 export function stripSuffix(name, suffix) {
   if (suffix.length >= name.length) {
     return name;

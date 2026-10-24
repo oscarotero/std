@@ -4,8 +4,8 @@
  * Format milliseconds to time duration.
  *
  * ```ts
- * import { format } from "duration.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "duration.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(99674, { style: "digital" }), "00:00:01:39:674:000:000");
  *
@@ -64,8 +64,8 @@ function millisecondsToDurationParts(ms) {
  *
  * @example Usage
  * ```ts
- * import { format } from "duration.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "duration.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(99674, { style: "digital" }), "00:00:01:39:674:000:000");
  *

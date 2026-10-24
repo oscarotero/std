@@ -8,8 +8,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { concat } from "concat.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { concat } from "concat.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = new Uint8Array([0, 1, 2]);
  * const b = new Uint8Array([3, 4, 5]);

@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { equal } from "./equal.ts";
-import { buildMessage } from "../internal/build_message.ts";
+import { buildMessage } from "../internal/build-message.ts";
 import { diff } from "../internal/diff.ts";
-import { diffStr } from "../internal/diff_str.ts";
+import { diffStr } from "../internal/diff-str.ts";
 import { format } from "../internal/format.ts";
 
-import { AssertionError } from "./assertion_error.ts";
+import { AssertionError } from "./assertion-error.ts";
 
 /**
  * Make an assertion that `actual` and `expected` are equal, deeply. If not

@@ -23,10 +23,10 @@
  */
 export * from "./concat.ts";
 export * from "./copy.ts";
-export * from "./ends_with.ts";
+export * from "./ends-with.ts";
 export * from "./equals.ts";
-export * from "./includes_needle.ts";
-export * from "./index_of_needle.ts";
-export * from "./last_index_of_needle.ts";
+export * from "./includes-needle.ts";
+export * from "./index-of-needle.ts";
+export * from "./last-index-of-needle.ts";
 export * from "./repeat.ts";
-export * from "./starts_with.ts";
+export * from "./starts-with.ts";

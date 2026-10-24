@@ -3,7 +3,7 @@
 // Copyright (c) Meta Platforms, Inc. and affiliates.
 // The documentation is extracted from https://github.com/jestjs/jest/blob/main/website/versioned_docs/version-29.7/ExpectAPI.md
 // and updated for the Deno ecosystem.
-import { AssertionError } from "../assert/assertion_error.js";
+import { AssertionError } from "../assert/assertion-error.js";
 import {
   assertions,
   emitAssertionTrigger,
@@ -12,7 +12,7 @@ import {
 import {
   addCustomEqualityTesters,
   getCustomEqualityTesters,
-} from "./_custom_equality_tester.js";
+} from "./_custom-equality-tester.js";
 import { equal } from "./_equal.js";
 import { getExtendMatchers, setExtendMatchers } from "./_extend.js";
 import {
@@ -53,11 +53,11 @@ import {
 } from "./_matchers.js";
 import { addSerializer } from "./_serializer.js";
 import { isPromiseLike } from "./_utils.js";
-import * as asymmetricMatchers from "./_asymmetric_matchers.js";
+import * as asymmetricMatchers from "./_asymmetric-matchers.js";
 import {
   getState as getSnapshotState,
   setState as setSnapshotState,
-} from "./_snapshot_state.js";
+} from "./_snapshot-state.js";
 const matchers = {
   lastCalledWith: toHaveBeenLastCalledWith,
   lastReturnedWith: toHaveLastReturnedWith,
@@ -113,7 +113,7 @@ const matchers = {
  *
  * @example Usage
  * ```ts no-assert
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * function bestLaCroixFlavor(): string {
  *  return "grapefruit";
@@ -224,7 +224,7 @@ export function expect(value, customMessage) {
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * class Volume {
  *   amount: number;
@@ -276,8 +276,8 @@ expect.addEqualityTesters = addCustomEqualityTesters;
  * To do so, you will need to extend the interface `Expected` to define the new signature of the `expect`.
  *
  * ```ts
- * import type { Async, Expected } from "./expect.js";
- * import { expect } from "./expect.js";
+ * import type { Async, Expected } from "./expect.ts";
+ * import { expect } from "./expect.ts";
  *
  * // Extends the `Expected` interface with your new matchers signatures
  * interface ExtendedExpected<IsAsync = false> extends Expected<IsAsync> {
@@ -333,7 +333,7 @@ expect.extend = setExtendMatchers;
  *
  * @example
  * ```ts
- * import { expect, fn } from "mod.js";
+ * import { expect, fn } from "mod.ts";
  *
  * Deno.test("map calls its argument with a non-null argument", () => {
  *   const mock = fn();
@@ -350,7 +350,7 @@ expect.anything = asymmetricMatchers.anything;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * class Cat {}
  * Deno.test("expect.any()", () => {
@@ -378,7 +378,7 @@ expect.any = asymmetricMatchers.any;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("expect.arrayContaining() with array of numbers", () => {
  *   const arr = [1, 2, 3];
@@ -400,7 +400,7 @@ expect.arrayContaining = asymmetricMatchers.arrayContaining;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("compare float in object properties", () => {
  *   expect({
@@ -420,7 +420,7 @@ expect.closeTo = asymmetricMatchers.closeTo;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("expect.stringContaining() with strings", () => {
  *   expect("https://deno.com/").toEqual(expect.stringContaining("deno"));
@@ -444,7 +444,7 @@ expect.stringContaining = asymmetricMatchers.stringContaining;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("example", () => {
  *   expect("deno_std").toEqual(expect.stringMatching(/std/));
@@ -463,8 +463,8 @@ expect.stringMatching = asymmetricMatchers.stringMatching;
  * @example
  * ```ts ignore
  *
- * import { test } from "../testing/bdd.js";
- * import { expect } from "mod.js";
+ * import { test } from "../testing/bdd.ts";
+ * import { expect } from "mod.ts";
  *
  * test("it works", () => {
  *   expect.hasAssertions();
@@ -481,8 +481,8 @@ expect.hasAssertions = hasAssertions;
  * @example
  * ```ts ignore
  *
- * import { test } from "../testing/bdd.js";
- * import { expect } from "mod.js";
+ * import { test } from "../testing/bdd.ts";
+ * import { expect } from "mod.ts";
  *
  * test("it works", () => {
  *   expect.assertions(1);
@@ -498,7 +498,7 @@ expect.assertions = assertions;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("example", () => {
  *   expect({ bar: 'baz' }).toEqual(expect.objectContaining({ bar: 'baz'}));
@@ -525,7 +525,7 @@ expect.objectContaining = asymmetricMatchers.objectContaining;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("expect.not.arrayContaining", () => {
  *   const expected = ["Samantha"];
@@ -563,7 +563,7 @@ expect.not = {
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  * import serializerAnsi from "npm:jest-snapshot-serializer-ansi";
  *
  * expect.addSnapshotSerializer(serializerAnsi);
@@ -579,7 +579,7 @@ expect.addSnapshotSerializer = addSerializer;
  *
  * @example
  * ```ts ignore
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * Deno.test("my test", () => {
  *   expect.setState({
@@ -598,7 +598,7 @@ expect.setState = setSnapshotState;
  *
  * @example
  * ```ts
- * import { expect } from "mod.js";
+ * import { expect } from "mod.ts";
  *
  * expect.setState({ currentTestName: "my test" });
  * const state = expect.getState();

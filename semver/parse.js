@@ -5,8 +5,8 @@ import { FULL_REGEXP, MAX_LENGTH } from "./_shared.js";
  *
  * @example Usage
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const version = parse("1.2.3");
  * assertEquals(version, {

@@ -11,8 +11,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { format } from "bytes.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "bytes.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(1337), "1.34 kB");
  * assertEquals(format(100), "100 B");
@@ -21,8 +21,8 @@
  * @example Include bits representation
  *
  * ```ts
- * import { format } from "bytes.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "bytes.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(1337, { bits: true }), "1.34 kbit");
  * ```
@@ -30,8 +30,8 @@
  * @example Include sign
  *
  * ```ts
- * import { format } from "bytes.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "bytes.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(42, { signed: true }), "+42 B");
  * assertEquals(format(-42, { signed: true }), "-42 B");
@@ -40,8 +40,8 @@
  * @example Change locale
  *
  * ```ts
- * import { format } from "bytes.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "bytes.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format(1337, { locale: "de" }), "1,34 kB");
  * ```

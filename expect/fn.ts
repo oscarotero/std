@@ -21,7 +21,7 @@
  * @module
  */
 
-import { MOCK_SYMBOL, type MockCall } from "./_mock_util.ts";
+import { MOCK_SYMBOL, type MockCall } from "./_mock-util.ts";
 
 /**
  * Creates a mock function that can be used for testing and assertions.

@@ -9,8 +9,8 @@ import { format as windowsFormat } from "./windows/format.js";
  *
  * @example Usage
  * ```ts
- * import { format } from "format.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "format.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(format({ dir: "C:\\path\\to", base: "script.ts" }), "C:\\path\\to\\script.ts");

@@ -8,7 +8,7 @@
  * @module
  */
 import { calcSizeBase64, decode, encode } from "./_common64.js";
-import { detach } from "./_common_detach.js";
+import { detach } from "./_common-detach.js";
 const padding = "=".charCodeAt(0);
 const alphabet = new TextEncoder()
   .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
@@ -24,8 +24,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase64Url } from "base64url.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase64Url } from "base64url.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeBase64Url("foobar"), "Zm9vYmFy");
  * ```
@@ -56,8 +56,8 @@ export function encodeBase64Url(data) {
  *
  * @example Usage
  * ```ts
- * import { decodeBase64Url } from "base64url.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeBase64Url } from "base64url.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeBase64Url("Zm9vYmFy"),

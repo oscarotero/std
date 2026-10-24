@@ -242,8 +242,8 @@ class Dumper {
  *
  * @example Usage
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = {
  *   title: "TOML Example",

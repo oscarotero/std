@@ -8,7 +8,7 @@
  */
 import { preferredEncodings } from "./_negotiation/encoding.js";
 import { preferredLanguages } from "./_negotiation/language.js";
-import { preferredMediaTypes } from "./_negotiation/media_type.js";
+import { preferredMediaTypes } from "./_negotiation/media-type.js";
 export function accepts(request, ...types) {
   const accept = request.headers.get("accept");
   return types.length

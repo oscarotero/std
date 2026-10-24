@@ -7,7 +7,7 @@
  * APIs when possible.
  *
  * ```ts no-assert
- * import { crypto } from "crypto.js";
+ * import { crypto } from "crypto.ts";
  *
  * const message = "Hello, Deno!";
  * const encoder = new TextEncoder();
@@ -18,6 +18,6 @@
  *
  * @module
  */
-export * from "./aes_gcm.js";
+export * from "./aes-gcm.js";
 export * from "./crypto.js";
-export * from "./timing_safe_equal.js";
+export * from "./timing-safe-equal.js";

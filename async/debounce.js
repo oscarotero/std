@@ -12,7 +12,7 @@
  *
  * @example Usage
  * ```ts ignore
- * import { debounce } from "debounce.js";
+ * import { debounce } from "debounce.ts";
  *
  * const log = debounce(
  *   (event: Deno.FsEvent) =>
@@ -29,7 +29,7 @@
  *
  * @example With AbortSignal
  * ```ts ignore
- * import { debounce } from "debounce.js";
+ * import { debounce } from "debounce.ts";
  *
  * const controller = new AbortController();
  * const log = debounce(

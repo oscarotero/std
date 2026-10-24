@@ -13,8 +13,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "v1.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { validate } from "v1.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(validate("ea71fc60-a713-11ee-af61-8349da24f689"));
  * assertFalse(validate("fac8c1e0-ad1a-4204-a0d0-8126ae84495d"));
@@ -37,8 +37,8 @@ let _lastNSecs = 0;
  *
  * @example Usage
  * ```ts
- * import { generate, validate } from "v1.js";
- * import { assert } from "../assert/mod.js";
+ * import { generate, validate } from "v1.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const options = {
  *   node: [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],

@@ -7,8 +7,8 @@
  * smaller values requiring fewer bytes.
  *
  * ```ts
- * import { encodeVarint, decodeVarint } from "varint.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeVarint, decodeVarint } from "varint.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const buf = new Uint8Array(10);
  * assertEquals(
@@ -65,8 +65,8 @@ const U64_VIEW = new BigUint64Array(AB);
  *
  * @example Usage
  * ```ts
- * import { decodeVarint } from "varint.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeVarint } from "varint.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const buf = new Uint8Array([0x8E, 0x02]);
  * assertEquals(decodeVarint(buf), [270n, 2]);
@@ -145,8 +145,8 @@ export function decodeVarint(buf, offset = 0) {
  *
  * @example Usage
  * ```ts
- * import { decodeVarint32 } from "varint.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeVarint32 } from "varint.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const buf = new Uint8Array([0x8E, 0x02]);
  * assertEquals(decodeVarint32(buf), [270, 2]);
@@ -190,8 +190,8 @@ export function decodeVarint32(buf, offset = 0) {
  *
  * @example Usage
  * ```ts
- * import { encodeVarint } from "varint.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeVarint } from "varint.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const buf = new Uint8Array(10);
  * assertEquals(encodeVarint(42n, buf), [new Uint8Array([42]), 1]);

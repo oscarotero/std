@@ -6,8 +6,8 @@
  * Note: this module is for internal use only and should not be used directly.
  *
  * ```ts
- * import { diff, diffStr, buildMessage } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { diff, diffStr, buildMessage } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = [1, 2, 3];
  * const b = [1, 2, 4];
@@ -36,12 +36,12 @@
  *
  * @module
  */
-export * from "./assertion_state.js";
-export * from "./build_message.js";
+export * from "./assertion-state.js";
+export * from "./build-message.js";
 export * from "./diff.js";
-export * from "./diff_str.js";
+export * from "./diff-str.js";
 export * from "./format.js";
 export * from "./os.js";
 export * from "./styles.js";
-export * from "./truncate_build_message.js";
+export * from "./truncate-build-message.js";
 export * from "./types.js";

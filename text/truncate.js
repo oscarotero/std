@@ -20,8 +20,8 @@
  *
  * @example End truncation (default)
  * ```ts
- * import { truncate } from "truncate.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { truncate } from "truncate.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(truncate("Hello, world!", 8), "Hello, …");
  * assertEquals(truncate("Short", 10), "Short");
@@ -29,8 +29,8 @@
  *
  * @example Middle truncation
  * ```ts
- * import { truncate } from "truncate.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { truncate } from "truncate.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   truncate("src/components/Button.tsx", 18, { position: "middle" }),
@@ -40,8 +40,8 @@
  *
  * @example Start truncation
  * ```ts
- * import { truncate } from "truncate.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { truncate } from "truncate.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   truncate("Hello, world!", 8, { position: "start" }),
@@ -51,8 +51,8 @@
  *
  * @example Custom suffix
  * ```ts
- * import { truncate } from "truncate.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { truncate } from "truncate.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   truncate("Hello, world!", 10, { suffix: "→" }),

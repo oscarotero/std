@@ -19,7 +19,7 @@
  *
  * @module
  */
-import { validateBinaryLike } from "./_validate_binary_like.js";
+import { validateBinaryLike } from "./_validate-binary-like.js";
 const rfc1924 =
   "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!#$%&()*+-;<=>?@^_`{|}~";
 const Z85 =
@@ -34,8 +34,8 @@ const Z85 =
  *
  * @example Usage
  * ```ts
- * import { encodeAscii85 } from "ascii85.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeAscii85 } from "ascii85.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeAscii85("Hello world!"), "87cURD]j7BEbo80");
  * ```
@@ -109,8 +109,8 @@ export function encodeAscii85(data, options = {}) {
  *
  * @example Usage
  * ```ts
- * import { decodeAscii85 } from "ascii85.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeAscii85 } from "ascii85.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeAscii85("87cURD]j7BEbo80"),

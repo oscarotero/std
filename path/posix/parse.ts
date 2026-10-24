@@ -3,8 +3,8 @@
 
 import { CHAR_DOT } from "../_common/constants.ts";
 import type { ParsedPath } from "../types.ts";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.ts";
-import { assertPath } from "../_common/assert_path.ts";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.ts";
+import { assertPath } from "../_common/assert-path.ts";
 import { isPosixPathSeparator } from "./_util.ts";
 
 export type { ParsedPath } from "../types.ts";

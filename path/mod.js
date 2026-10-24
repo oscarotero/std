@@ -15,8 +15,8 @@
  * ## Basic Path Operations
  *
  * ```ts
- * import * as path from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import * as path from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Get components of a path
  * if (Deno.build.os === "windows") {
@@ -67,8 +67,8 @@
  * ## Path Parsing and Formatting
  *
  * ```ts
- * import * as path from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import * as path from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   const parsedWindows = path.parse("C:\\Users\\user\\file.txt");
@@ -102,8 +102,8 @@
  * ## URL Conversion
  *
  * ```ts
- * import * as path from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import * as path from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Convert between file URLs and paths
  * if (Deno.build.os === "windows") {
@@ -118,8 +118,8 @@
  * ## Path Properties
  *
  * ```ts
- * import * as path from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import * as path from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Check if path is absolute
  * if (Deno.build.os === "windows") {
@@ -146,8 +146,8 @@
  * ## Glob Pattern Utilities
  *
  * ```ts
- * import * as path from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import * as path from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Check if a string is a glob pattern
  * assertEquals(path.isGlob("*.txt"), true);
@@ -174,8 +174,8 @@
  * For POSIX-specific functions:
  *
  * ```ts
- * import { fromFileUrl } from "posix/from_file_url.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { fromFileUrl } from "posix/from-file-url.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(fromFileUrl("file:///home/foo"), "/home/foo");
  * ```
@@ -183,8 +183,8 @@
  * For Windows-specific functions:
  *
  * ```ts
- * import { fromFileUrl } from "windows/from_file_url.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { fromFileUrl } from "windows/from-file-url.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(fromFileUrl("file:///home/foo"), "\\home\\foo");
  * ```
@@ -199,18 +199,18 @@ export * from "./constants.js";
 export * from "./dirname.js";
 export * from "./extname.js";
 export * from "./format.js";
-export * from "./from_file_url.js";
-export * from "./is_absolute.js";
+export * from "./from-file-url.js";
+export * from "./is-absolute.js";
 export * from "./join.js";
 export * from "./normalize.js";
 export * from "./parse.js";
 export * from "./relative.js";
 export * from "./resolve.js";
-export * from "./to_file_url.js";
-export * from "./to_namespaced_path.js";
+export * from "./to-file-url.js";
+export * from "./to-namespaced-path.js";
 export * from "./common.js";
 export * from "./types.js";
-export * from "./glob_to_regexp.js";
-export * from "./is_glob.js";
-export * from "./join_globs.js";
-export * from "./normalize_glob.js";
+export * from "./glob-to-regexp.js";
+export * from "./is-glob.js";
+export * from "./join-globs.js";
+export * from "./normalize-glob.js";

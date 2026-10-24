@@ -11,8 +11,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { sample } from "sample.js";
- * import { assertArrayIncludes } from "../assert/mod.js";
+ * import { sample } from "sample.ts";
+ * import { assertArrayIncludes } from "../assert/mod.ts";
  *
  * const numbers = [1, 2, 3, 4];
  * const random = sample(numbers);

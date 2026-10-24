@@ -6,8 +6,8 @@
  * byte slices.
  *
  * ```ts
- * import { concat, indexOfNeedle, endsWith } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { concat, indexOfNeedle, endsWith } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = new Uint8Array([0, 1, 2]);
  * const b = new Uint8Array([3, 4, 5]);
@@ -25,10 +25,10 @@
  */
 export * from "./concat.js";
 export * from "./copy.js";
-export * from "./ends_with.js";
+export * from "./ends-with.js";
 export * from "./equals.js";
-export * from "./includes_needle.js";
-export * from "./index_of_needle.js";
-export * from "./last_index_of_needle.js";
+export * from "./includes-needle.js";
+export * from "./index-of-needle.js";
+export * from "./last-index-of-needle.js";
 export * from "./repeat.js";
-export * from "./starts_with.js";
+export * from "./starts-with.js";

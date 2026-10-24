@@ -1,15 +1,15 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { assertPath } from "../_common/assert_path.js";
-import { fromFileUrl } from "./from_file_url.js";
+import { assertPath } from "../_common/assert-path.js";
+import { fromFileUrl } from "./from-file-url.js";
 import { normalize } from "./normalize.js";
 /**
  * Join all given a sequence of `paths`,then normalizes the resulting path.
  *
  * @example Usage
  * ```ts
- * import { join } from "join.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { join } from "join.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(join("/foo", "bar", "baz/asdf", "quux", ".."), "/foo/bar/baz/asdf");
  * assertEquals(join(new URL("file:///foo"), "bar", "baz/asdf", "quux", ".."), "/foo/bar/baz/asdf");
@@ -17,8 +17,8 @@ import { normalize } from "./normalize.js";
  *
  * @example Working with URLs
  * ```ts
- * import { join } from "join.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { join } from "join.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const url = new URL("https://deno.land");
  * url.pathname = join("std", "path", "mod.ts");

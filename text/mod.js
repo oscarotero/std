@@ -4,8 +4,8 @@
  * Utility functions for working with text.
  *
  * ```ts
- * import { toCamelCase, compareSimilarity } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { toCamelCase, compareSimilarity } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(toCamelCase("snake_case"), "snakeCase");
  *
@@ -17,12 +17,12 @@
  *
  * @module
  */
-export * from "./levenshtein_distance.js";
-export * from "./closest_string.js";
-export * from "./compare_similarity.js";
-export * from "./word_similarity_sort.js";
-export * from "./to_camel_case.js";
-export * from "./to_kebab_case.js";
-export * from "./to_pascal_case.js";
-export * from "./to_snake_case.js";
+export * from "./levenshtein-distance.js";
+export * from "./closest-string.js";
+export * from "./compare-similarity.js";
+export * from "./word-similarity-sort.js";
+export * from "./to-camel-case.js";
+export * from "./to-kebab-case.js";
+export * from "./to-pascal-case.js";
+export * from "./to-snake-case.js";
 export * from "./truncate.js";

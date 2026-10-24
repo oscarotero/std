@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { assertPath } from "./assert_path.ts";
+import { assertPath } from "./assert-path.ts";
 
 export function assertArg(path: string) {
   assertPath(path);

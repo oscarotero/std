@@ -13,8 +13,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { permutations } from "permutations.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { permutations } from "permutations.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const numbers = [ 1, 2 ];
  * const windows = permutations(numbers);

@@ -3,8 +3,8 @@
  * Tools for creating interactive command line tools.
  *
  * ```ts
- * import { parseArgs } from "parse_args.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parseArgs } from "parse-args.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Same as running `deno run example.ts --foo --bar=baz ./quux.txt`
  * const args = parseArgs(["--foo", "--bar=baz", "./quux.txt"]);
@@ -13,6 +13,6 @@
  *
  * @module
  */
-export * from "./parse_args.js";
-export * from "./prompt_secret.js";
-export * from "./unicode_width.js";
+export * from "./parse-args.js";
+export * from "./prompt-secret.js";
+export * from "./unicode-width.js";

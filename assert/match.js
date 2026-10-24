@@ -1,13 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Make an assertion that `actual` match RegExp `expected`. If not
  * then throw.
  *
  * @example Usage
  * ```ts ignore
- * import { assertMatch } from "mod.js";
+ * import { assertMatch } from "mod.ts";
  *
  * assertMatch("Raptor", /Raptor/); // Doesn't throw
  * assertMatch("Denosaurus", /Raptor/); // Throws

@@ -9,8 +9,8 @@
  * Modified from {@link https://github.com/beatgammit/base64-js}.
  *
  * ```ts
- * import { encodeBase32, decodeBase32 } from "base32.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase32, decodeBase32 } from "base32.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeBase32("foobar"), "MZXW6YTBOI======");
  *
@@ -23,7 +23,7 @@
  * @module
  */
 import { calcSizeBase32, decode, encode } from "./_common32.js";
-import { detach } from "./_common_detach.js";
+import { detach } from "./_common-detach.js";
 const padding = "=".charCodeAt(0);
 const alphabet = new TextEncoder()
   .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZ234567");
@@ -39,8 +39,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase32 } from "base32.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase32 } from "base32.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeBase32("6c60c0"), "GZRTMMDDGA======");
  * ```
@@ -67,8 +67,8 @@ export function encodeBase32(data) {
  *
  * @example Usage
  * ```ts
- * import { decodeBase32 } from "base32.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeBase32 } from "base32.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeBase32("GZRTMMDDGA======"),

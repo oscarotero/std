@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
-import { assertIsError } from "./is_error.js";
+import { AssertionError } from "./assertion-error.js";
+import { assertIsError } from "./is-error.js";
 export async function assertRejects(
   fn,
   errorClassOrMsg,

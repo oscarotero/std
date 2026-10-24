@@ -38,7 +38,7 @@ export interface BufferBytesOptions {
  * @example Buffer input bytes and convert it to a string
  * ```ts
  * import { Buffer } from "buffer.ts";
- * import { toText } from "to_text.ts";
+ * import { toText } from "to-text.ts";
  * import { assert } from "../assert/mod.ts";
  * import { assertEquals } from "../assert/mod.ts";
  *

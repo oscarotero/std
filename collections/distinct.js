@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { distinct } from "distinct.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { distinct } from "distinct.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const numbers = [3, 2, 5, 2, 5];
  * const distinctNumbers = distinct(numbers);

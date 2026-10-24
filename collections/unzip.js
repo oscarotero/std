@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { unzip } from "unzip.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { unzip } from "unzip.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const parents = [
  *   ["Maria", "Jeff"],

@@ -11,8 +11,8 @@ import { NIL_UUID } from "./constants.js";
  *
  * @example Usage
  * ```ts
- * import { isNil } from "mod.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { isNil } from "mod.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(isNil("00000000-0000-0000-0000-000000000000"));
  * assertFalse(isNil(crypto.randomUUID()));
@@ -30,8 +30,8 @@ export function isNil(id) {
  *
  * @example Usage
  * ```ts
- * import { validate } from "mod.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { validate } from "mod.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(validate("6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"));
  * assertFalse(validate("not a UUID"));
@@ -50,8 +50,8 @@ export function validate(uuid) {
  *
  * @example Usage
  * ```ts
- * import { version } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { version } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(version("d9428888-122b-11e1-b85c-61cd3cbb3210"), 1);
  * assertEquals(version("6ec0bd7f-11c0-43da-975e-2a8ad9ebae0b"), 4);

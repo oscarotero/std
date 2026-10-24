@@ -1,13 +1,13 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Make an assertion that actual is not null or undefined.
  * If not then throw.
  *
  * @example Usage
  * ```ts ignore
- * import { assertExists } from "mod.js";
+ * import { assertExists } from "mod.ts";
  *
  * assertExists("something"); // Doesn't throw
  * assertExists(undefined); // Throws

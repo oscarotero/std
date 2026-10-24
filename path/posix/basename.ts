@@ -6,8 +6,8 @@ import {
   lastPathSegment,
   stripSuffix,
 } from "../_common/basename.ts";
-import { fromFileUrl } from "./from_file_url.ts";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.ts";
+import { fromFileUrl } from "./from-file-url.ts";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.ts";
 import { isPosixPathSeparator } from "./_util.ts";
 
 /**

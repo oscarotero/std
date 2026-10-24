@@ -1,16 +1,16 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { CHAR_COLON, CHAR_DOT } from "../_common/constants.js";
-import { assertPath } from "../_common/assert_path.js";
+import { assertPath } from "../_common/assert-path.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
-import { fromFileUrl } from "./from_file_url.js";
+import { fromFileUrl } from "./from-file-url.js";
 /**
  * Return the extension of the `path` with leading period.
  *
  * @example Usage
  * ```ts
- * import { extname } from "extname.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { extname } from "extname.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(extname("file.ts"), ".ts");
  * assertEquals(extname(new URL("file:///C:/foo/bar/baz.ext")), ".ext");

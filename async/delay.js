@@ -12,7 +12,7 @@
  *
  * @example Basic usage
  * ```ts no-assert
- * import { delay } from "delay.js";
+ * import { delay } from "delay.ts";
  *
  * // ...
  * const delayedPromise = delay(100);
@@ -26,7 +26,7 @@
  * long as the timer exists.
  *
  * ```ts no-assert ignore
- * import { delay } from "delay.js";
+ * import { delay } from "delay.ts";
  *
  * // ...
  * await delay(100, { persistent: false });

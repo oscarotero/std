@@ -8,8 +8,8 @@ import { join as windowsJoin } from "./windows/join.js";
  *
  * @example Usage
  * ```ts
- * import { join } from "join.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { join } from "join.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(join("C:\\foo", "bar", "baz\\quux", "garply", ".."), "C:\\foo\\bar\\baz\\quux");

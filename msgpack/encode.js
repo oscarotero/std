@@ -17,8 +17,8 @@ const encoder = new TextEncoder();
  *
  * @example Usage
  * ```ts
- * import { encode } from "encode.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encode } from "encode.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = {
  *   str: "deno",

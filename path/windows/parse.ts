@@ -3,7 +3,7 @@
 
 import { CHAR_COLON, CHAR_DOT } from "../_common/constants.ts";
 import type { ParsedPath } from "../types.ts";
-import { assertPath } from "../_common/assert_path.ts";
+import { assertPath } from "../_common/assert-path.ts";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.ts";
 
 export type { ParsedPath } from "../types.ts";

@@ -24,7 +24,7 @@ export type { Uint8Array_ };
  * @module
  */
 
-import { validateBinaryLike } from "./_validate_binary_like.ts";
+import { validateBinaryLike } from "./_validate-binary-like.ts";
 
 /**
  * Supported ascii85 standards for {@linkcode EncodeAscii85Options} and

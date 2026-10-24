@@ -97,8 +97,8 @@ function serializeValue(value, ancestors = []) {
  *
  * @example Basic usage (RFC 8785 Appendix E inspired)
  * ```ts
- * import { canonicalize } from "canonicalize.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { canonicalize } from "canonicalize.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Keys are sorted lexicographically, no whitespace between tokens
  * const data = {
@@ -111,8 +111,8 @@ function serializeValue(value, ancestors = []) {
  *
  * @example Number serialization (RFC 8785 Section 3.2.2.3)
  * ```ts
- * import { canonicalize } from "canonicalize.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { canonicalize } from "canonicalize.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Numbers follow ECMAScript serialization rules
  * assertEquals(canonicalize(10.0), "10");           // No unnecessary decimals
@@ -123,8 +123,8 @@ function serializeValue(value, ancestors = []) {
  *
  * @example Key sorting by UTF-16 code units (RFC 8785 Section 3.2.3)
  * ```ts
- * import { canonicalize } from "canonicalize.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { canonicalize } from "canonicalize.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Keys sorted by UTF-16 code units: digits < uppercase < lowercase
  * const data = { a: 1, A: 2, "1": 3 };
@@ -153,9 +153,9 @@ export function canonicalize(value) {
  *
  * @example Creating a verifiable hash
  * ```ts
- * import { canonicalizeToBytes } from "canonicalize.js";
- * import { encodeHex } from "../encoding/hex.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { canonicalizeToBytes } from "canonicalize.ts";
+ * import { encodeHex } from "../encoding/hex.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * async function sha256Hex(data: Uint8Array): Promise<string> {
  *   const hash = await crypto.subtle.digest("SHA-256", data.buffer as ArrayBuffer);

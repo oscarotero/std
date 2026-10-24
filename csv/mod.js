@@ -6,8 +6,8 @@
  * ## Parsing CSV
  *
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const string = "a,b,c\nd,e,f";
  *
@@ -40,8 +40,8 @@
  * ## Parsing CSV from a Stream
  *
  * ```ts
- * import { CsvParseStream } from "parse_stream.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { CsvParseStream } from "parse-stream.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Parse from a stream (useful for large files)
  * const source = ReadableStream.from([
@@ -68,8 +68,8 @@
  * ## Stringifying Data to CSV
  *
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Convert array of arrays to CSV
  * const arrayData = [["name", "age", "city"], ["john", "30", "new york"], ["mary", "25", "los angeles"]];
@@ -90,8 +90,8 @@
  * ## Streaming Stringify Data to CSV
  *
  * ```ts
- * import { CsvStringifyStream } from "stringify_stream.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { CsvStringifyStream } from "stringify-stream.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * async function writeCsvToTempFile(): Promise<string> {
  *   const path = await Deno.makeTempFile();
@@ -180,6 +180,6 @@
  * @module
  */
 export * from "./parse.js";
-export * from "./parse_stream.js";
+export * from "./parse-stream.js";
 export * from "./stringify.js";
-export * from "./stringify_stream.js";
+export * from "./stringify-stream.js";

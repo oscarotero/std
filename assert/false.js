@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Make an assertion, an error will be thrown if `expr` has a truthy value.
  *
  * @example Usage
  * ```ts ignore
- * import { assertFalse } from "mod.js";
+ * import { assertFalse } from "mod.ts";
  *
  * assertFalse(false); // Doesn't throw
  * assertFalse(true); // Throws

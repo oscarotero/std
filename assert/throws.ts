@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { assertIsError } from "./is_error.ts";
-import { AssertionError } from "./assertion_error.ts";
+import { assertIsError } from "./is-error.ts";
+import { AssertionError } from "./assertion-error.ts";
 
 /**
  * Executes a function, expecting it to throw. If it does not, then it

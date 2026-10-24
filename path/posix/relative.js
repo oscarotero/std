@@ -10,8 +10,8 @@ import { assertArgs } from "../_common/relative.js";
  *
  * @example Usage
  * ```ts
- * import { relative } from "relative.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { relative } from "relative.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const path = relative("/data/orandea/test/aaa", "/data/orandea/impl/bbb");
  * assertEquals(path, "../../impl/bbb");

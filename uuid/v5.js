@@ -15,8 +15,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "v5.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { validate } from "v5.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(validate("7af94e2b-4dd9-50f0-9c9a-8a48519bdef0"));
  * assertFalse(validate(crypto.randomUUID()));
@@ -38,9 +38,9 @@ export function validate(id) {
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_URL } from "constants.js";
- * import { generate, validate } from "v5.js";
- * import { assert } from "../assert/mod.js";
+ * import { NAMESPACE_URL } from "constants.ts";
+ * import { generate, validate } from "v5.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const data = new TextEncoder().encode("python.org");
  * const uuid = await generate(NAMESPACE_URL, data);

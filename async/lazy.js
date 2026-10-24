@@ -14,8 +14,8 @@
  * @example Concurrent deduplication
  *
  * ```ts
- * import { Lazy } from "lazy.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { Lazy } from "lazy.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * let initCount = 0;
  * const config = new Lazy<number>(async () => {
@@ -32,8 +32,8 @@
  * @example Composing with retry
  *
  * ```ts ignore
- * import { Lazy } from "lazy.js";
- * import { retry } from "retry.js";
+ * import { Lazy } from "lazy.ts";
+ * import { retry } from "retry.ts";
  *
  * const db = new Lazy(() =>
  *   retry(() => connectDb(), { minTimeout: 100, maxAttempts: 3 })
@@ -65,7 +65,7 @@ export class Lazy {
    *
    * @example Usage
    * ```ts no-assert
-   * import { Lazy } from "lazy.js";
+   * import { Lazy } from "lazy.ts";
    *
    * const config = new Lazy(async () => ({ loaded: true }));
    * const value = await config.get();
@@ -73,8 +73,8 @@ export class Lazy {
    *
    * @example Abort a slow initialization
    * ```ts
-   * import { Lazy } from "lazy.js";
-   * import { assertRejects } from "../assert/mod.js";
+   * import { Lazy } from "lazy.ts";
+   * import { assertRejects } from "../assert/mod.ts";
    *
    * const slow = new Lazy(() => new Promise<string>(() => {}));
    * const controller = new AbortController();
@@ -134,8 +134,8 @@ export class Lazy {
    *
    * @example Check initialization state
    * ```ts
-   * import { Lazy } from "lazy.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Lazy } from "lazy.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const lazy = new Lazy(() => 42);
    * assertEquals(lazy.initialized, false);
@@ -155,8 +155,8 @@ export class Lazy {
    *
    * @example Fast-path when already initialized
    * ```ts
-   * import { Lazy } from "lazy.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Lazy } from "lazy.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const config = new Lazy(async () => ({ port: 8080 }));
    * await config.get();
@@ -167,8 +167,8 @@ export class Lazy {
    *
    * @example Not yet initialized
    * ```ts
-   * import { Lazy } from "lazy.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Lazy } from "lazy.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const lazy = new Lazy(() => 42);
    * assertEquals(lazy.peek(), { ok: false });
@@ -187,7 +187,7 @@ export class Lazy {
    *
    * @example Force reload
    * ```ts ignore
-   * import { Lazy } from "lazy.js";
+   * import { Lazy } from "lazy.ts";
    *
    * const config = new Lazy(async () => loadConfig());
    * await config.get();

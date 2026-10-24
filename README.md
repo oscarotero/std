@@ -4,7 +4,7 @@ Use [Deno std library](https://jsr.io/@std) from NPM or HTTP modules, in a
 single package, with no dependencies. Compatible with browsers, Node, Bun, and
 Deno.
 
-Note: This package only includes stable APIs that are browser compatible.
+Note: This package only includes stable APIs that are compatible with browsers.
 
 ## Use in browsers
 

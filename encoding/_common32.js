@@ -25,8 +25,8 @@ alphabet.base32crockford
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "../assert/mod.js";
- * import { calcSizeBase32 } from "unstable_base32.js";
+ * import { assertEquals } from "../assert/mod.ts";
+ * import { calcSizeBase32 } from "unstable-base32.ts";
  *
  * assertEquals(calcSizeBase32(1), 8);
  * ```

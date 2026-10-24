@@ -10,8 +10,8 @@
  *
  * @example Usage
  * ```ts
- * import { format } from "format.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "format.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(format({ a: 1, b: 2 }), "{\n  a: 1,\n  b: 2,\n}");
  * assertEquals(format(new Set([1, 2])), "Set(2) {\n  1,\n  2,\n}");

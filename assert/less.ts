@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { format } from "../internal/format.ts";
-import { AssertionError } from "./assertion_error.ts";
+import { AssertionError } from "./assertion-error.ts";
 
 /**
  * Make an assertion that `actual` is less than `expected`.

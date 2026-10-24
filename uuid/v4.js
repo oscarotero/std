@@ -12,8 +12,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "v4.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { validate } from "v4.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(validate(crypto.randomUUID()));
  * assertFalse(validate("this-is-not-a-uuid"));

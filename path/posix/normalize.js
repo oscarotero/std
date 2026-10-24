@@ -1,9 +1,9 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { assertArg } from "../_common/normalize.js";
-import { normalizeString } from "../_common/normalize_string.js";
+import { normalizeString } from "../_common/normalize-string.js";
 import { isPosixPathSeparator } from "./_util.js";
-import { fromFileUrl } from "./from_file_url.js";
+import { fromFileUrl } from "./from-file-url.js";
 /**
  * Normalize the `path`, resolving `'..'` and `'.'` segments.
  * Note that resolving these segments does not necessarily mean that all will be eliminated.
@@ -11,8 +11,8 @@ import { fromFileUrl } from "./from_file_url.js";
  *
  * @example Usage
  * ```ts
- * import { normalize } from "normalize.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { normalize } from "normalize.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(normalize("/foo/bar//baz/asdf/quux/.."), "/foo/bar/baz/asdf");
  * assertEquals(normalize(new URL("file:///foo/bar//baz/asdf/quux/..")), "/foo/bar/baz/asdf/");
@@ -25,8 +25,8 @@ import { fromFileUrl } from "./from_file_url.js";
  * the URL.
  *
  * ```ts
- * import { normalize } from "normalize.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { normalize } from "normalize.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const url = new URL("https://deno.land");
  * url.pathname = normalize("//std//assert//.//mod.ts");

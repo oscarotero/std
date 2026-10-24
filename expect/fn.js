@@ -6,7 +6,7 @@
  * This module contains a function to mock functions for testing and assertions.
  *
  * ```ts no-assert
- * import { fn, expect } from "mod.js";
+ * import { fn, expect } from "mod.ts";
  *
  * Deno.test("example", () => {
  *   const mockFn = fn((a: number, b: number) => a + b);
@@ -19,7 +19,7 @@
  *
  * @module
  */
-import { MOCK_SYMBOL } from "./_mock_util.js";
+import { MOCK_SYMBOL } from "./_mock-util.js";
 /**
  * Creates a mock function that can be used for testing and assertions.
  *
@@ -28,7 +28,7 @@ import { MOCK_SYMBOL } from "./_mock_util.js";
  *
  * @example Usage
  * ```ts no-assert
- * import { fn, expect } from "mod.js";
+ * import { fn, expect } from "mod.ts";
  *
  * Deno.test("example", () => {
  *   const mockFn = fn(

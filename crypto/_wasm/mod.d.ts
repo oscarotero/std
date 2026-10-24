@@ -1,4 +1,4 @@
-export { digest, DigestContext } from "./lib/deno_std_wasm_crypto.mjs";
+export { digest, DigestContext } from "./lib/deno-std-wasm-crypto.mjs";
 /**
  * All cryptographic hash/digest algorithms supported by std/crypto.
  *

@@ -13,8 +13,8 @@
  *   greaterThan,
  *   lessThan,
  *   format
- * } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const semver = parse("1.2.3");
  * assertEquals(semver, {
@@ -126,8 +126,8 @@
  * argument that will append the value of the string as a prerelease identifier:
  *
  * ```ts
- * import { increment, parse } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { increment, parse } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(increment(parse("1.2.3"), "prerelease", { prerelease: "alpha" }), parse("1.2.4-alpha.0"));
  * ```
@@ -278,23 +278,23 @@ export * from "./difference.js";
 export * from "./format.js";
 export * from "./satisfies.js";
 export * from "./increment.js";
-export * from "./is_semver.js";
-export * from "./max_satisfying.js";
-export * from "./min_satisfying.js";
-export * from "./parse_range.js";
+export * from "./is-semver.js";
+export * from "./max-satisfying.js";
+export * from "./min-satisfying.js";
+export * from "./parse-range.js";
 export * from "./parse.js";
-export * from "./range_intersects.js";
+export * from "./range-intersects.js";
 export * from "./types.js";
-export * from "./try_parse_range.js";
-export * from "./is_range.js";
-export * from "./can_parse.js";
-export * from "./try_parse.js";
-export * from "./format_range.js";
+export * from "./try-parse-range.js";
+export * from "./is-range.js";
+export * from "./can-parse.js";
+export * from "./try-parse.js";
+export * from "./format-range.js";
 export * from "./equals.js";
-export * from "./not_equals.js";
-export * from "./greater_than.js";
-export * from "./greater_than_range.js";
-export * from "./greater_or_equal.js";
-export * from "./less_than.js";
-export * from "./less_than_range.js";
-export * from "./less_or_equal.js";
+export * from "./not-equals.js";
+export * from "./greater-than.js";
+export * from "./greater-than-range.js";
+export * from "./greater-or-equal.js";
+export * from "./less-than.js";
+export * from "./less-than-range.js";
+export * from "./less-or-equal.js";

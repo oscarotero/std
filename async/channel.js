@@ -15,8 +15,8 @@ const CLOSED_RESULT = Object.freeze({
  *
  * @example Usage
  * ```ts
- * import { Channel, ChannelClosedError } from "channel.js";
- * import { assertInstanceOf } from "../assert/mod.js";
+ * import { Channel, ChannelClosedError } from "channel.ts";
+ * import { assertInstanceOf } from "../assert/mod.ts";
  *
  * const ch = new Channel<number>();
  * ch.close();
@@ -72,8 +72,8 @@ export class ChannelClosedError extends Error {
  *
  * @example Basic producer/consumer
  * ```ts
- * import { Channel } from "channel.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { Channel } from "channel.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const ch = new Channel<number>({ capacity: 4 });
  *
@@ -90,8 +90,8 @@ export class ChannelClosedError extends Error {
  *
  * @example Using `await using` for automatic cleanup
  * ```ts
- * import { Channel } from "channel.js";
- * import { assert } from "../assert/mod.js";
+ * import { Channel } from "channel.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * let ref: Channel<string>;
  * {
@@ -140,8 +140,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -151,8 +151,8 @@ export class Channel {
    *
    * @example Cancelling with an AbortSignal
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertRejects } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertRejects } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>();
    * const controller = new AbortController();
@@ -215,8 +215,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -226,8 +226,8 @@ export class Channel {
    *
    * @example Cancelling with an AbortSignal
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertRejects } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertRejects } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>();
    * const controller = new AbortController();
@@ -292,8 +292,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assert, assertFalse } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assert, assertFalse } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * assert(ch.trySend(1));
@@ -324,8 +324,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 1 });
    * await ch.send(42);
@@ -374,8 +374,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assert, assertFalse } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assert, assertFalse } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>();
    * assertFalse(ch.closed);
@@ -394,8 +394,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -414,8 +414,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 8 });
    * assertEquals(ch.capacity, 8);
@@ -432,8 +432,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -476,8 +476,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>({ capacity: 4 });
    * await ch.send(1);
@@ -517,8 +517,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assert } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assert } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>();
    * ch[Symbol.dispose]();
@@ -534,8 +534,8 @@ export class Channel {
    *
    * @example Usage
    * ```ts
-   * import { Channel } from "channel.js";
-   * import { assert } from "../assert/mod.js";
+   * import { Channel } from "channel.ts";
+   * import { assert } from "../assert/mod.ts";
    *
    * const ch = new Channel<number>();
    * await ch[Symbol.asyncDispose]();

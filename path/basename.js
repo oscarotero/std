@@ -11,8 +11,8 @@ import { basename as windowsBasename } from "./windows/basename.js";
  *
  * @example Usage
  * ```ts
- * import { basename } from "basename.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { basename } from "basename.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(basename("C:\\user\\Documents\\image.png"), "image.png");

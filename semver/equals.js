@@ -8,8 +8,8 @@ import { compare } from "./compare.js";
  *
  * @example Usage
  * ```ts
- * import { parse, equals } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { parse, equals } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const version1 = parse("1.2.3");
  * const version2 = parse("1.2.3");

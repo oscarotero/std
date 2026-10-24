@@ -11,8 +11,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { union } from "union.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { union } from "union.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const soupIngredients = ["Pepper", "Carrots", "Leek"];
  * const saladIngredients = ["Carrots", "Radicchio", "Pepper"];

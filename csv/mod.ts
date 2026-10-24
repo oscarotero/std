@@ -41,7 +41,7 @@
  * ## Parsing CSV from a Stream
  *
  * ```ts
- * import { CsvParseStream } from "parse_stream.ts";
+ * import { CsvParseStream } from "parse-stream.ts";
  * import { assertEquals } from "../assert/mod.ts";
  *
  * // Parse from a stream (useful for large files)
@@ -91,7 +91,7 @@
  * ## Streaming Stringify Data to CSV
  *
  * ```ts
- * import { CsvStringifyStream } from "stringify_stream.ts";
+ * import { CsvStringifyStream } from "stringify-stream.ts";
  * import { assertEquals } from "../assert/mod.ts";
  *
  * async function writeCsvToTempFile(): Promise<string> {
@@ -182,6 +182,6 @@
  */
 
 export * from "./parse.ts";
-export * from "./parse_stream.ts";
+export * from "./parse-stream.ts";
 export * from "./stringify.ts";
-export * from "./stringify_stream.ts";
+export * from "./stringify-stream.ts";

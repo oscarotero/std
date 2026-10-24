@@ -2,9 +2,9 @@
 // This module is browser compatible.
 
 import { assertArg } from "../_common/dirname.ts";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.ts";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.ts";
 import { isPosixPathSeparator } from "./_util.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 
 /**
  * Return the directory path of a `path`.

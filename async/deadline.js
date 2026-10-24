@@ -23,8 +23,8 @@ import { abortable } from "./abortable.js";
  *
  * @example Usage
  * ```ts ignore
- * import { deadline } from "deadline.js";
- * import { delay } from "delay.js";
+ * import { deadline } from "deadline.ts";
+ * import { delay } from "delay.ts";
  *
  * const delayedPromise = delay(1_000);
  * // Below throws `DOMException` after 10 ms

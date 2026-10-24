@@ -2,7 +2,7 @@
 // This module is browser compatible.
 
 import type { Range, SemVer } from "./types.ts";
-import { testComparatorSet } from "./_test_comparator_set.ts";
+import { testComparatorSet } from "./_test-comparator-set.ts";
 
 /**
  * Test to see if the SemVer satisfies the range.

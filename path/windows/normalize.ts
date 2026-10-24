@@ -3,9 +3,9 @@
 
 import { assertArg } from "../_common/normalize.ts";
 import { CHAR_COLON } from "../_common/constants.ts";
-import { normalizeString } from "../_common/normalize_string.ts";
+import { normalizeString } from "../_common/normalize-string.ts";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 
 /**
  * Normalize the `path`, resolving `'..'` and `'.'` segments.

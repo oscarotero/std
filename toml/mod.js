@@ -74,8 +74,8 @@
  * ```
  *
  * ```ts
- * import { parse, stringify } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse, stringify } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = {
  *   bin: [

@@ -2,9 +2,9 @@
 // This module is browser compatible.
 
 import { CHAR_COLON, CHAR_DOT } from "../_common/constants.ts";
-import { assertPath } from "../_common/assert_path.ts";
+import { assertPath } from "../_common/assert-path.ts";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 
 /**
  * Return the extension of the `path` with leading period.

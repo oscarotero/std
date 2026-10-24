@@ -12,8 +12,8 @@
  * Based on {@linkcode https://www.npmjs.com/package/uuid | npm:uuid}.
  *
  * ```ts
- * import { v5, NAMESPACE_DNS, NIL_UUID } from "mod.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { v5, NAMESPACE_DNS, NIL_UUID } from "mod.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * const data = new TextEncoder().encode("deno.land");
  * const uuid = await v5.generate(NAMESPACE_DNS, data);
@@ -41,8 +41,8 @@ import {
  *
  * @example Usage
  * ```ts
- * import { v1 } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { v1 } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const uuid = v1.generate();
  * assert(v1.validate(uuid));
@@ -58,8 +58,8 @@ export const v1 = {
  *
  * @example Usage
  * ```ts
- * import { v3, NAMESPACE_DNS } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { v3, NAMESPACE_DNS } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const data = new TextEncoder().encode("deno.land");
  * const uuid = await v3.generate(NAMESPACE_DNS, data);
@@ -76,8 +76,8 @@ export const v3 = {
  *
  * @example Usage
  * ```ts
- * import { v4 } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { v4 } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const uuid = crypto.randomUUID();
  * assert(v4.validate(uuid));
@@ -92,8 +92,8 @@ export const v4 = {
  *
  * @example Usage
  * ```ts
- * import { v5, NAMESPACE_DNS } from "mod.js";
- * import { assert } from "../assert/mod.js";
+ * import { v5, NAMESPACE_DNS } from "mod.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const data = new TextEncoder().encode("deno.land");
  * const uuid = await v5.generate(NAMESPACE_DNS, data);
@@ -110,8 +110,8 @@ export const v5 = {
  *
  * @example Usage
  * ```ts
- * import { v7 } from "mod.js";
- * import { assert, assertEquals } from "../assert/mod.js";
+ * import { v7 } from "mod.ts";
+ * import { assert, assertEquals } from "../assert/mod.ts";
  *
  * const TIMESTAMP = 1527897600000;
  * const uuid = v7.generate(TIMESTAMP); // optional timestamp, otherwise defaults to Date.now();

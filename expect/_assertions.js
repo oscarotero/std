@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { getAssertionState } from "../internal/assertion_state.js";
+import { getAssertionState } from "../internal/assertion-state.js";
 const assertionState = getAssertionState();
 export function hasAssertions() {
   assertionState.setAssertionCheck(true);

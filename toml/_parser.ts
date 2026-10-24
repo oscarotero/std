@@ -1,7 +1,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { deepMerge } from "../collections/deep_merge.ts";
+import { deepMerge } from "../collections/deep-merge.ts";
 
 /**
  * Copy of `import { isLeap } from "../datetime/mod.ts";` because it cannot be impoted as long as it is unstable.

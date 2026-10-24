@@ -72,8 +72,8 @@ const THRESHOLD_32_BIT = 160;
  *
  * @example Basic usage
  * ```ts
- * import { equals } from "equals.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { equals } from "equals.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = new Uint8Array([1, 2, 3]);
  * const b = new Uint8Array([1, 2, 3]);

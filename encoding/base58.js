@@ -6,8 +6,8 @@
  * encoding and decoding.
  *
  * ```ts
- * import { encodeBase58, decodeBase58 } from "base58.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase58, decodeBase58 } from "base58.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const hello = new TextEncoder().encode("Hello World!");
  *
@@ -18,7 +18,7 @@
  *
  * @module
  */
-import { validateBinaryLike } from "./_validate_binary_like.js";
+import { validateBinaryLike } from "./_validate-binary-like.js";
 // deno-fmt-ignore
 const mapBase58 = {
     "1": 0, "2": 1, "3": 2, "4": 3, "5": 4, "6": 5, "7": 6, "8": 7, "9": 8, A: 9,
@@ -40,8 +40,8 @@ const base58alphabet =
  *
  * @example Usage
  * ```ts
- * import { encodeBase58 } from "base58.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase58 } from "base58.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeBase58("Hello World!"), "2NEpo7TZRRrLZSi2U");
  * ```
@@ -92,8 +92,8 @@ export function encodeBase58(data) {
  *
  * @example Usage
  * ```ts
- * import { decodeBase58 } from "base58.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeBase58 } from "base58.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeBase58("2NEpo7TZRRrLZSi2U"),

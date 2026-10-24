@@ -2,9 +2,9 @@
 // This module is browser compatible.
 
 import { assertArg } from "../_common/normalize.ts";
-import { normalizeString } from "../_common/normalize_string.ts";
+import { normalizeString } from "../_common/normalize-string.ts";
 import { isPosixPathSeparator } from "./_util.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 
 /**
  * Normalize the `path`, resolving `'..'` and `'.'` segments.

@@ -5,8 +5,8 @@
  *
  * @example Usage
  * ```ts
- * import { parse } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(parse('{"foo": "bar"}'), { foo: "bar" });
  * assertEquals(parse('{"foo": "bar", }'), { foo: "bar" });

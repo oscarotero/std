@@ -6,8 +6,8 @@ import { SEPARATOR } from "./constants.js";
  *
  * @example Usage
  * ```ts
- * import { common } from "common.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { common } from "common.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const path = common([
  *   "./deno/std/path/mod.ts",

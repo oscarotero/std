@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { copy } from "copy.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { copy } from "copy.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const src = new Uint8Array([9, 8, 7]);
  * const dst = new Uint8Array([0, 1, 2, 3, 4, 5]);
@@ -27,8 +27,8 @@
  *
  * @example Copy with offset
  * ```ts
- * import { copy } from "copy.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { copy } from "copy.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const src = new Uint8Array([1, 1, 1, 1]);
  * const dst = new Uint8Array([0, 0, 0, 0]);

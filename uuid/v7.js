@@ -10,8 +10,8 @@
  * each other, see {@linkcode generate} for details.
  *
  * ```ts
- * import { generate, validate, extractTimestamp } from "v7.js";
- * import { assert, assertEquals } from "../assert/mod.js";
+ * import { generate, validate, extractTimestamp } from "v7.ts";
+ * import { assert, assertEquals } from "../assert/mod.ts";
  *
  * const uuid = generate();
  * assert(validate(uuid));
@@ -33,8 +33,8 @@ const UUID_REGEXP =
  *
  * @example Usage
  * ```ts
- * import { validate } from "v7.js";
- * import { assert, assertFalse } from "../assert/mod.js";
+ * import { validate } from "v7.ts";
+ * import { assert, assertFalse } from "../assert/mod.ts";
  *
  * assert(validate("017f22e2-79b0-7cc3-98c4-dc0c0c07398f"));
  * assertFalse(validate("fac8c1e0-ad1a-4204-a0d0-8126ae84495d"));
@@ -60,8 +60,8 @@ export function validate(id) {
  *
  * @example Usage
  * ```ts
- * import { generate, validate } from "v7.js";
- * import { assert } from "../assert/mod.js";
+ * import { generate, validate } from "v7.ts";
+ * import { assert } from "../assert/mod.ts";
  *
  * const uuid = generate();
  * assert(validate(uuid));
@@ -96,8 +96,8 @@ export function generate(timestamp = Date.now()) {
  *
  * @example Usage
  * ```ts
- * import { extractTimestamp } from "v7.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { extractTimestamp } from "v7.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const uuid = "017f22e2-79b0-7cc3-98c4-dc0c0c07398f";
  * const timestamp = extractTimestamp(uuid);

@@ -1,5 +1,5 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { AsymmetricMatcher } from "./_asymmetric_matchers.js";
+import { AsymmetricMatcher } from "./_asymmetric-matchers.js";
 function isKeyedCollection(x) {
   return x instanceof Set || x instanceof Map;
 }

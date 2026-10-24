@@ -27,7 +27,7 @@
  */
 
 import { calcSizeHex, decode, encode } from "./_common16.ts";
-import { detach } from "./_common_detach.ts";
+import { detach } from "./_common-detach.ts";
 import type { Uint8Array_ } from "./_types.ts";
 export type { Uint8Array_ };
 

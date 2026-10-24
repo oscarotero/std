@@ -9,8 +9,8 @@
  *
  * @example Usage
  * ```ts
- * import { parse, YamlSyntaxError } from "mod.js";
- * import { assertInstanceOf } from "../assert/mod.js";
+ * import { parse, YamlSyntaxError } from "mod.ts";
+ * import { assertInstanceOf } from "../assert/mod.ts";
  *
  * try {
  *   parse(`"`);
@@ -26,8 +26,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "mod.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { YamlSyntaxError } from "mod.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.line, 5);
@@ -39,8 +39,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "mod.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { YamlSyntaxError } from "mod.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.column, 10);
@@ -52,8 +52,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "mod.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { YamlSyntaxError } from "mod.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const error = new YamlSyntaxError("Test", { line: 5, column: 10, offset: 50 });
    * assertEquals(error.offset, 50);
@@ -66,8 +66,8 @@ export class YamlSyntaxError extends SyntaxError {
    *
    * @example Usage
    * ```ts
-   * import { YamlSyntaxError } from "mod.js";
-   * import { assertEquals } from "../assert/mod.js";
+   * import { YamlSyntaxError } from "mod.ts";
+   * import { assertEquals } from "../assert/mod.ts";
    *
    * const snippet = "    foo: bar\n         ^";
    * const error = new YamlSyntaxError(

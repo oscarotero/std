@@ -13,8 +13,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { omit } from "omit.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { omit } from "omit.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = { a: 5, b: 6, c: 7, d: 8 };
  * const omitted = omit(obj, ["a", "c"]);

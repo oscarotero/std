@@ -12,8 +12,8 @@ import { copy } from "./copy.js";
  *
  * @example Basic usage
  * ```ts
- * import { repeat } from "repeat.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { repeat } from "repeat.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const source = new Uint8Array([0, 1, 2]);
  *
@@ -22,8 +22,8 @@ import { copy } from "./copy.js";
  *
  * @example Zero count
  * ```ts
- * import { repeat } from "repeat.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { repeat } from "repeat.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const source = new Uint8Array([0, 1, 2]);
  *

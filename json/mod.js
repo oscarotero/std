@@ -3,8 +3,8 @@
  * Utilities for parsing streaming JSON data.
  *
  * ```ts
- * import { JsonStringifyStream } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { JsonStringifyStream } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const stream = ReadableStream.from([{ foo: "bar" }, { baz: 100 }])
  *   .pipeThrough(new JsonStringifyStream());
@@ -17,8 +17,8 @@
  *
  * @module
  */
-export * from "./concatenated_json_parse_stream.js";
+export * from "./concatenated-json-parse-stream.js";
 export * from "./types.js";
-export * from "./parse_stream.js";
-export * from "./stringify_stream.js";
+export * from "./parse-stream.js";
+export * from "./stringify-stream.js";
 export * from "./canonicalize.js";

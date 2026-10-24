@@ -44,7 +44,7 @@ export type Base32Alphabet = "base32" | "base32hex" | "base32crockford";
  * @example Basic Usage
  * ```ts
  * import { assertEquals } from "../assert/mod.ts";
- * import { calcSizeBase32 } from "unstable_base32.ts";
+ * import { calcSizeBase32 } from "unstable-base32.ts";
  *
  * assertEquals(calcSizeBase32(1), 8);
  * ```

@@ -6,7 +6,7 @@
  * {@linkcode pooledMap}.
  *
  * ```ts no-assert
- * import { delay } from "delay.js";
+ * import { delay } from "delay.ts";
  *
  * await delay(100); // waits for 100 milliseconds
  * ```
@@ -18,10 +18,10 @@ export * from "./channel.js";
 export * from "./deadline.js";
 export * from "./debounce.js";
 export * from "./delay.js";
-export * from "./mux_async_iterator.js";
+export * from "./mux-async-iterator.js";
 export * from "./poll.js";
 export * from "./pool.js";
 export * from "./tee.js";
 export * from "./retry.js";
-export * from "./all_keyed.js";
+export * from "./all-keyed.js";
 export * from "./lazy.js";

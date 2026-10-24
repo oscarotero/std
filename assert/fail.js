@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Forcefully throws a failed assertion.
  *
  * @example Usage
  * ```ts ignore
- * import { fail } from "mod.js";
+ * import { fail } from "mod.ts";
  *
  * fail("Deliberately failed!"); // Throws
  * ```

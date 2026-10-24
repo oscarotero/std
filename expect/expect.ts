@@ -12,7 +12,7 @@ import type {
   MatcherKey,
   Matchers,
 } from "./_types.ts";
-import { AssertionError } from "../assert/assertion_error.ts";
+import { AssertionError } from "../assert/assertion-error.ts";
 import {
   assertions,
   emitAssertionTrigger,
@@ -21,7 +21,7 @@ import {
 import {
   addCustomEqualityTesters,
   getCustomEqualityTesters,
-} from "./_custom_equality_tester.ts";
+} from "./_custom-equality-tester.ts";
 import { equal } from "./_equal.ts";
 import { getExtendMatchers, setExtendMatchers } from "./_extend.ts";
 import {
@@ -62,13 +62,13 @@ import {
 } from "./_matchers.ts";
 import { addSerializer } from "./_serializer.ts";
 import { isPromiseLike } from "./_utils.ts";
-import * as asymmetricMatchers from "./_asymmetric_matchers.ts";
+import * as asymmetricMatchers from "./_asymmetric-matchers.ts";
 import type { SnapshotPlugin, Tester } from "./_types.ts";
 import {
   type ExpectSnapshotState,
   getState as getSnapshotState,
   setState as setSnapshotState,
-} from "./_snapshot_state.ts";
+} from "./_snapshot-state.ts";
 
 export type { AnyConstructor, Async, Expected } from "./_types.ts";
 

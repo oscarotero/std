@@ -12,8 +12,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { chunk } from "chunk.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { chunk } from "chunk.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const words = [
  *   "lorem",

@@ -84,8 +84,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Default options
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   ["Rick", 70],
@@ -97,8 +97,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Give an array of objects and specify columns
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   { name: "Rick", age: 70 },
@@ -112,8 +112,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Give an array of objects without specifying columns
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertThrows } from "../assert/throws.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertThrows } from "../assert/throws.ts";
  *
  * const data = [
  *   { name: "Rick", age: 70 },
@@ -129,8 +129,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Give an array of objects and specify columns with `headers: false`
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   { name: "Rick", age: 70 },
@@ -147,8 +147,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Give an array of objects and specify columns with renaming
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   { name: "Rick", age: 70 },
@@ -171,8 +171,8 @@ function getValuesFromItem(item, normalizedColumns) {
  * import {
  *   Column,
  *   stringify,
- * } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   {
@@ -208,8 +208,8 @@ function getValuesFromItem(item, normalizedColumns) {
  * import {
  *   Column,
  *   stringify,
- * } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   {
@@ -241,8 +241,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Give an array of string arrays and specify columns with renaming
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   ["Rick", 70],
@@ -262,8 +262,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Emit TSV (tab-separated values) with `separator: "\t"`
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [
  *   ["Rick", 70],
@@ -275,8 +275,8 @@ function getValuesFromItem(item, normalizedColumns) {
  *
  * @example Prepend a byte-order mark with `bom: true`
  * ```ts
- * import { stringify } from "stringify.js";
- * import { assertEquals } from "../assert/equals.js";
+ * import { stringify } from "stringify.ts";
+ * import { assertEquals } from "../assert/equals.ts";
  *
  * const data = [["Rick", 70]];
  *

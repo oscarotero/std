@@ -4,7 +4,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { isEOL } from "./_chars.js";
-import { LoaderState } from "./_loader_state.js";
+import { LoaderState } from "./_loader-state.js";
 import { SCHEMA_MAP } from "./_schema.js";
 function sanitizeInput(input) {
   input = String(input);
@@ -27,8 +27,8 @@ function sanitizeInput(input) {
  *
  * @example Usage
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const data = parse(`
  * id: 1
@@ -61,8 +61,8 @@ export function parse(content, options = {}) {
  *
  * @example Usage
  * ```ts
- * import { parseAll } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parseAll } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const data = parseAll(`
  * ---

@@ -5,8 +5,8 @@
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_DNS } from "constants.js";
- * import { generate } from "v5.js";
+ * import { NAMESPACE_DNS } from "constants.ts";
+ * import { generate } from "v5.ts";
  *
  * await generate(NAMESPACE_DNS, new TextEncoder().encode("deno.land"));
  * ```
@@ -17,8 +17,8 @@ export const NAMESPACE_DNS = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_URL } from "constants.js";
- * import { generate } from "v3.js";
+ * import { NAMESPACE_URL } from "constants.ts";
+ * import { generate } from "v3.ts";
  *
  * await generate(NAMESPACE_URL, new TextEncoder().encode("https://deno.land"));
  * ```
@@ -29,8 +29,8 @@ export const NAMESPACE_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_OID } from "constants.js";
- * import { generate } from "v5.js";
+ * import { NAMESPACE_OID } from "constants.ts";
+ * import { generate } from "v5.ts";
  *
  * await generate(NAMESPACE_OID, new TextEncoder().encode("1.3.6.1.2.1.1.1"));
  * ```
@@ -41,8 +41,8 @@ export const NAMESPACE_OID = "6ba7b812-9dad-11d1-80b4-00c04fd430c8";
  *
  * @example Usage
  * ```ts
- * import { NAMESPACE_X500 } from "constants.js";
- * import { generate } from "v3.js";
+ * import { NAMESPACE_X500 } from "constants.ts";
+ * import { generate } from "v3.ts";
  *
  * await generate(NAMESPACE_X500, new TextEncoder().encode("CN=John Doe, OU=People, O=Example.com"));
  * ```

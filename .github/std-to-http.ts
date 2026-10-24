@@ -57,7 +57,7 @@ if (versions[tag_name]) {
   console.log(
     `The version ${tag_name} is already published as ${versions[tag_name]}`,
   );
-  Deno.exit();
+  // Deno.exit();
 }
 
 // Remove the previous std code
@@ -118,7 +118,7 @@ for await (const entry of reader.getEntriesGenerator()) {
   }
 
   const [, filename] = entry.filename.match(/[^/]+\/(.*)$/)!;
-  const path = `${filename}`;
+  const path = convertPath(filename);
 
   try {
     await Deno.mkdir(dirname(path), { recursive: true });
@@ -157,16 +157,10 @@ await Deno.writeTextFile(
 );
 
 await new Deno.Command("deno", {
-  args: ["run", "-A", "npm:typescript/tsc", "-p", "."],
+  args: ["run", "-A", "npm:typescript@^7/tsc", "-p", "."],
 }).output();
 
 await Deno.remove("tsconfig.json");
-
-// Replace .ts extensions with .js in the imports of JavaScript files
-for await (const { path } of walk(".", { exts: [".js"] })) {
-  const code = await Deno.readTextFile(path);
-  Deno.writeTextFile(path, code.replaceAll(/\.ts";/g, '.js";'));
-}
 
 // Create a package.json file to publish on npm
 await Deno.writeTextFile(
@@ -214,17 +208,24 @@ await new Deno.Command("deno", {
 
 function fixImports(base: string, code: string): string {
   return code.replaceAll(
-    /from "(@std\/[^"]+)"/g,
+    /from "([^"]+)"/g,
     (_, mod) => `from "${resolve(base, mod)}"`,
   );
 }
 
 function resolve(base: string, path: string): string {
-  const [, mod, filename] = path.match(/@std\/([^/]+)(\/.*)?/)!;
-  return relative(
-    base,
-    filename ? `${mod}/${filename.replaceAll("-", "_")}.ts` : `${mod}/mod.ts`,
-  );
+  const isStd = path.match(/@std\/([^/]+)(\/.*)?/);
+
+  if (isStd) {
+    const [, mod, filename] = isStd;
+
+    path = relative(
+      base,
+      filename ? `${mod}/${filename.replaceAll("-", "_")}.ts` : `${mod}/mod.ts`,
+    );
+  }
+
+  return convertPath(path);
 }
 
 function figureOutVersion(body: string, version: string): string {
@@ -262,4 +263,9 @@ function figureOutVersion(body: string, version: string): string {
     default:
       throw new Error("Invalid version");
   }
+}
+
+// Convert underscore to hyphen (ie: front_matter -> front-matter)
+function convertPath(path: string) {
+  return path.replaceAll(/(\w)_(\w)/g, "$1-$2");
 }

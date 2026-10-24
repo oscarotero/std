@@ -15,8 +15,8 @@ const ERROR_WHILE_MAPPING_MESSAGE =
  *
  * @example Usage
  * ```ts
- * import { pooledMap } from "pool.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { pooledMap } from "pool.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const results = pooledMap(
  *   2,

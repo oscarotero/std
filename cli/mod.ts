@@ -4,7 +4,7 @@
  * Tools for creating interactive command line tools.
  *
  * ```ts
- * import { parseArgs } from "parse_args.ts";
+ * import { parseArgs } from "parse-args.ts";
  * import { assertEquals } from "../assert/mod.ts";
  *
  * // Same as running `deno run example.ts --foo --bar=baz ./quux.txt`
@@ -15,6 +15,6 @@
  * @module
  */
 
-export * from "./parse_args.ts";
-export * from "./prompt_secret.ts";
-export * from "./unicode_width.ts";
+export * from "./parse-args.ts";
+export * from "./prompt-secret.ts";
+export * from "./unicode-width.ts";

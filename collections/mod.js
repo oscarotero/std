@@ -9,8 +9,8 @@
  * package and {@link https://lodash.com/ | Lodash}.
  *
  * ```ts
- * import { intersect, sample, pick } from "mod.js";
- * import { assertEquals, assertArrayIncludes } from "../assert/mod.js";
+ * import { intersect, sample, pick } from "mod.ts";
+ * import { assertEquals, assertArrayIncludes } from "../assert/mod.ts";
  *
  * const lisaInterests = ["Cooking", "Music", "Hiking"];
  * const kimInterests = ["Music", "Tennis", "Cooking"];
@@ -26,50 +26,50 @@
  *
  * @module
  */
-export * from "./aggregate_groups.js";
-export * from "./associate_by.js";
-export * from "./associate_with.js";
+export * from "./aggregate-groups.js";
+export * from "./associate-by.js";
+export * from "./associate-with.js";
 export * from "./chunk.js";
-export * from "./deep_merge.js";
+export * from "./deep-merge.js";
 export * from "./distinct.js";
-export * from "./distinct_by.js";
-export * from "./drop_last_while.js";
-export * from "./drop_while.js";
-export * from "./filter_entries.js";
-export * from "./filter_keys.js";
-export * from "./filter_values.js";
-export * from "./find_single.js";
-export * from "./first_not_nullish_of.js";
-export * from "./includes_value.js";
+export * from "./distinct-by.js";
+export * from "./drop-last-while.js";
+export * from "./drop-while.js";
+export * from "./filter-entries.js";
+export * from "./filter-keys.js";
+export * from "./filter-values.js";
+export * from "./find-single.js";
+export * from "./first-not-nullish-of.js";
+export * from "./includes-value.js";
 export * from "./interleave.js";
 export * from "./intersect.js";
-export * from "./invert_by.js";
+export * from "./invert-by.js";
 export * from "./invert.js";
-export * from "./join_to_string.js";
-export * from "./map_entries.js";
-export * from "./map_keys.js";
-export * from "./map_not_nullish.js";
-export * from "./map_values.js";
-export * from "./max_by.js";
-export * from "./max_of.js";
-export * from "./max_with.js";
-export * from "./min_by.js";
-export * from "./min_of.js";
-export * from "./min_with.js";
+export * from "./join-to-string.js";
+export * from "./map-entries.js";
+export * from "./map-keys.js";
+export * from "./map-not-nullish.js";
+export * from "./map-values.js";
+export * from "./max-by.js";
+export * from "./max-of.js";
+export * from "./max-with.js";
+export * from "./min-by.js";
+export * from "./min-of.js";
+export * from "./min-with.js";
 export * from "./omit.js";
 export * from "./partition.js";
-export * from "./partition_entries.js";
+export * from "./partition-entries.js";
 export * from "./permutations.js";
 export * from "./pick.js";
-export * from "./reduce_groups.js";
-export * from "./running_reduce.js";
+export * from "./reduce-groups.js";
+export * from "./running-reduce.js";
 export * from "./sample.js";
-export * from "./sliding_windows.js";
-export * from "./sort_by.js";
-export * from "./sum_of.js";
-export * from "./take_last_while.js";
-export * from "./take_while.js";
+export * from "./sliding-windows.js";
+export * from "./sort-by.js";
+export * from "./sum-of.js";
+export * from "./take-last-while.js";
+export * from "./take-while.js";
 export * from "./union.js";
 export * from "./unzip.js";
-export * from "./without_all.js";
+export * from "./without-all.js";
 export * from "./zip.js";

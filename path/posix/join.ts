@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { assertPath } from "../_common/assert_path.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { assertPath } from "../_common/assert-path.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 import { normalize } from "./normalize.ts";
 
 /**

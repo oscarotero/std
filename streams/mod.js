@@ -6,8 +6,8 @@
  * Includes buffering and conversion.
  *
  * ```ts
- * import { toText } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { toText } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const stream = ReadableStream.from(["Hello, world!"]);
  * const text = await toText(stream);
@@ -17,21 +17,21 @@
  *
  * @module
  */
-export * from "./batch_stream.js";
+export * from "./batch-stream.js";
 export * from "./buffer.js";
-export * from "./byte_slice_stream.js";
-export * from "./concat_readable_streams.js";
-export * from "./delimiter_stream.js";
-export * from "./early_zip_readable_streams.js";
-export * from "./limited_bytes_transform_stream.js";
-export * from "./limited_transform_stream.js";
-export * from "./merge_readable_streams.js";
-export * from "./text_delimiter_stream.js";
-export * from "./text_line_stream.js";
-export * from "./to_array_buffer.js";
-export * from "./to_blob.js";
-export * from "./to_bytes.js";
-export * from "./to_json.js";
-export * from "./to_text.js";
-export * from "./to_transform_stream.js";
-export * from "./zip_readable_streams.js";
+export * from "./byte-slice-stream.js";
+export * from "./concat-readable-streams.js";
+export * from "./delimiter-stream.js";
+export * from "./early-zip-readable-streams.js";
+export * from "./limited-bytes-transform-stream.js";
+export * from "./limited-transform-stream.js";
+export * from "./merge-readable-streams.js";
+export * from "./text-delimiter-stream.js";
+export * from "./text-line-stream.js";
+export * from "./to-array-buffer.js";
+export * from "./to-blob.js";
+export * from "./to-bytes.js";
+export * from "./to-json.js";
+export * from "./to-text.js";
+export * from "./to-transform-stream.js";
+export * from "./zip-readable-streams.js";

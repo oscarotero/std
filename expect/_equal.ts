@@ -3,7 +3,7 @@
 // This file is copied from `std/assert`.
 
 import type { EqualOptions } from "./_types.ts";
-import { AsymmetricMatcher } from "./_asymmetric_matchers.ts";
+import { AsymmetricMatcher } from "./_asymmetric-matchers.ts";
 
 type KeyedCollection = Set<unknown> | Map<unknown, unknown>;
 function isKeyedCollection(x: unknown): x is KeyedCollection {

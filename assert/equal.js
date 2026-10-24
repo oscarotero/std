@@ -92,7 +92,7 @@ function sameValueZero(a, b) {
  *
  * @example Usage
  * ```ts
- * import { equal } from "equal.js";
+ * import { equal } from "equal.ts";
  *
  * equal({ foo: "bar" }, { foo: "bar" }); // Returns `true`
  * equal({ foo: "bar" }, { foo: "baz" }); // Returns `false`

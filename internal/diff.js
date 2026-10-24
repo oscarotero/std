@@ -15,8 +15,8 @@ const ADDED = 3;
  *
  * @example Usage
  * ```ts
- * import { createCommon } from "diff.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { createCommon } from "diff.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = [1, 2, 3];
  * const b = [1, 2, 4];
@@ -50,8 +50,8 @@ export function createCommon(A, B) {
  *
  * @example Usage
  * ```ts
- * import { assertFp } from "diff.js";
- * import { assertThrows } from "../assert/mod.js";
+ * import { assertFp } from "diff.ts";
+ * import { assertThrows } from "../assert/mod.ts";
  *
  * assertFp({ y: 0, id: 0 });
  * assertThrows(() => assertFp({ id: 0 }));
@@ -87,8 +87,8 @@ export function assertFp(value) {
  *
  * @example Usage
  * ```ts
- * import { backTrace } from "diff.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { backTrace } from "diff.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   backTrace([], [], { y: 0, id: 0 }, false, new Uint32Array(0), 0),
@@ -147,8 +147,8 @@ export function backTrace(A, B, current, swapped, routes, diffTypesPtrOffset) {
  *
  * @example Usage
  * ```ts
- * import { createFp } from "diff.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { createFp } from "diff.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   createFp(
@@ -199,8 +199,8 @@ export function createFp(k, M, routes, diffTypesPtrOffset, ptr, slide, down) {
  *
  * @example Usage
  * ```ts
- * import { diff } from "diff.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { diff } from "diff.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const a = [1, 2, 3];
  * const b = [1, 2, 4];

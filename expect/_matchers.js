@@ -1,21 +1,21 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
-import { assertNotStrictEquals } from "../assert/not_strict_equals.js";
-import { assertStrictEquals } from "../assert/strict_equals.js";
-import { assertInstanceOf } from "../assert/instance_of.js";
-import { assertIsError } from "./_assert_is_error.js";
-import { assertNotInstanceOf } from "../assert/not_instance_of.js";
+import { assertNotStrictEquals } from "../assert/not-strict-equals.js";
+import { assertStrictEquals } from "../assert/strict-equals.js";
+import { assertInstanceOf } from "../assert/instance-of.js";
+import { assertIsError } from "./_assert-is-error.js";
+import { assertNotInstanceOf } from "../assert/not-instance-of.js";
 import { assertMatch } from "../assert/match.js";
-import { assertNotMatch } from "../assert/not_match.js";
-import { AssertionError } from "../assert/assertion_error.js";
-import { buildMessage } from "../internal/build_message.js";
+import { assertNotMatch } from "../assert/not-match.js";
+import { AssertionError } from "../assert/assertion-error.js";
+import { buildMessage } from "../internal/build-message.js";
 import { diff } from "../internal/diff.js";
-import { diffStr } from "../internal/diff_str.js";
-import { assertEquals } from "./_assert_equals.js";
-import { assertNotEquals } from "./_assert_not_equals.js";
+import { diffStr } from "../internal/diff-str.js";
+import { assertEquals } from "./_assert-equals.js";
+import { assertNotEquals } from "./_assert-not-equals.js";
 import { equal } from "./_equal.js";
 import { format } from "../internal/format.js";
-import { getMockCalls } from "./_mock_util.js";
-import { inspectArg, inspectArgs } from "./_inspect_args.js";
+import { getMockCalls } from "./_mock-util.js";
+import { inspectArg, inspectArgs } from "./_inspect-args.js";
 import {
   buildEqualOptions,
   getObjectSubset,
@@ -25,7 +25,7 @@ import {
 import {
   buildEqualErrorMessage,
   buildNotEqualErrorMessage,
-} from "./_build_message.js";
+} from "./_build-message.js";
 import {
   escapeStringForJs,
   getInlineCallSite,
@@ -36,7 +36,7 @@ import {
   registerInlineTeardown,
   serialize,
   SnapshotContext,
-} from "./_snapshot_state.js";
+} from "./_snapshot-state.js";
 export function toBe(context, expect) {
   if (context.isNot) {
     assertNotStrictEquals(context.value, expect, context.customMessage);

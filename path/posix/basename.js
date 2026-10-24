@@ -5,8 +5,8 @@ import {
   lastPathSegment,
   stripSuffix,
 } from "../_common/basename.js";
-import { fromFileUrl } from "./from_file_url.js";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";
+import { fromFileUrl } from "./from-file-url.js";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.js";
 import { isPosixPathSeparator } from "./_util.js";
 /**
  * Return the last portion of a `path`.
@@ -14,8 +14,8 @@ import { isPosixPathSeparator } from "./_util.js";
  *
  * @example Usage
  * ```ts
- * import { basename } from "basename.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { basename } from "basename.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(basename("/home/user/Documents/"), "Documents");
  * assertEquals(basename("/home/user/Documents/image.png"), "image.png");
@@ -35,8 +35,8 @@ import { isPosixPathSeparator } from "./_util.js";
  * and setting the `hash` and `search` properties to empty strings.
  *
  * ```ts
- * import { basename } from "basename.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { basename } from "basename.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(basename("https://deno.land/std/path/mod.ts"), "mod.ts");
  * assertEquals(basename("https://deno.land/std/path/mod.ts", ".ts"), "mod");

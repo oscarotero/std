@@ -6,8 +6,8 @@ import { parserFactory, toml } from "./_parser.js";
  *
  * @example Usage
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const tomlString = `title = "TOML Example"
  * [owner]

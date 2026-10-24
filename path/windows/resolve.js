@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { CHAR_COLON } from "../_common/constants.js";
-import { normalizeString } from "../_common/normalize_string.js";
-import { assertPath } from "../_common/assert_path.js";
+import { normalizeString } from "../_common/normalize-string.js";
+import { assertPath } from "../_common/assert-path.js";
 import { cwd } from "../_common/env.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
 /**
@@ -10,8 +10,8 @@ import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
  *
  * @example Usage
  * ```ts
- * import { resolve } from "resolve.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { resolve } from "resolve.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const resolved = resolve("C:\\foo\\bar", "..\\baz");
  * assertEquals(resolved, "C:\\foo\\baz");

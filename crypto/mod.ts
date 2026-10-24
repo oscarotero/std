@@ -20,6 +20,6 @@
  * @module
  */
 
-export * from "./aes_gcm.ts";
+export * from "./aes-gcm.ts";
 export * from "./crypto.ts";
-export * from "./timing_safe_equal.ts";
+export * from "./timing-safe-equal.ts";

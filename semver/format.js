@@ -6,8 +6,8 @@ function formatNumber(value) {
  *
  * @example Usage
  * ```ts
- * import { format } from "format.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { format } from "format.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const semver = {
  *   major: 1,

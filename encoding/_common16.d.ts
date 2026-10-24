@@ -12,7 +12,7 @@ export declare const rAlphabet: Uint8Array<ArrayBuffer>;
  * @example Basic Usage
  * ```ts
  * import { assertEquals } from "../assert/mod.ts";
- * import { calcSizeHex } from "unstable_hex.ts";
+ * import { calcSizeHex } from "unstable-hex.ts";
  *
  * assertEquals(calcSizeHex(1), 2);
  * ```

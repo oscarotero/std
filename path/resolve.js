@@ -8,8 +8,8 @@ import { resolve as windowsResolve } from "./windows/resolve.js";
  *
  * @example Usage
  * ```ts
- * import { resolve } from "resolve.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { resolve } from "resolve.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(resolve("C:\\foo", "bar", "baz"), "C:\\foo\\bar\\baz");

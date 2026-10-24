@@ -6,17 +6,17 @@ import {
   stripSuffix,
 } from "../_common/basename.js";
 import { CHAR_COLON } from "../_common/constants.js";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
-import { fromFileUrl } from "./from_file_url.js";
+import { fromFileUrl } from "./from-file-url.js";
 /**
  * Return the last portion of a `path`.
  * Trailing directory separators are ignored, and optional suffix is removed.
  *
  * @example Usage
  * ```ts
- * import { basename } from "basename.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { basename } from "basename.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(basename("C:\\user\\Documents\\"), "Documents");
  * assertEquals(basename("C:\\user\\Documents\\image.png"), "image.png");

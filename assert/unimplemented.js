@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Use this to stub out methods that will throw when invoked.
  *
  * @example Usage
  * ```ts ignore
- * import { unimplemented } from "mod.js";
+ * import { unimplemented } from "mod.ts";
  *
  * unimplemented(); // Throws
  * ```

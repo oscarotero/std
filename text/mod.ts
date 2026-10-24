@@ -19,12 +19,12 @@
  * @module
  */
 
-export * from "./levenshtein_distance.ts";
-export * from "./closest_string.ts";
-export * from "./compare_similarity.ts";
-export * from "./word_similarity_sort.ts";
-export * from "./to_camel_case.ts";
-export * from "./to_kebab_case.ts";
-export * from "./to_pascal_case.ts";
-export * from "./to_snake_case.ts";
+export * from "./levenshtein-distance.ts";
+export * from "./closest-string.ts";
+export * from "./compare-similarity.ts";
+export * from "./word-similarity-sort.ts";
+export * from "./to-camel-case.ts";
+export * from "./to-kebab-case.ts";
+export * from "./to-pascal-case.ts";
+export * from "./to-snake-case.ts";
 export * from "./truncate.ts";

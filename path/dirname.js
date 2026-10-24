@@ -8,8 +8,8 @@ import { dirname as windowsDirname } from "./windows/dirname.js";
  *
  * @example Usage
  * ```ts
- * import { dirname } from "dirname.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { dirname } from "dirname.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(dirname("C:\\home\\user\\Documents\\image.png"), "C:\\home\\user\\Documents");

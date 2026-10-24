@@ -1,6 +1,6 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.ts";
+import { AssertionError } from "./assertion-error.ts";
 
 /**
  * Make an assertion that `actual` match RegExp `expected`. If not

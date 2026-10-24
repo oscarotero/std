@@ -1,12 +1,12 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Use this to assert unreachable code.
  *
  * @example Usage
  * ```ts ignore
- * import { unreachable } from "mod.js";
+ * import { unreachable } from "mod.ts";
  *
  * unreachable(); // Throws
  * ```

@@ -23,8 +23,8 @@ alphabet.base64url
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "../assert/mod.js";
- * import { calcSizeBase64 } from "unstable_base64.js";
+ * import { assertEquals } from "../assert/mod.ts";
+ * import { calcSizeBase64 } from "unstable-base64.ts";
  *
  * assertEquals(calcSizeBase64(1), 4);
  * ```

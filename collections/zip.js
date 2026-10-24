@@ -20,8 +20,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { zip } from "zip.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { zip } from "zip.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const numbers = [1, 2, 3, 4];
  * const letters = ["a", "b", "c", "d"];
@@ -40,8 +40,8 @@
  *
  * @example With iterables
  * ```ts
- * import { zip } from "zip.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { zip } from "zip.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   zip(new Set([1, 2, 3]), ["a", "b", "c"]),
@@ -51,8 +51,8 @@
  *
  * @example Strings are iterables
  * ```ts
- * import { zip } from "zip.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { zip } from "zip.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // A string is zipped character-by-character, not as a single value.
  * assertEquals(

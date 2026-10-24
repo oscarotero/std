@@ -30,7 +30,7 @@ function run(str, code) {
  *
  * @example Usage
  * ```ts no-assert
- * import { bold } from "styles.js";
+ * import { bold } from "styles.ts";
  *
  * console.log(bold("Hello, world!")); // Prints "Hello, world!" in bold
  * ```
@@ -49,7 +49,7 @@ export function bold(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { red } from "styles.js";
+ * import { red } from "styles.ts";
  *
  * console.log(red("Hello, world!")); // Prints "Hello, world!" in red
  * ```
@@ -68,7 +68,7 @@ export function red(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { green } from "styles.js";
+ * import { green } from "styles.ts";
  *
  * console.log(green("Hello, world!")); // Prints "Hello, world!" in green
  * ```
@@ -87,7 +87,7 @@ export function green(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { yellow } from "styles.js";
+ * import { yellow } from "styles.ts";
  *
  * console.log(yellow("Hello, world!")); // Prints "Hello, world!" in yellow
  * ```
@@ -104,7 +104,7 @@ export function yellow(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { white } from "styles.js";
+ * import { white } from "styles.ts";
  *
  * console.log(white("Hello, world!")); // Prints "Hello, world!" in white
  * ```
@@ -121,7 +121,7 @@ export function white(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { gray } from "styles.js";
+ * import { gray } from "styles.ts";
  *
  * console.log(gray("Hello, world!")); // Prints "Hello, world!" in gray
  * ```
@@ -138,7 +138,7 @@ export function gray(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { brightBlack } from "styles.js";
+ * import { brightBlack } from "styles.ts";
  *
  * console.log(brightBlack("Hello, world!")); // Prints "Hello, world!" in bright-black
  * ```
@@ -155,7 +155,7 @@ export function brightBlack(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgRed } from "styles.js";
+ * import { bgRed } from "styles.ts";
  *
  * console.log(bgRed("Hello, world!")); // Prints "Hello, world!" with red background
  * ```
@@ -172,7 +172,7 @@ export function bgRed(str) {
  *
  * @example Usage
  * ```ts no-assert
- * import { bgGreen } from "styles.js";
+ * import { bgGreen } from "styles.ts";
  *
  * console.log(bgGreen("Hello, world!")); // Prints "Hello, world!" with green background
  * ```
@@ -197,7 +197,7 @@ const ANSI_REGEXP = new RegExp(
  *
  * @example Usage
  * ```ts no-assert
- * import { red, stripAnsiCode } from "styles.js";
+ * import { red, stripAnsiCode } from "styles.ts";
  *
  * console.log(stripAnsiCode(red("Hello, world!"))); // Prints "Hello, world!"
  * ```

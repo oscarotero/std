@@ -14,8 +14,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { pick } from "pick.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { pick } from "pick.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = { a: 5, b: 6, c: 7, d: 8 };
  * const picked = pick(obj, ["a", "c"]);

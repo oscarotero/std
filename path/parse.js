@@ -11,8 +11,8 @@ import { parse as windowsParse } from "./windows/parse.js";
  *
  * @example Usage
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   const parsedPathObj = parse("C:\\path\\to\\script.ts");

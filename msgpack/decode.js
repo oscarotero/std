@@ -7,8 +7,8 @@
  *
  * @example Usage
  * ```ts
- * import { decode } from "decode.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decode } from "decode.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const encoded = new Uint8Array([163, 72, 105, 33]);
  *

@@ -13,8 +13,8 @@ import {
  *
  * @example Usage
  * ```ts
- * import { parse, compare } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse, compare } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const version1 = parse("1.2.3");
  * const version2 = parse("1.2.4");

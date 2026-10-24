@@ -11,8 +11,8 @@
  * import {
  *   decodeHex,
  *   encodeHex,
- * } from "hex.js";
- * import { assertEquals } from "../assert/mod.js";
+ * } from "hex.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeHex("abc"), "616263");
  *
@@ -25,7 +25,7 @@
  * @module
  */
 import { calcSizeHex, decode, encode } from "./_common16.js";
-import { detach } from "./_common_detach.js";
+import { detach } from "./_common-detach.js";
 const alphabet = new TextEncoder()
   .encode("0123456789abcdef");
 const rAlphabet = new Uint8Array(128).fill(16); // alphabet.length
@@ -42,8 +42,8 @@ new TextEncoder()
  *
  * @example Usage
  * ```ts
- * import { encodeHex } from "hex.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeHex } from "hex.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeHex("abc"), "616263");
  * ```
@@ -70,8 +70,8 @@ export function encodeHex(src) {
  *
  * @example Usage
  * ```ts
- * import { decodeHex } from "hex.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeHex } from "hex.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeHex("616263"),

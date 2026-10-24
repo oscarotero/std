@@ -19,8 +19,8 @@ const rawRe = new RegExp(`[${[...rawToEntity.keys()].join("")}]`, "g");
  *
  * @example Usage
  * ```ts
- * import { escape } from "entities.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { escape } from "entities.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(escape("<>'&AA"), "&lt;&gt;&#39;&amp;AA");
  *
@@ -49,8 +49,8 @@ const entityListRegexCache = new WeakMap();
  *
  * @example Basic usage
  * ```ts
- * import { unescape } from "entities.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { unescape } from "entities.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(unescape("&lt;&gt;&#39;&amp;AA"), "<>'&AA");
  * assertEquals(unescape("&thorn;&eth;"), "&thorn;&eth;");
@@ -61,9 +61,9 @@ const entityListRegexCache = new WeakMap();
  * This uses the full named entity list from the HTML spec (~47K un-minified)
  *
  * ```ts
- * import { unescape } from "entities.js";
- * import entityList from "named_entity_list.json.ts" with { type: "json" };
- * import { assertEquals } from "../assert/mod.js";
+ * import { unescape } from "entities.ts";
+ * import entityList from "named-entity-list.json.ts" with { type: "json" };
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(unescape("&lt;&gt;&#39;&amp;AA", { entityList }), "<>'&AA");
  * ```

@@ -1,10 +1,10 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { assertPath } from "../_common/assert_path.ts";
+import { assertPath } from "../_common/assert-path.ts";
 import { isPathSeparator } from "./_util.ts";
 import { normalize } from "./normalize.ts";
-import { fromFileUrl } from "./from_file_url.ts";
+import { fromFileUrl } from "./from-file-url.ts";
 
 /**
  * Join all given a sequence of `paths`,then normalizes the resulting path.

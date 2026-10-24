@@ -14,8 +14,8 @@ new TextEncoder()
  *
  * @example Basic Usage
  * ```ts
- * import { assertEquals } from "../assert/mod.js";
- * import { calcSizeHex } from "unstable_hex.js";
+ * import { assertEquals } from "../assert/mod.ts";
+ * import { calcSizeHex } from "unstable-hex.ts";
  *
  * assertEquals(calcSizeHex(1), 2);
  * ```

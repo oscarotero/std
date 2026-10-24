@@ -83,4 +83,4 @@
  */
 export * from "./expect.ts";
 export * from "./fn.ts";
-export type { ExpectSnapshotState } from "./_snapshot_state.ts";
+export type { ExpectSnapshotState } from "./_snapshot-state.ts";

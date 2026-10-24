@@ -6,8 +6,8 @@
  * such as escaping text for interpolation into a regexp.
  *
  * ```ts
- * import { escape } from "escape.js";
- * import { assertEquals, assertMatch, assertNotMatch } from "../assert/mod.js";
+ * import { escape } from "escape.ts";
+ * import { assertEquals, assertMatch, assertNotMatch } from "../assert/mod.ts";
  *
  * const re = new RegExp(`^${escape(".")}$`, "u");
  *

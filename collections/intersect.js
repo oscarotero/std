@@ -13,8 +13,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { intersect } from "intersect.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { intersect } from "intersect.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const lisaInterests = ["Cooking", "Music", "Hiking"];
  * const kimInterests = ["Music", "Tennis", "Cooking"];

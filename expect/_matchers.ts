@@ -1,24 +1,24 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 
-import { assertNotStrictEquals } from "../assert/not_strict_equals.ts";
-import { assertStrictEquals } from "../assert/strict_equals.ts";
-import { assertInstanceOf } from "../assert/instance_of.ts";
-import { assertIsError } from "./_assert_is_error.ts";
-import { assertNotInstanceOf } from "../assert/not_instance_of.ts";
+import { assertNotStrictEquals } from "../assert/not-strict-equals.ts";
+import { assertStrictEquals } from "../assert/strict-equals.ts";
+import { assertInstanceOf } from "../assert/instance-of.ts";
+import { assertIsError } from "./_assert-is-error.ts";
+import { assertNotInstanceOf } from "../assert/not-instance-of.ts";
 import { assertMatch } from "../assert/match.ts";
-import { assertNotMatch } from "../assert/not_match.ts";
-import { AssertionError } from "../assert/assertion_error.ts";
-import { buildMessage } from "../internal/build_message.ts";
+import { assertNotMatch } from "../assert/not-match.ts";
+import { AssertionError } from "../assert/assertion-error.ts";
+import { buildMessage } from "../internal/build-message.ts";
 import { diff } from "../internal/diff.ts";
-import { diffStr } from "../internal/diff_str.ts";
+import { diffStr } from "../internal/diff-str.ts";
 
-import { assertEquals } from "./_assert_equals.ts";
-import { assertNotEquals } from "./_assert_not_equals.ts";
+import { assertEquals } from "./_assert-equals.ts";
+import { assertNotEquals } from "./_assert-not-equals.ts";
 import { equal } from "./_equal.ts";
 import { format } from "../internal/format.ts";
 import type { AnyConstructor, MatcherContext, MatchResult } from "./_types.ts";
-import { getMockCalls } from "./_mock_util.ts";
-import { inspectArg, inspectArgs } from "./_inspect_args.ts";
+import { getMockCalls } from "./_mock-util.ts";
+import { inspectArg, inspectArgs } from "./_inspect-args.ts";
 import {
   buildEqualOptions,
   getObjectSubset,
@@ -28,7 +28,7 @@ import {
 import {
   buildEqualErrorMessage,
   buildNotEqualErrorMessage,
-} from "./_build_message.ts";
+} from "./_build-message.ts";
 import {
   escapeStringForJs,
   getInlineCallSite,
@@ -39,7 +39,7 @@ import {
   registerInlineTeardown,
   serialize,
   SnapshotContext,
-} from "./_snapshot_state.ts";
+} from "./_snapshot-state.ts";
 
 export function toBe(context: MatcherContext, expect: unknown): MatchResult {
   if (context.isNot) {

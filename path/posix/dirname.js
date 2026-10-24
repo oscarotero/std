@@ -1,16 +1,16 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { assertArg } from "../_common/dirname.js";
-import { stripTrailingSeparators } from "../_common/strip_trailing_separators.js";
+import { stripTrailingSeparators } from "../_common/strip-trailing-separators.js";
 import { isPosixPathSeparator } from "./_util.js";
-import { fromFileUrl } from "./from_file_url.js";
+import { fromFileUrl } from "./from-file-url.js";
 /**
  * Return the directory path of a `path`.
  *
  * @example Usage
  * ```ts
- * import { dirname } from "dirname.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { dirname } from "dirname.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(dirname("/home/user/Documents/"), "/home/user");
  * assertEquals(dirname("/home/user/Documents/image.png"), "/home/user/Documents");
@@ -24,8 +24,8 @@ import { fromFileUrl } from "./from_file_url.js";
  * non-`file:` URL, pass it as a string or pass its `pathname` property.
  *
  * ```ts
- * import { dirname } from "dirname.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { dirname } from "dirname.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * assertEquals(dirname("https://deno.land/std/path/mod.ts"), "https://deno.land/std/path");
  * assertEquals(dirname("https://deno.land/std/path/mod.ts?a=b"), "https://deno.land/std/path");

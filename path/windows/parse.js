@@ -1,15 +1,15 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { CHAR_COLON, CHAR_DOT } from "../_common/constants.js";
-import { assertPath } from "../_common/assert_path.js";
+import { assertPath } from "../_common/assert-path.js";
 import { isPathSeparator, isWindowsDeviceRoot } from "./_util.js";
 /**
  * Return a `ParsedPath` object of the `path`.
  *
  * @example Usage
  * ```ts
- * import { parse } from "parse.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { parse } from "parse.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const parsed = parse("C:\\foo\\bar\\baz.ext");
  * assertEquals(parsed, {

@@ -78,7 +78,7 @@ const entityListRegexCache = new WeakMap<EntityList, RegExp>();
  *
  * ```ts
  * import { unescape } from "entities.ts";
- * import entityList from "named_entity_list.json.ts" with { type: "json" };
+ * import entityList from "named-entity-list.json.ts" with { type: "json" };
  * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(unescape("&lt;&gt;&#39;&amp;AA", { entityList }), "<>'&AA");

@@ -22,10 +22,10 @@ const DEFAULT_CHUNK_SIZE = 16_640;
  *
  * @example Buffer input bytes and convert it to a string
  * ```ts
- * import { Buffer } from "buffer.js";
- * import { toText } from "to_text.js";
- * import { assert } from "../assert/mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { Buffer } from "buffer.ts";
+ * import { toText } from "to-text.ts";
+ * import { assert } from "../assert/mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * // Create a new buffer
  * const buf = new Buffer();
@@ -77,7 +77,7 @@ export class Buffer {
    *
    * @example Read the content out of the buffer to stdout
    * ```ts ignore
-   * import { Buffer } from "buffer.js";
+   * import { Buffer } from "buffer.ts";
    *
    * const buf = new Buffer();
    * await buf.readable.pipeTo(Deno.stdout.writable);
@@ -99,7 +99,7 @@ export class Buffer {
    *
    * @example Write the data from stdin to the buffer
    * ```ts ignore
-   * import { Buffer } from "buffer.js";
+   * import { Buffer } from "buffer.ts";
    *
    * const buf = new Buffer();
    * await Deno.stdin.readable.pipeTo(buf.writable);
@@ -137,9 +137,9 @@ export class Buffer {
    *
    * @example Copy the buffer
    * ```ts
-   * import { assertEquals } from "../assert/mod.js";
-   * import { assertNotEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { assertNotEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([0, 1, 2]);
    * const buf = new Buffer(array.buffer);
@@ -156,8 +156,8 @@ export class Buffer {
    *
    * @example Get a slice to the buffer
    * ```ts
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([0, 1, 2]);
    * const buf = new Buffer(array.buffer);
@@ -185,8 +185,8 @@ export class Buffer {
    *
    * @example Empty buffer
    * ```ts
-   * import { assert } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assert } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const buf = new Buffer();
    * assert(buf.empty());
@@ -194,8 +194,8 @@ export class Buffer {
    *
    * @example Non-empty buffer
    * ```ts
-   * import { assert } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assert } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([42]);
    * const buf = new Buffer(array.buffer);
@@ -204,8 +204,8 @@ export class Buffer {
    *
    * @example Non-empty, but the content was already read
    * ```ts ignore
-   * import { assert } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assert } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([42]);
    * const buf = new Buffer(array.buffer);
@@ -226,8 +226,8 @@ export class Buffer {
    *
    * @example Basic usage
    * ```ts
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([0, 1, 2]);
    * const buf = new Buffer(array.buffer);
@@ -236,8 +236,8 @@ export class Buffer {
    *
    * @example Length becomes 0 after the content is read
    * ```ts ignore
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([42]);
    * const buf = new Buffer(array.buffer);
@@ -259,8 +259,8 @@ export class Buffer {
    *
    * @example Basic usage
    * ```ts
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const arrayBuffer = new ArrayBuffer(256);
    * const buf = new Buffer(arrayBuffer);
@@ -279,8 +279,8 @@ export class Buffer {
    *
    * @example Basic usage
    * ```ts
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([0, 1, 2]);
    * const buf = new Buffer(array.buffer);
@@ -308,8 +308,8 @@ export class Buffer {
    *
    * @example Basic usage
    * ```ts
-   * import { assert } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assert } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const array = new Uint8Array([0, 1, 2]);
    * const buf = new Buffer(array.buffer);
@@ -381,9 +381,9 @@ export class Buffer {
    *
    * @example Basic usage
    * ```ts
-   * import { assert } from "../assert/mod.js";
-   * import { assertEquals } from "../assert/mod.js";
-   * import { Buffer } from "buffer.js";
+   * import { assert } from "../assert/mod.ts";
+   * import { assertEquals } from "../assert/mod.ts";
+   * import { Buffer } from "buffer.ts";
    *
    * const buf = new Buffer();
    * assertEquals(buf.capacity, 0);

@@ -4,7 +4,7 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { DumperState } from "./_dumper_state.ts";
+import { DumperState } from "./_dumper-state.ts";
 import { SCHEMA_MAP, type SchemaType } from "./_schema.ts";
 import type { StyleVariant } from "./_type.ts";
 

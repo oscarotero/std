@@ -8,8 +8,8 @@ import { extname as windowsExtname } from "./windows/extname.js";
  *
  * @example Usage
  * ```ts
- * import { extname } from "extname.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { extname } from "extname.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   assertEquals(extname("C:\\home\\user\\Documents\\image.png"), ".png");

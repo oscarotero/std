@@ -10,8 +10,8 @@ import { delay } from "./delay.js";
  *
  * @example Polling a payment status with {@linkcode deadline}
  * ```ts ignore
- * import { poll } from "poll.js";
- * import { deadline } from "deadline.js";
+ * import { poll } from "poll.ts";
+ * import { deadline } from "deadline.ts";
  *
  * async function getPaymentStatus(id: string): Promise<{ status: string }> {
  *   // Fetch payment status from API
@@ -30,7 +30,7 @@ import { delay } from "./delay.js";
  *
  * @example Using AbortSignal for timeout
  * ```ts ignore
- * import { poll } from "poll.js";
+ * import { poll } from "poll.ts";
  *
  * const result = await poll(
  *   () => fetch("https://api.example.com/status").then((r) => r.json()),

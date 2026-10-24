@@ -1,8 +1,8 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 
-import { normalizeString } from "../_common/normalize_string.ts";
-import { assertPath } from "../_common/assert_path.ts";
+import { normalizeString } from "../_common/normalize-string.ts";
+import { assertPath } from "../_common/assert-path.ts";
 import { cwd } from "../_common/env.ts";
 import { isPosixPathSeparator } from "./_util.ts";
 

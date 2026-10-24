@@ -33,8 +33,8 @@ class Queue {
  *
  * @example Usage
  * ```ts
- * import { tee } from "tee.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { tee } from "tee.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const gen = async function* gen() {
  *   yield 1;

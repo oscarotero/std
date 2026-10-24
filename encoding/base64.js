@@ -9,8 +9,8 @@
  * import {
  *   encodeBase64,
  *   decodeBase64,
- * } from "base64.js";
- * import { assertEquals } from "../assert/mod.js";
+ * } from "base64.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const foobar = new TextEncoder().encode("foobar");
  *
@@ -21,7 +21,7 @@
  * @module
  */
 import { calcSizeBase64, decode, encode } from "./_common64.js";
-import { detach } from "./_common_detach.js";
+import { detach } from "./_common-detach.js";
 const padding = "=".charCodeAt(0);
 const alphabet = new TextEncoder()
   .encode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
@@ -37,8 +37,8 @@ alphabet.forEach((byte, i) => rAlphabet[byte] = i);
  *
  * @example Usage
  * ```ts
- * import { encodeBase64 } from "base64.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { encodeBase64 } from "base64.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(encodeBase64("foobar"), "Zm9vYmFy");
  * ```
@@ -65,8 +65,8 @@ export function encodeBase64(data) {
  *
  * @example Usage
  * ```ts
- * import { decodeBase64 } from "base64.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decodeBase64 } from "base64.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * assertEquals(
  *   decodeBase64("Zm9vYmFy"),

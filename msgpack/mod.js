@@ -8,8 +8,8 @@
  * {@link https://msgpack.org/ | Learn more about MessagePack}.
  *
  * ```ts
- * import { decode, encode } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { decode, encode } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const obj = {
  *   str: "deno",

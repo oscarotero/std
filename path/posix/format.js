@@ -6,8 +6,8 @@ import { _format, assertArg } from "../_common/format.js";
  *
  * @example Usage
  * ```ts
- * import { format } from "format.js";
- * import { assertEquals } from "../../assert/mod.js";
+ * import { format } from "format.ts";
+ * import { assertEquals } from "../../assert/mod.ts";
  *
  * const path = format({
  *   root: "/",

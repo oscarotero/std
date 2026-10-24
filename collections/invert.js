@@ -15,8 +15,8 @@
  *
  * @example Basic usage
  * ```ts
- * import { invert } from "invert.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { invert } from "invert.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const record = { a: "x", b: "y", c: "z" };
  *

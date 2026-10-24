@@ -81,7 +81,7 @@ export const DEFAULT_SCHEMA = createSchema({
  *
  * @example
  * ```ts
- * import { parse } from "mod.js";
+ * import { parse } from "mod.ts";
  *
  * const data = parse(
  *   `

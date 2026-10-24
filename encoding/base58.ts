@@ -20,7 +20,7 @@
  * @module
  */
 
-import { validateBinaryLike } from "./_validate_binary_like.ts";
+import { validateBinaryLike } from "./_validate-binary-like.ts";
 import type { Uint8Array_ } from "./_types.ts";
 export type { Uint8Array_ };
 

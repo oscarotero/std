@@ -38,6 +38,6 @@
  *
  * @module
  */
-export * from "./decode_time.ts";
-export * from "./monotonic_ulid.ts";
+export * from "./decode-time.ts";
+export * from "./monotonic-ulid.ts";
 export * from "./ulid.ts";

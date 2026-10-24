@@ -24,8 +24,8 @@
  * - Sexagesimal numbers (e.g. `3:25:45`)
  *
  * ```ts
- * import { parse, stringify } from "mod.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { parse, stringify } from "mod.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * const data = parse(`
  * foo: bar

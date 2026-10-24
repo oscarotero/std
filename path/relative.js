@@ -9,8 +9,8 @@ import { relative as windowsRelative } from "./windows/relative.js";
  *
  * @example Usage
  * ```ts
- * import { relative } from "relative.js";
- * import { assertEquals } from "../assert/mod.js";
+ * import { relative } from "relative.ts";
+ * import { assertEquals } from "../assert/mod.ts";
  *
  * if (Deno.build.os === "windows") {
  *   const path = relative("C:\\foobar\\test\\aaa", "C:\\foobar\\impl\\bbb");

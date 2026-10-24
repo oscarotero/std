@@ -1,14 +1,14 @@
 // Copyright 2018-2026 the Deno authors. MIT license.
 // This module is browser compatible.
 import { format } from "../internal/format.js";
-import { AssertionError } from "./assertion_error.js";
+import { AssertionError } from "./assertion-error.js";
 /**
  * Make an assertion that `actual` is greater than `expected`.
  * If not then throw.
  *
  * @example Usage
  * ```ts ignore
- * import { assertGreater } from "mod.js";
+ * import { assertGreater } from "mod.ts";
  *
  * assertGreater(2, 1); // Doesn't throw
  * assertGreater(1, 1); // Throws
