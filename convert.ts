@@ -8,15 +8,13 @@ import {
   dirname,
   relative,
 } from "https://deno.land/x/_std@1.0.0/path/posix/mod.ts";
-import { walk } from "https://deno.land/x/_std@1.0.0/fs/walk.ts";
-import versions from "./versions.json" with { type: "json" };
 
 // Fetch the latest release of the std repository
 const release = await (await fetch(
   "https://api.github.com/repos/denoland/std/releases/latest",
 )).json();
 
-const { tag_name, zipball_url, body } = release;
+const { zipball_url } = release;
 
 const stablePackages = [
   "assert",
@@ -53,27 +51,14 @@ const stablePackages = [
   "yaml",
 ];
 
-if (versions[tag_name]) {
-  console.log(
-    `The version ${tag_name} is already published as ${versions[tag_name]}`,
-  );
-  // Deno.exit();
-}
-
 // Remove the previous std code
 for await (const entry of Deno.readDir(".")) {
-  if (![".git", ".github", "README.md"].includes(entry.name)) {
+  if (![".git", "convert.ts", "README.md"].includes(entry.name)) {
     await Deno.remove(entry.name, { recursive: true });
   }
 }
 
-const last = Object.values(versions).pop()!;
-
-// Increment patch version
-const version = figureOutVersion(body, last);
-versions[tag_name] = version;
-Deno.writeTextFile(".github/versions.json", JSON.stringify(versions, null, 2));
-
+// Read the zip file
 const zip = await (await fetch(zipball_url)).arrayBuffer();
 const reader = new ZipReader(new BlobReader(new Blob([zip])));
 
@@ -150,6 +135,7 @@ await Deno.writeTextFile(
         rewriteRelativeImportExtensions: true,
         declaration: true,
       },
+      exclude: ["convert.ts"],
     },
     null,
     2,
@@ -168,7 +154,7 @@ await Deno.writeTextFile(
   JSON.stringify(
     {
       name: "deno-std",
-      version,
+      version: "1.6.0",
       description: "Deno std packages in a single package",
       type: "module",
       repository: {
@@ -190,9 +176,13 @@ await Deno.writeTextFile(
         "**/*.d.ts",
       ],
       exports: {
-        "./*.js": {
-          import: "./*.js",
+        "./*.ts": {
           types: "./*.d.ts",
+          import: "./*.js",
+        },
+        "./*.js": {
+          types: "./*.d.ts",
+          import: "./*.js",
         },
       },
     },
@@ -226,43 +216,6 @@ function resolve(base: string, path: string): string {
   }
 
   return convertPath(path);
-}
-
-function figureOutVersion(body: string, version: string): string {
-  let v = 1; // 1: patch, 2: minor, 3: major
-
-  const lines = body.split("\n").map((line) => line.trim());
-  for (const line of lines) {
-    if (line.startsWith("#### ")) {
-      const match = line.match(
-        /####\s+@std\/([\w-]+)\s+([\d.]+)\s+\(([^)]+)\)/,
-      );
-      if (match) {
-        const [, name, , increment] = match;
-
-        if (!stablePackages.includes(name)) {
-          continue;
-        }
-        if (increment === "minor" && v < 2) {
-          v = 2;
-        } else if (increment === "major" && v < 3) {
-          v = 3;
-        }
-      }
-    }
-  }
-
-  const [major, minor, patch] = last.split(".").map(Number);
-  switch (v) {
-    case 1:
-      return `${major}.${minor}.${patch + 1}`;
-    case 2:
-      return `${major}.${minor + 1}.0`;
-    case 3:
-      return `${major + 1}.0.0`;
-    default:
-      throw new Error("Invalid version");
-  }
 }
 
 // Convert underscore to hyphen (ie: front_matter -> front-matter)

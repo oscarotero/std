@@ -22,9 +22,13 @@
     "**/*.d.ts"
   ],
   "exports": {
+    "./*.ts": {
+      "types": "./*.d.ts",
+      "import": "./*.js"
+    },
     "./*.js": {
-      "import": "./*.js",
-      "types": "./*.d.ts"
+      "types": "./*.d.ts",
+      "import": "./*.js"
     }
   }
 }
